@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dashboard.dart' show kAccentGradient; 
-import 'package:landpage/src/ui/widgets/offer_email_button.dart';
+// import 'package:landpage/src/ui/widgets/offer_email_button.dart';
 enum ApplicationStatus { applied, underReview, interview, offer, rejected }
 
 extension _StatusMeta on ApplicationStatus {

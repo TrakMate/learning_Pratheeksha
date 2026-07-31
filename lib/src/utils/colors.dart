@@ -55,11 +55,26 @@ class AppColors {
 
   static const Color fabCoreGradientStart = Color(0x38FFFFFF); // white @ 0.22
   static const Color fabCoreGradientEnd = Color(0x0FFFFFFF); // white @ 0.06
-  // FAB core border reuses glassBorderHover (white @ 0.35)
-  // Progress ring track reuses glassBorder (white @ 0.15)
 
-// ---- Found in register.dart ----
+
+// ---- register.dart ----
   static const Color inputFill = Color(0x0DFFFFFF); // white @ 0.05 — text field fill
  
+ // ---- dashboard.dart ----
+  static const Color textEmphasis90 = Color(0xE6FFFFFF); // white @ 0.9 — activity title, dropdown tile fg
+  static const Color textFaded65 = Color(0xA6FFFFFF); // white @ 0.65 — stat card label
+  static const Color textFaded55 = Color(0x8CFFFFFF); // white @ 0.55 — dropdown menu email
+  static const Color textFaded50 = Color(0x80FFFFFF); // white @ 0.5 — activity time
+  static const Color outlineBorder = Color(0x33FFFFFF); // white @ 0.2 — outline button border
+  static const Color outlineBg = Color(0x0AFFFFFF); // white @ 0.04 — outline button bg
+
+// ---- Found in company.dart ----
+  static const Color textFaded40 = Color(0x66FFFFFF); // white @ 0.4 — hint text, empty-state icon
+  static const Color textFaded45 = Color(0x73FFFFFF); // white @ 0.45 — search icons
+  static const Color shadowPurpleDeep = Color(0xff7C3AED); // deep purple glow behind company icon
+  static const Color success = Color(0xff34D399); // "Applied" badge
+  static const Color glassFill07 = Color(0x12FFFFFF); // white @ 0.07 — unselected filter chip bg
+  static const Color glassFill06 = Color(0x0FFFFFFF); // white @ 0.06 — role chip bg
+  
 
 }

@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:landpage/src/ui/screens/applications_section.dart';
+import 'package:landpage/src/ui/screens/settings.dart';
 import 'package:landpage/src/ui/widgets/calendar.dart';
 import 'package:landpage/src/ui/screens/company.dart';
 import 'package:landpage/src/ui/screens/interview.dart';
@@ -100,7 +101,7 @@ class _DashboardPageState extends State<DashboardPage>
       case "saved roles":
         return _buildSavedRolesTab();
       case "Settings":
-        return _buildSettingsTab();
+        return _buildSettingsTab(displayName);
       case "Companies":
         return _buildCompaniesTab();
       case "Interview":
@@ -157,15 +158,20 @@ class _DashboardPageState extends State<DashboardPage>
     return SelectedRolesSection();
   }
 
-  Widget _buildSettingsTab() {
-    return GlassContainer(
-      radius: 20,
-      padding: const EdgeInsets.all(24),
-      child: Text(
-        "Settings.",
-        style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
-      ),
-    );
+  Widget _buildSettingsTab(displayName) {
+    // return GlassContainer(
+    //   radius: 20,
+    //   padding: const EdgeInsets.all(24),
+    //   child: Text(
+    //     "Settings.",
+    //     style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
+    //   ),
+    // );
+     return SettingsSection(
+    // displayName: displayName,
+    displayName: "Pratheeksha",
+    email: auth.currentUser?.email ?? "",
+  );
   }
 
 
@@ -749,7 +755,7 @@ class _DropdownMenuTileState extends State<_DropdownMenuTile> {
   @override
   Widget build(BuildContext context) {
     final Color fg = widget.destructive
-        ? const Color(0xffFF8A8A)
+        ? const Color.fromARGB(255, 236, 232, 232)
         : Colors.white.withValues(alpha: 0.9);
 
     return MouseRegion(

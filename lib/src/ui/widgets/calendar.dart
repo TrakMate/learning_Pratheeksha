@@ -41,6 +41,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   void _addEvent(DateTime day, CalendarEvent event) {
+    
     final key = _normalize(day);
     setState(() {
       _events.putIfAbsent(key, () => []).add(event);
@@ -69,195 +70,208 @@ class _CalendarScreenState extends State<CalendarScreen> {
           builder: (context, setDialogState) {
             return Dialog(
               backgroundColor: Colors.transparent,
-              insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+              insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                  child: Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.10),
-                      borderRadius: BorderRadius.circular(20),
-                      border:
-                          Border.all(color: Colors.white.withValues(alpha: 0.18)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xffA855F7).withValues(alpha: 0.2),
-                          blurRadius: 30,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              width: 36,
-                              height: 36,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: LinearGradient(colors: kAccentGradient),
-                              ),
-                              alignment: Alignment.center,
-                              child: const Icon(
-                                CupertinoIcons.calendar_badge_plus,
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Text(
-                              "New Event",
-                              style: GoogleFonts.poppins(
-                                color: Colors.white,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          "${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}",
-                          style: GoogleFonts.poppins(
-                            color: Colors.white.withValues(alpha: 0.55),
-                            fontSize: 12.5,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 400),
+                    child: Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.10),
+                        borderRadius: BorderRadius.circular(20),
+                        border:
+                            Border.all(color: Colors.white.withValues(alpha: 0.18)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xffA855F7).withValues(alpha: 0.2),
+                            blurRadius: 30,
+                            spreadRadius: 2,
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        _buildDialogTextField(
-                          controller: titleController,
-                          hint: "Event title",
-                          icon: CupertinoIcons.text_cursor,
-                        ),
-                        const SizedBox(height: 14),
-                        _buildDialogTextField(
-                          controller: descController,
-                          hint: "Description (optional)",
-                          icon: CupertinoIcons.doc_text,
-                          maxLines: 3,
-                        ),
-                        const SizedBox(height: 14),
-                        GestureDetector(
-                          onTap: () async {
-                            final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.now(),
-                              builder: (context, child) {
-                                return Theme(
-                                  data: Theme.of(context).copyWith(
-                                    colorScheme: const ColorScheme.dark(
-                                      primary: Color(0xffA855F7),
-                                      surface: Color(0xff1A1B2E),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 36,
+                                height: 36,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient: LinearGradient(colors: kAccentGradient),
+                                ),
+                                alignment: Alignment.center,
+                                child: const Icon(
+                                  CupertinoIcons.calendar_badge_plus,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                "New Event",
+                                style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            "${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white.withValues(alpha: 0.55),
+                              fontSize: 12.5,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          _buildDialogTextField(
+                            controller: titleController,
+                            hint: "Event title",
+                            icon: CupertinoIcons.text_cursor,
+                          ),
+                          const SizedBox(height: 14),
+                          _buildDialogTextField(
+                            controller: descController,
+                            hint: "Description (optional)",
+                            icon: CupertinoIcons.doc_text,
+                            minLines: 1,
+                            maxLines: 3,
+                          ),
+                          const SizedBox(height: 14),
+                          GestureDetector(
+                            onTap: () async {
+                              final time = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.now(),
+                                builder: (context, child) {
+                                  return Theme(
+                                    data: Theme.of(context).copyWith(
+                                      colorScheme: const ColorScheme.dark(
+                                        primary: Color(0xffA855F7),
+                                        surface: Color(0xff1A1B2E),
+                                      ),
+                                    ),
+                                    child: child!,
+                                  );
+                                },
+                              );
+                              if (time != null) {
+                                setDialogState(() => pickedTime = time);
+                              }
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 14, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.06),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    color: Colors.white.withValues(alpha: 0.15)),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(CupertinoIcons.clock,
+                                      color: Colors.white70, size: 18),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    pickedTime == null
+                                        ? "Pick a time (optional)"
+                                        : pickedTime!.format(context),
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white70,
+                                      fontSize: 13.5,
                                     ),
                                   ),
-                                  child: child!,
-                                );
-                              },
-                            );
-                            if (time != null) {
-                              setDialogState(() => pickedTime = time);
-                            }
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 12),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.06),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.15)),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(CupertinoIcons.clock,
-                                    color: Colors.white70, size: 18),
-                                const SizedBox(width: 10),
-                                Text(
-                                  pickedTime == null
-                                      ? "Pick a time (optional)"
-                                      : pickedTime!.format(context),
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.white70,
-                                    fontSize: 13.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: OutlinedButton(
-                                onPressed: () => Navigator.pop(dialogContext),
-                                style: OutlinedButton.styleFrom(
-                                  side: BorderSide(
-                                      color: Colors.white.withValues(alpha: 0.2)),
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: Text(
-                                  "Cancel",
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.white70, fontSize: 13.5),
-                                ),
+                                ],
                               ),
                             ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  gradient:
-                                      const LinearGradient(colors: kAccentGradient),
-                                ),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    if (titleController.text.trim().isEmpty) {
-                                      return;
-                                    }
-                                    _addEvent(
-                                      _selectedDay,
-                                      CalendarEvent(
-                                        title: titleController.text.trim(),
-                                        description: descController.text.trim(),
-                                        time: pickedTime,
-                                      ),
-                                    );
-                                    Navigator.pop(dialogContext);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    backgroundColor: Colors.transparent,
-                                    shadowColor: Colors.transparent,
+                          ),
+                          const SizedBox(height: 24),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: OutlinedButton(
+                                  onPressed: () => Navigator.pop(dialogContext),
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(
+                                        color: Colors.white.withValues(alpha: 0.2)),
                                     padding: const EdgeInsets.symmetric(vertical: 12),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
                                   child: Text(
-                                    "Add Event",
+                                    "Cancel",
                                     style: GoogleFonts.poppins(
-                                      color: Colors.white,
-                                      fontSize: 13.5,
-                                      fontWeight: FontWeight.w600,
+                                        color: Colors.white70, fontSize: 13.5),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    gradient:
+                                        const LinearGradient(colors: kAccentGradient),
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (titleController.text.trim().isEmpty) {
+                                        //  ScaffoldMessenger.of(context).showSnackBar(
+                                       //   SnackBar(
+                                         //     content: Text(
+                                         //       "All fields are required",
+                                            //       style: GoogleFonts.poppins(),
+                                             //     ),
+                                            //  backgroundColor: Colors.redAccent,
+                                                 //   ),
+                                               // );
+                                        return;
+                                      }
+                                      _addEvent(
+                                        _selectedDay,
+                                        CalendarEvent(
+                                          title: titleController.text.trim(),
+                                          description: descController.text.trim(),
+                                          time: pickedTime,
+                                        ),
+                                      );
+                                      Navigator.pop(dialogContext);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      backgroundColor: Colors.transparent,
+                                      shadowColor: Colors.transparent,
+                                      padding: const EdgeInsets.symmetric(vertical: 12),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Add Event",
+                                      style: GoogleFonts.poppins(
+                                        color: Colors.white,
+                                        fontSize: 13.5,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -274,6 +288,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     required String hint,
     required IconData icon,
     int maxLines = 1,
+    int minLines = 1,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -284,6 +299,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       child: TextField(
         controller: controller,
         maxLines: maxLines,
+        minLines: minLines,
         style: GoogleFonts.poppins(color: Colors.white, fontSize: 13.5),
         cursorColor: const Color(0xffC084FC),
         decoration: InputDecoration(

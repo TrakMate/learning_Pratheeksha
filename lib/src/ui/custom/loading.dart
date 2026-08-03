@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:landpage/src/ui/screens/dashboard.dart'; 
+import 'package:landpage/src/ui/screens/dashboard.dart';
+import 'package:landpage/src/utils/colors.dart';
+
 
 class LoadingOverlay extends StatelessWidget {
   final String message;
@@ -20,8 +22,8 @@ class LoadingOverlay extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.white.withValues(alpha: 0.35),
-              Colors.white.withValues(alpha: 0.05),
+              AppColors.glassBorderHover,
+              AppColors.inputFill,
               kAccentGradient[1].withValues(alpha: 0.25),
             ],
           ),
@@ -33,7 +35,7 @@ class LoadingOverlay extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 42),
               decoration: BoxDecoration(
-                color: const Color(0xff1a0f2b).withValues(alpha: 0.55),
+                color: AppColors.loadingOverlayBg.withValues(alpha: 0.55),
                 borderRadius: BorderRadius.circular(27),
                 boxShadow: [
                   BoxShadow(
@@ -43,7 +45,7 @@ class LoadingOverlay extends StatelessWidget {
                     offset: const Offset(0, 16),
                   ),
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.3),
+                    color: AppColors.avatarShadow,
                     blurRadius: 24,
                     offset: const Offset(0, 8),
                   ),
@@ -83,12 +85,12 @@ class LoadingOverlay extends StatelessWidget {
                         child: Container(
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xff130a1f),
+                            color: AppColors.loadingOverlayInnerBg,
                           ),
                           padding: const EdgeInsets.all(11),
                           child: const CircularProgressIndicator(
                             strokeWidth: 2.4,
-                            valueColor: AlwaysStoppedAnimation(Colors.white),
+                            valueColor: AlwaysStoppedAnimation(AppColors.textPrimary),
                           ),
                         ),
                       ),
@@ -99,7 +101,7 @@ class LoadingOverlay extends StatelessWidget {
                     message,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                       fontSize: 15.5,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.2,

@@ -131,4 +131,8 @@ static const Color barrierOverlay = Color(0x66000000); // black @ 0.4 — dialog
   static const Color datePickerSurface = Color(0xff1A1B2E); // dark surface for the time-picker dialog's ColorScheme.dark
   // add alongside barrierOverlay in AppColors
 static const Color deleteAccountBarrier = Color(0x59000000); // black @ 0.35 — delete-account confirmation dialog barrier
+static const Color snackBarBg = Color(0xFF1F1F1F); // solid dark gray — default snackbar background
+
+static const Color loadingOverlayBg = Color(0xff1a0f2b); // dark purple-black — LoadingOverlay outer card background
+static const Color loadingOverlayInnerBg = Color(0xff130a1f); // deeper purple-black — LoadingOverlay spinner puck background
 }

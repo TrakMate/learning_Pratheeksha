@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:landpage/src/utils/colors.dart';
 
 class AnimatedBrandText extends StatefulWidget {
   const AnimatedBrandText({super.key});
@@ -58,11 +59,11 @@ class _AnimatedBrandTextState extends State<AnimatedBrandText> {
                 style: GoogleFonts.syne(
                   fontSize: 120,
                   fontWeight: FontWeight.w800,
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   shadows: active
                       ? [
                           Shadow(
-                            color: Colors.white.withValues(alpha: 0.35),
+                            color: AppColors.glassBorderHover,
                             blurRadius: 18,
                           ),
                         ]

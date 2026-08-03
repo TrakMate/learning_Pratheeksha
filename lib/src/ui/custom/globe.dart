@@ -1,6 +1,7 @@
 
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:landpage/src/utils/colors.dart';
 
 /// Drop-in replacement for your existing AnimatedGlobe.
 /// Same constructor signature -> no changes needed at the call site:
@@ -94,7 +95,7 @@ class _AnimatedGlobeState extends State<AnimatedGlobe>
                         shape: BoxShape.circle,
                         boxShadow:[
                           BoxShadow(
-                            color: Colors.purpleAccent
+                            color: AppColors.ringAccent
                                 .withValues(alpha: 0.05 + 0.35 * depth),
                             blurRadius: 30,
                             spreadRadius: 2,
@@ -137,7 +138,7 @@ class _OrbitPathPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
     final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.08)
+      ..color = AppColors.glassFill
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 

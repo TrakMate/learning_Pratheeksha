@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:landpage/dashboard.dart
 import 'package:landpage/src/forms/register.dart';
+import 'package:landpage/src/utils/colors.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -26,7 +27,7 @@ class CustomAppBar extends StatelessWidget {
               Text(
                 "ARTISAN",
                 style: GoogleFonts.syne(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
@@ -150,7 +151,7 @@ class CustomAppBar extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Colors.white,
+                          color: AppColors.textPrimary,
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(12),
@@ -159,12 +160,12 @@ class CustomAppBar extends StatelessWidget {
                         children: const [
                           Text(
                             "Login ",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: AppColors.textPrimary),
                           ),
                           Icon(
                             Icons.arrow_forward,
                             size: 14,
-                            color: Colors.white,
+                            color: AppColors.textPrimary,
                           ),
                         ],
                       ),
@@ -218,7 +219,7 @@ class _NavTextItemState extends State<NavTextItem> {
               Text(
                 widget.title,
                 style: GoogleFonts.poppins(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 14,
                 ),
               ),
@@ -228,7 +229,7 @@ class _NavTextItemState extends State<NavTextItem> {
                 curve: Curves.easeOut,
                 height: 1.5,
                 width: isHovered ? 35 : 0,
-                color: Colors.white,
+                color: AppColors.textPrimary,
               ),
             ],
           ),

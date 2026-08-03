@@ -13,14 +13,11 @@ import 'package:landpage/src/ui/screens/interview.dart';
 import 'package:landpage/src/forms/register.dart';
 import 'package:landpage/src/ui/screens/savedroles.dart';
 import 'package:landpage/src/ui/widgets/glassContainer.dart';
+import 'package:landpage/src/utils/colors.dart' show AppColors;
 import '../../forms/login.dart';
 
  
-const List<Color> kAccentGradient = [
-  Color(0xffC084FC),
-  Color(0xffA855F7),
-  Color(0xff6D28D9),
-];
+const List<Color> kAccentGradient = AppColors.accentGradient;
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -200,7 +197,7 @@ return const CompaniesSection();
           Text(
             "ARTISAN",
             style: GoogleFonts.poppins(
-              color: Colors.white,
+              color: AppColors.textPrimary,
               fontSize: 20,
               fontWeight: FontWeight.w600,
             ),
@@ -259,12 +256,10 @@ return const CompaniesSection();
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: _profileMenuOpen ? 0.14 : 0.08),
+            color: _profileMenuOpen ? AppColors.glassFillHover : AppColors.glassFill,
             borderRadius: BorderRadius.circular(30),
             border: Border.all(
-              color: _profileMenuOpen
-                  ? Colors.white.withValues(alpha: 0.35)
-                  : Colors.white.withValues(alpha: 0.15),
+              color: _profileMenuOpen ? AppColors.glassBorderHover : AppColors.glassBorder,
             ),
           ),
           child: Row(
@@ -281,7 +276,7 @@ return const CompaniesSection();
                 child: Text(
                   displayName.isNotEmpty ? displayName[0].toUpperCase() : "?",
                   style: GoogleFonts.poppins(
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                   ),
@@ -290,15 +285,15 @@ return const CompaniesSection();
               const SizedBox(width: 10),
               Text(
                 displayName,
-                style: GoogleFonts.poppins(color: Colors.white70, fontSize: 13),
+                style: GoogleFonts.poppins(color: AppColors.textSecondary, fontSize: 13),
               ),
               const SizedBox(width: 2),
               AnimatedRotation(
                 turns: _profileMenuOpen ? 0.5 : 0.0,
                 duration: const Duration(milliseconds: 180),
-                child: const Icon(
+                child: Icon(
                   Icons.keyboard_arrow_down,
-                  color: Colors.white70,
+                  color: AppColors.textSecondary,
                   size: 18,
                 ),
               ),
@@ -406,7 +401,7 @@ return const CompaniesSection();
             Text(
               "Welcome, $displayName ",
               style: GoogleFonts.poppins(
-                color: Colors.white,
+                color: AppColors.textPrimary,
                 fontSize: 28,
                 fontWeight: FontWeight.w600,
               ),
@@ -418,7 +413,7 @@ return const CompaniesSection();
             "icons/wave.svg",
             width: 30,
             height: 30,
-            color: Colors.white,
+            color: AppColors.textPrimary,
           ),
           ],
         ),
@@ -426,7 +421,7 @@ return const CompaniesSection();
         Text(
           "Here's what's happening with your workspace today.",
           style: GoogleFonts.poppins(
-            color: Colors.white.withValues(alpha: 0.7),
+            color: AppColors.chipLabel,
             fontSize: 14,
           ),
         ),
@@ -480,7 +475,7 @@ return const CompaniesSection();
           Text(
             "Recent Activity",
             style: GoogleFonts.poppins(
-              color: Colors.white,
+              color: AppColors.textPrimary,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
@@ -505,20 +500,20 @@ return const CompaniesSection();
               gradient: LinearGradient(
                 colors: kAccentGradient.map((c) => c.withValues(alpha: 0.35)).toList(),
               ),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+              border: Border.all(color: AppColors.glassBorder),
             ),
-            child: Icon(a.icon, color: Colors.white, size: 18),
+            child: Icon(a.icon, color: AppColors.textPrimary, size: 18),
           ),
           const SizedBox(width: 14),
           Expanded(
             child: Text(
               a.title,
-              style: GoogleFonts.poppins(color: Colors.white.withValues(alpha: 0.9), fontSize: 13.5),
+              style: GoogleFonts.poppins(color: AppColors.textEmphasis90, fontSize: 13.5),
             ),
           ),
           Text(
             a.time,
-            style: GoogleFonts.poppins(color: Colors.white.withValues(alpha: 0.5), fontSize: 12),
+            style: GoogleFonts.poppins(color: AppColors.textFaded50, fontSize: 12),
           ),
         ],
       ),
@@ -535,7 +530,7 @@ return const CompaniesSection();
           Text(
             "Quick Actions",
             style: GoogleFonts.poppins(
-              color: Colors.white,
+              color: AppColors.textPrimary,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
@@ -571,15 +566,15 @@ return const CompaniesSection();
         ),
         child: ElevatedButton.icon(
           onPressed: onTap,
-          icon: Icon(icon, size: 18, color: Colors.white),
+          icon: Icon(icon, size: 18, color: AppColors.textPrimary),
           label: Text(
             label,
             style: GoogleFonts.poppins(fontSize: 14.5, fontWeight: FontWeight.w500),
           ),
           style: ElevatedButton.styleFrom(
             elevation: 4,
-            backgroundColor: Colors.white.withValues(alpha: 0.15),
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.glassBorder,
+            foregroundColor: AppColors.textPrimary,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.5)),
           ),
         ),
@@ -593,15 +588,15 @@ return const CompaniesSection();
       height: 46,
       child: OutlinedButton.icon(
         onPressed: onTap,
-        icon: Icon(icon, size: 18, color: Colors.white70),
+        icon: Icon(icon, size: 18, color: AppColors.textSecondary),
         label: Text(
           label,
-          style: GoogleFonts.poppins(fontSize: 14.5, color: Colors.white70),
+          style: GoogleFonts.poppins(fontSize: 14.5, color: AppColors.textSecondary),
         ),
         style: OutlinedButton.styleFrom(
-          side: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
+          side: BorderSide(color: AppColors.outlineBorder),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.5)),
-          backgroundColor: Colors.white.withValues(alpha: 0.04),
+          backgroundColor: AppColors.outlineBg,
         ),
       ),
     );
@@ -631,14 +626,14 @@ class _ProfileDropdownMenu extends StatelessWidget {
           child: Container(
             width: 240,
            decoration: BoxDecoration(
-  color: Colors.white.withValues(alpha: 0.08),
+  color: AppColors.glassFill,
   borderRadius: BorderRadius.circular(16),
   border: Border.all(
-    color: Colors.white.withValues(alpha: 0.15),
+    color: AppColors.glassBorder,
   ),
   boxShadow: [
     BoxShadow(
-      color: const Color(0xffA855F7).withValues(alpha: 0.15),
+      color: AppColors.glowPurple.withValues(alpha: 0.15),
       blurRadius: 30,
       spreadRadius: 2,
     ),
@@ -666,7 +661,7 @@ class _ProfileDropdownMenu extends StatelessWidget {
                               ? displayName[0].toUpperCase()
                               : "?",
                           style: GoogleFonts.poppins(
-                            color: Colors.white,
+                            color: AppColors.textPrimary,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
@@ -683,7 +678,7 @@ class _ProfileDropdownMenu extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
-                                color: Colors.white,
+                                color: AppColors.textPrimary,
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -695,7 +690,7 @@ class _ProfileDropdownMenu extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.poppins(
-                                  color: Colors.white.withValues(alpha: 0.55),
+                                  color: AppColors.textFaded55,
                                   fontSize: 11.5,
                                 ),
                               ),
@@ -710,7 +705,7 @@ class _ProfileDropdownMenu extends StatelessWidget {
                 Divider(
                   height: 1,
                   thickness: 1,
-                  color: Colors.white.withValues(alpha: 0.10),
+                  color: AppColors.cardBorder,
                 ),
 
                 const SizedBox(height: 6),
@@ -755,8 +750,8 @@ class _DropdownMenuTileState extends State<_DropdownMenuTile> {
   @override
   Widget build(BuildContext context) {
     final Color fg = widget.destructive
-        ? const Color.fromARGB(255, 236, 232, 232)
-        : Colors.white.withValues(alpha: 0.9);
+        ? AppColors.logoutTextColor
+        : AppColors.textEmphasis90;
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -770,7 +765,7 @@ class _DropdownMenuTileState extends State<_DropdownMenuTile> {
           margin: const EdgeInsets.symmetric(horizontal: 8),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
-            color: hovered ? Colors.white.withValues(alpha: 0.08) : Colors.transparent,
+            color: hovered ? AppColors.glassFill : Colors.transparent,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
@@ -792,37 +787,6 @@ class _DropdownMenuTileState extends State<_DropdownMenuTile> {
     );
   }
 }
-
-// class _GlassContainer extends StatelessWidget {
-//   final Widget child;
-//   final double radius;
-//   final EdgeInsets padding;
-
-//   const _GlassContainer({
-//     required this.child,
-//     this.radius = 20,
-//     this.padding = const EdgeInsets.all(20),
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ClipRRect(
-//       borderRadius: BorderRadius.circular(radius),
-//       child: BackdropFilter(
-//         filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-//         child: Container(
-//           padding: padding,
-//           decoration: BoxDecoration(
-//             color: Colors.white.withValues(alpha: 0.08),
-//             borderRadius: BorderRadius.circular(radius),
-//             border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
-//           ),
-//           child: child,
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class _NavTextItem extends StatefulWidget {
   final String title;
@@ -854,7 +818,7 @@ class _NavTextItemState extends State<_NavTextItem> {
               Text(
                 widget.title,
                 style: GoogleFonts.poppins(
-                  color: active ? Colors.white : Colors.white70,
+                  color: active ? AppColors.textPrimary : AppColors.textSecondary,
                   fontSize: 14,
                   fontWeight: widget.selected ? FontWeight.w600 : FontWeight.w400,
                 ),
@@ -911,10 +875,10 @@ class _StatCardState extends State<_StatCard> {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: hovered ? 0.12 : 0.08),
+                color: hovered ? AppColors.cardGradientStart : AppColors.glassFill,
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(
-                  color: hovered ? Colors.white.withValues(alpha: 0.3) : Colors.white.withValues(alpha: 0.15),
+                  color: hovered ? AppColors.cardBorderHover : AppColors.glassBorder,
                 ),
               ),
               child: Row(
@@ -927,7 +891,7 @@ class _StatCardState extends State<_StatCard> {
                       borderRadius: BorderRadius.circular(12),
                       gradient: const LinearGradient(colors: kAccentGradient),
                     ),
-                    child: Icon(widget.data.icon, color: Colors.white, size: 20),
+                    child: Icon(widget.data.icon, color: AppColors.textPrimary, size: 20),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -937,7 +901,7 @@ class _StatCardState extends State<_StatCard> {
                         Text(
                           widget.data.value,
                           style: GoogleFonts.poppins(
-                            color: Colors.white,
+                            color: AppColors.textPrimary,
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
                           ),
@@ -946,7 +910,7 @@ class _StatCardState extends State<_StatCard> {
                         Text(
                           widget.data.label,
                           style: GoogleFonts.poppins(
-                            color: Colors.white.withValues(alpha: 0.65),
+                            color: AppColors.textFaded65,
                             fontSize: 12.5,
                           ),
                         ),
@@ -954,7 +918,7 @@ class _StatCardState extends State<_StatCard> {
                         Text(
                           widget.data.delta,
                           style: GoogleFonts.poppins(
-                            color: const Color(0xffC084FC),
+                            color: AppColors.accentLight,
                             fontSize: 11,
                             fontWeight: FontWeight.w500,
                           ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  // ---- Core accent gradient (same 3 stops used everywhere already) ----
+  // ---- Core accent gradient  ----
   static const Color accentLight = Color(0xffC084FC);
   static const Color accentMid = Color(0xffA855F7);
   static const Color accentDark = Color(0xff6D28D9);
@@ -77,4 +77,58 @@ class AppColors {
   static const Color glassFill06 = Color(0x0FFFFFFF); // white @ 0.06 — role chip bg
   
 
+
+  // ---- Base ----
+  static const Color white = Colors.white; // raw white for one-off .withOpacity() calls
+
+
+// ----  applications.dart ----
+  static const Color statusApplied = Color.fromARGB(255, 228, 135, 219); // "Applied" status pill/dot/accent bar
+  static const Color statusUnderReview = Color.fromARGB(255, 159, 195, 239); // "Under Review" status pill/dot/accent bar
+  static const Color statusInterview = Color.fromARGB(255, 227, 207, 154); // "Interview" status pill/dot/accent bar
+  static const Color statusOffer = Color.fromARGB(255, 144, 211, 187); // "Offer" status pill/dot/accent bar
+  static const Color statusRejected = Color.fromARGB(255, 239, 167, 167); // "Rejected" status pill/dot/accent bar
+  static const Color shaderHighlight = Color(0xffE9D5FF); // "Applications Sent" header shader gradient end
+
+
+
+  // ---- selected_roles.dart ----
+  static const Color removeButtonBorder = Color(0x2EFFFFFF); // white @ 0.18 — Remove button border
+  static const Color appliedBg = Color(0x1AFFFFFF); // white @ 0.1 — Applied button background (filled state)
+  static const Color chipLabel = Color(0xB3FFFFFF); // white @ 0.70 — role chip label text
+
+
+  // ---- interview status colors (interview.dart + interview_room.dart _StatusBadge) ----
+static const Color statusUpcomingInterview = Color.fromARGB(255, 214, 142, 65); // upcoming badge + early-join dialog icon
+static const Color statusCompletedInterview = Color(0xff22C55E); // completed badge
+static const Color statusCancelledInterview = Color(0xffF87171); // cancelled badge + join-window-over dialog icon
+
+// ---- interview_room.dart ----
+static const Color barrierOverlay = Color(0x66000000); // black @ 0.4 — dialog barrier/scrim behind popups
+
+
+
+// ---- Additional shared alpha variants (added for color audit) ----
+  static const Color textFaded85 = Color(0xD9FFFFFF); // white @ 0.85 — filter chip count text
+  static const Color textFaded80 = Color(0xCCFFFFFF); // white @ 0.80 — empty state title text
+  static const Color logoutTextColor = Color.fromARGB(255, 236, 232, 232); // destructive dropdown tile text (near-white)
+  static const Color tileFillHover = Color(0x17FFFFFF); // white @ ~0.09 — application tile hover fill
+  static const Color tileFillBase = Color(0x0CFFFFFF); // white @ ~0.045 — application tile base fill
+
+
+
+  // ---- Additional colors found during audit (settings.dart, settingpopup.dart, camera_overlay.dart) ----
+  static const Color black = Colors.black; // raw black for one-off .withValues() calls (mirrors `white` above)
+  static const Color overlayTint = Color(0xff0F0A1E); // dark navy/purple backdrop tint behind camera overlay
+  static const Color cameraCardBg = Color(0xff17102A); // camera preview card background
+
+
+  // ---- Additional colors found in session.dart (interview session screen) ----
+  static const Color endCallGradientEnd = Color(0xffEF4444); // darker red, second stop of "End" button gradient (paired with statusCancelledInterview)
+  static const Color textEmphasis92 = Color(0xEBFFFFFF); // white @ 0.92 — active interview question text
+
+  // ---- Additional colors found in calendar.dart (time-picker dialog theme) ----
+  static const Color datePickerSurface = Color(0xff1A1B2E); // dark surface for the time-picker dialog's ColorScheme.dark
+  // add alongside barrierOverlay in AppColors
+static const Color deleteAccountBarrier = Color(0x59000000); // black @ 0.35 — delete-account confirmation dialog barrier
 }

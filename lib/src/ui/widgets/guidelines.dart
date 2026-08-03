@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:landpage/src/utils/colors.dart';
+// import 'colors.dart'; // adjust path to your actual AppColors location
 // import 'package:landpage/src/forms/login.dart';
 // import 'login.dart'; // AuthService lives here
 
@@ -16,7 +18,7 @@ void showGuidelineDialog(
   showDialog(
     context: context,
     barrierDismissible: true,
-    barrierColor: Colors.black.withValues(alpha: 0.4),
+    barrierColor: AppColors.barrierOverlay, // black @ 0.4
     builder: (dialogContext) {
       return Dialog(
         backgroundColor: Colors.transparent,
@@ -29,26 +31,27 @@ void showGuidelineDialog(
               width: 380,
               padding: const EdgeInsets.all(26),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.08),
+                color: AppColors.glassFill, // white @ 0.08
                 borderRadius: BorderRadius.circular(22),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.15),
+                  color: AppColors.glassBorder, // white @ 0.15
                 ),
               ),
-              child:IntrinsicHeight(child: Column(
-                mainAxisSize: MainAxisSize.min,
-  crossAxisAlignment: CrossAxisAlignment.center,
-  children: [
-    _guideline("Join the interview at least 10 minutes early."),
-    _guideline("Ensure your camera and microphone are working."),
-    _guideline("Use a stable internet connection."),
-    _guideline("Sit in a quiet, well-lit environment."),
-    _guideline("Avoid switching tabs during the interview."),
-    _guideline("Keep your face visible throughout the session."),
-    _guideline("Do not use external assistance unless instructed."),
-    _guideline("Dont switch tabs or full screen, it will be monitored during the interview."),
-  ],
-),
+              child: IntrinsicHeight(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _guideline("Join the interview at least 10 minutes early."),
+                    _guideline("Ensure your camera and microphone are working."),
+                    _guideline("Use a stable internet connection."),
+                    _guideline("Sit in a quiet, well-lit environment."),
+                    _guideline("Avoid switching tabs during the interview."),
+                    _guideline("Keep your face visible throughout the session."),
+                    _guideline("Do not use external assistance unless instructed."),
+                    _guideline("Dont switch tabs or full screen, it will be monitored during the interview."),
+                  ],
+                ),
               ),
             ),
           ),
@@ -57,6 +60,7 @@ void showGuidelineDialog(
     },
   );
 }
+
 Widget _guideline(String text) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 12),
@@ -65,7 +69,7 @@ Widget _guideline(String text) {
       children: [
         const Icon(
           CupertinoIcons.checkmark_circle_fill,
-          color: Colors.white,
+          color: AppColors.textPrimary,
           size: 18,
         ),
         const SizedBox(width: 10),
@@ -73,7 +77,7 @@ Widget _guideline(String text) {
           child: Text(
             text,
             style: GoogleFonts.poppins(
-              color: Colors.white.withValues(alpha: .7),
+              color: AppColors.chipLabel, // white @ 0.70
               fontSize: 12.5,
               height: 1.45,
             ),

@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:landpage/src/forms/login.dart';
+import 'package:landpage/src/utils/colors.dart';
+// import 'package:landpage/src/ui/theme/colors.dart'; // adjust path if different
 // import 'login.dart'; // AuthService lives here
 
 void showForgotPasswordDialog(
@@ -16,7 +18,7 @@ void showForgotPasswordDialog(
   showDialog(
     context: context,
     barrierDismissible: true,
-    barrierColor: Colors.black.withValues(alpha: 0.4),
+    barrierColor: AppColors.barrierOverlay,
     builder: (dialogContext) {
       return Dialog(
         backgroundColor: Colors.transparent,
@@ -29,10 +31,10 @@ void showForgotPasswordDialog(
               width: 380,
               padding: const EdgeInsets.all(26),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.08),
+                color: AppColors.glassFill,
                 borderRadius: BorderRadius.circular(22),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.15),
+                  color: AppColors.glassBorder,
                 ),
               ),
               child: Column(
@@ -42,7 +44,7 @@ void showForgotPasswordDialog(
                   Text(
                     "Reset Password",
                     style: GoogleFonts.poppins(
-                      color: Colors.white,
+                      color: AppColors.textPrimary,
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
@@ -51,35 +53,35 @@ void showForgotPasswordDialog(
                   Text(
                     "Enter your email and we'll send you a reset link.",
                     style: GoogleFonts.poppins(
-                      color: Colors.white.withValues(alpha: .65),
+                      color: AppColors.textFaded65,
                       fontSize: 12.5,
                     ),
                   ),
                   const SizedBox(height: 22),
                   TextField(
                     controller: resetEmailController,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: AppColors.textPrimary),
                     decoration: InputDecoration(
                       prefixIcon: const Icon(
                         CupertinoIcons.mail_solid,
-                        color: Colors.white70,
+                        color: AppColors.textSecondary,
                       ),
                       hintText: "Email",
                       hintStyle: GoogleFonts.poppins(
-                        color: Colors.white.withValues(alpha: .6),
+                        color: AppColors.sectionLabel,
                       ),
                       filled: true,
-                      fillColor: Colors.white.withValues(alpha: .05),
+                      fillColor: AppColors.inputFill,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide(
-                          color: Colors.white.withValues(alpha: .15),
+                          color: AppColors.glassBorder,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(
-                          color: Colors.white,
+                          color: AppColors.white,
                         ),
                       ),
                     ),
@@ -96,10 +98,10 @@ void showForgotPasswordDialog(
                             },
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(
-                                color: Colors.white.withValues(alpha: .18),
+                                color: AppColors.removeButtonBorder,
                               ),
                               backgroundColor:
-                                  Colors.white.withValues(alpha: .04),
+                                  AppColors.outlineBg,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -107,7 +109,7 @@ void showForgotPasswordDialog(
                             child: Text(
                               "Cancel",
                               style: GoogleFonts.poppins(
-                                color: Colors.white70,
+                                color: AppColors.textSecondary,
                               ),
                             ),
                           ),
@@ -122,11 +124,7 @@ void showForgotPasswordDialog(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(13),
                               gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xffC084FC),
-                                  Color(0xffA855F7),
-                                  Color(0xff6D28D9),
-                                ],
+                                colors: AppColors.accentGradient,
                               ),
                             ),
                             child: ElevatedButton(
@@ -140,8 +138,8 @@ void showForgotPasswordDialog(
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
                                 backgroundColor:
-                                    Colors.white.withValues(alpha: .14),
-                                foregroundColor: Colors.white,
+                                    AppColors.glassFillHover,
+                                foregroundColor: AppColors.textPrimary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(11),
                                 ),

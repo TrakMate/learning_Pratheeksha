@@ -2,25 +2,36 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:landpage/src/utils/colors.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:landpage/src/ui/widgets/glassContainer.dart'; 
+import 'package:landpage/src/ui/widgets/glassContainer.dart';
 
-const List<Color> kAccentGradient = [
-  Color(0xffC084FC),
-  Color(0xffA855F7),
-  Color(0xff6D28D9),
-];
+import 'package:landpage/src/ui/screens/interview.dart';
+// import 'package:landpage/src/ui/theme/colors.dart'; // adjust path if different
+
+const List<Color> kAccentGradient = AppColors.accentGradient;
 
 class CalendarEvent {
   final String title;
   final String description;
   final TimeOfDay? time;
+  final bool isInterview;
+  final InterviewStatus? interviewStatus;
 
-  CalendarEvent({required this.title, this.description = "", this.time});
+  CalendarEvent({
+    required this.title,
+    this.description = "",
+    this.time,
+    this.isInterview = false,
+    this.interviewStatus,
+  });
 }
 
 class CalendarScreen extends StatefulWidget {
-  const CalendarScreen({super.key});
+  
+  final List<InterviewData> interviews;
+
+  const CalendarScreen({super.key, this.interviews = const []});
 
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
@@ -31,17 +42,39 @@ class _CalendarScreenState extends State<CalendarScreen> {
   DateTime _selectedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
-  // key = normalized (y, m, d) date
+  // key = normalized (y, m, d) date — manually added events only.
   final Map<DateTime, List<CalendarEvent>> _events = {};
 
   DateTime _normalize(DateTime d) => DateTime(d.year, d.month, d.day);
 
+  
+  Map<DateTime, List<CalendarEvent>> get _interviewEvents {
+    final map = <DateTime, List<CalendarEvent>>{};
+    for (final i in widget.interviews) {
+      final key = _normalize(i.dateTime);
+      map.putIfAbsent(key, () => []).add(
+            CalendarEvent(
+              title: "${i.company} Interview",
+              description: "${i.role} · ${i.type} with ${i.interviewer}",
+              time: TimeOfDay.fromDateTime(i.dateTime),
+              isInterview: true,
+              interviewStatus: i.status,
+            ),
+          );
+    }
+    return map;
+  }
+
+  // Manual events + auto interview events, merged, for a given day.
   List<CalendarEvent> _eventsForDay(DateTime day) {
-    return _events[_normalize(day)] ?? [];
+    final key = _normalize(day);
+    return [
+      ...(_interviewEvents[key] ?? []),
+      ...(_events[key] ?? []),
+    ];
   }
 
   void _addEvent(DateTime day, CalendarEvent event) {
-    
     final key = _normalize(day);
     setState(() {
       _events.putIfAbsent(key, () => []).add(event);
@@ -64,7 +97,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     await showDialog(
       context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.5),
+      barrierColor: AppColors.black.withValues(alpha: 0.5),
       builder: (dialogContext) {
         return StatefulBuilder(
           builder: (context, setDialogState) {
@@ -80,13 +113,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.10),
+                        color: AppColors.cardBorder,
                         borderRadius: BorderRadius.circular(20),
                         border:
-                            Border.all(color: Colors.white.withValues(alpha: 0.18)),
+                            Border.all(color: AppColors.removeButtonBorder),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xffA855F7).withValues(alpha: 0.2),
+                            color: AppColors.accentMid.withValues(alpha: 0.2),
                             blurRadius: 30,
                             spreadRadius: 2,
                           ),
@@ -108,7 +141,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 alignment: Alignment.center,
                                 child: const Icon(
                                   CupertinoIcons.calendar_badge_plus,
-                                  color: Colors.white,
+                                  color: AppColors.textPrimary,
                                   size: 18,
                                 ),
                               ),
@@ -116,7 +149,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               Text(
                                 "New Event",
                                 style: GoogleFonts.poppins(
-                                  color: Colors.white,
+                                  color: AppColors.textPrimary,
                                   fontSize: 17,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -127,7 +160,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           Text(
                             "${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}",
                             style: GoogleFonts.poppins(
-                              color: Colors.white.withValues(alpha: 0.55),
+                              color: AppColors.textFaded55,
                               fontSize: 12.5,
                             ),
                           ),
@@ -154,9 +187,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 builder: (context, child) {
                                   return Theme(
                                     data: Theme.of(context).copyWith(
-                                      colorScheme: const ColorScheme.dark(
-                                        primary: Color(0xffA855F7),
-                                        surface: Color(0xff1A1B2E),
+                                      colorScheme: ColorScheme.dark(
+                                        primary: AppColors.accentMid,
+                                        surface: AppColors.datePickerSurface,
                                       ),
                                     ),
                                     child: child!,
@@ -172,22 +205,22 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 14, vertical: 12),
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.06),
+                                color: AppColors.glassFill06,
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                    color: Colors.white.withValues(alpha: 0.15)),
+                                    color: AppColors.glassBorder),
                               ),
                               child: Row(
                                 children: [
                                   const Icon(CupertinoIcons.clock,
-                                      color: Colors.white70, size: 18),
+                                      color: AppColors.textSecondary, size: 18),
                                   const SizedBox(width: 10),
                                   Text(
                                     pickedTime == null
-                                        ? "Pick a time (optional)"
+                                        ? "Pick a time"
                                         : pickedTime!.format(context),
                                     style: GoogleFonts.poppins(
-                                      color: Colors.white70,
+                                      color: AppColors.textSecondary,
                                       fontSize: 13.5,
                                     ),
                                   ),
@@ -203,7 +236,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   onPressed: () => Navigator.pop(dialogContext),
                                   style: OutlinedButton.styleFrom(
                                     side: BorderSide(
-                                        color: Colors.white.withValues(alpha: 0.2)),
+                                        color: AppColors.outlineBorder),
                                     padding: const EdgeInsets.symmetric(vertical: 12),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -212,7 +245,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   child: Text(
                                     "Cancel",
                                     style: GoogleFonts.poppins(
-                                        color: Colors.white70, fontSize: 13.5),
+                                        color: AppColors.textSecondary, fontSize: 13.5),
                                   ),
                                 ),
                               ),
@@ -227,15 +260,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       if (titleController.text.trim().isEmpty) {
-                                        //  ScaffoldMessenger.of(context).showSnackBar(
-                                       //   SnackBar(
-                                         //     content: Text(
-                                         //       "All fields are required",
-                                            //       style: GoogleFonts.poppins(),
-                                             //     ),
-                                            //  backgroundColor: Colors.redAccent,
-                                                 //   ),
-                                               // );
                                         return;
                                       }
                                       _addEvent(
@@ -260,7 +284,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     child: Text(
                                       "Add Event",
                                       style: GoogleFonts.poppins(
-                                        color: Colors.white,
+                                        color: AppColors.textPrimary,
                                         fontSize: 13.5,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -292,24 +316,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.06),
+        color: AppColors.glassFill06,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+        border: Border.all(color: AppColors.glassBorder),
       ),
       child: TextField(
         controller: controller,
         maxLines: maxLines,
         minLines: minLines,
-        style: GoogleFonts.poppins(color: Colors.white, fontSize: 13.5),
-        cursorColor: const Color(0xffC084FC),
+        style: GoogleFonts.poppins(color: AppColors.textPrimary, fontSize: 13.5),
+        cursorColor: AppColors.accentLight,
         decoration: InputDecoration(
           prefixIcon: Padding(
             padding: const EdgeInsets.only(left: 4, right: 4),
-            child: Icon(icon, color: Colors.white54, size: 18),
+            child: Icon(icon, color: AppColors.textFaded55, size: 18),
           ),
           prefixIconConstraints: const BoxConstraints(minWidth: 36),
           hintText: hint,
-          hintStyle: GoogleFonts.poppins(color: Colors.white38, fontSize: 13.5),
+          hintStyle: GoogleFonts.poppins(color: AppColors.textMuted, fontSize: 13.5),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
         ),
@@ -317,9 +341,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
-  // ===========================================================
-  // Build
-  // ===========================================================
+  
   @override
   Widget build(BuildContext context) {
     final selectedEvents = _eventsForDay(_selectedDay);
@@ -358,7 +380,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           gradient: const LinearGradient(colors: kAccentGradient),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xffA855F7).withValues(alpha: 0.4),
+              color: AppColors.accentMid.withValues(alpha: 0.4),
               blurRadius: 16,
               spreadRadius: 1,
             ),
@@ -368,7 +390,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           onPressed: _showAddEventDialog,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          child: const Icon(CupertinoIcons.add, color: Colors.white),
+          child: const Icon(CupertinoIcons.add, color: AppColors.textPrimary),
         ),
       ),
     );
@@ -388,13 +410,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
               gradient: LinearGradient(colors: kAccentGradient),
             ),
             alignment: Alignment.center,
-            child: const Icon(CupertinoIcons.calendar, color: Colors.white, size: 17),
+            child: const Icon(CupertinoIcons.calendar, color: AppColors.textPrimary, size: 17),
           ),
           const SizedBox(width: 12),
           Text(
             "My Calendar",
             style: GoogleFonts.poppins(
-              color: Colors.white,
+              color: AppColors.textPrimary,
               fontSize: 20,
               fontWeight: FontWeight.w600,
             ),
@@ -414,6 +436,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
         focusedDay: _focusedDay,
         calendarFormat: _calendarFormat,
         selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+        // eventLoader now returns manual + auto-generated interview events,
+        // so interview dates show a marker dot without any manual entry.
         eventLoader: _eventsForDay,
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
@@ -431,42 +455,42 @@ class _CalendarScreenState extends State<CalendarScreen> {
           formatButtonVisible: false,
           titleCentered: true,
           leftChevronIcon:
-              const Icon(CupertinoIcons.chevron_left, color: Colors.white70, size: 18),
+              const Icon(CupertinoIcons.chevron_left, color: AppColors.textSecondary, size: 18),
           rightChevronIcon:
-              const Icon(CupertinoIcons.chevron_right, color: Colors.white70, size: 18),
+              const Icon(CupertinoIcons.chevron_right, color: AppColors.textSecondary, size: 18),
           titleTextStyle: GoogleFonts.poppins(
-            color: Colors.white,
+            color: AppColors.textPrimary,
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
         ),
         daysOfWeekStyle: DaysOfWeekStyle(
           weekdayStyle:
-              GoogleFonts.poppins(color: Colors.white.withValues(alpha: 0.5), fontSize: 12),
+              GoogleFonts.poppins(color: AppColors.textFaded50, fontSize: 12),
           weekendStyle:
-              GoogleFonts.poppins(color: Colors.white.withValues(alpha: 0.5), fontSize: 12),
+              GoogleFonts.poppins(color: AppColors.textFaded50, fontSize: 12),
         ),
         calendarStyle: CalendarStyle(
           outsideDaysVisible: false,
-          defaultTextStyle: GoogleFonts.poppins(color: Colors.white70, fontSize: 13),
-          weekendTextStyle: GoogleFonts.poppins(color: Colors.white70, fontSize: 13),
+          defaultTextStyle: GoogleFonts.poppins(color: AppColors.textSecondary, fontSize: 13),
+          weekendTextStyle: GoogleFonts.poppins(color: AppColors.textSecondary, fontSize: 13),
           todayDecoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xffC084FC), width: 1.5),
+            border: Border.all(color: AppColors.accentLight, width: 1.5),
           ),
-          todayTextStyle: GoogleFonts.poppins(color: Colors.white, fontSize: 13),
+          todayTextStyle: GoogleFonts.poppins(color: AppColors.textPrimary, fontSize: 13),
           selectedDecoration: const BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(colors: kAccentGradient),
           ),
           selectedTextStyle: GoogleFonts.poppins(
-            color: Colors.white,
+            color: AppColors.textPrimary,
             fontSize: 13,
             fontWeight: FontWeight.w600,
           ),
           markerDecoration: const BoxDecoration(
             shape: BoxShape.circle,
-            color: Color(0xffC084FC),
+            color: AppColors.accentLight,
           ),
           markersMaxCount: 3,
           markerSize: 5,
@@ -488,7 +512,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               Text(
                 "Events on ${_selectedDay.day}/${_selectedDay.month}/${_selectedDay.year}",
                 style: GoogleFonts.poppins(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -497,12 +521,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.08),
+                  color: AppColors.glassFill,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   "${events.length}",
-                  style: GoogleFonts.poppins(color: Colors.white70, fontSize: 12),
+                  style: GoogleFonts.poppins(color: AppColors.textSecondary, fontSize: 12),
                 ),
               ),
             ],
@@ -514,7 +538,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               child: Text(
                 "No events for this day yet.",
                 style: GoogleFonts.poppins(
-                  color: Colors.white.withValues(alpha: 0.5),
+                  color: AppColors.textFaded50,
                   fontSize: 13,
                 ),
               ),
@@ -526,14 +550,35 @@ class _CalendarScreenState extends State<CalendarScreen> {
     );
   }
 
+  Color _statusColor(InterviewStatus? status) {
+    switch (status) {
+      case InterviewStatus.upcoming:
+        return AppColors.statusInterview;
+      case InterviewStatus.completed:
+        return AppColors.statusCompletedInterview;
+      case InterviewStatus.cancelled:
+        return AppColors.statusCancelledInterview;
+      case null:
+        return AppColors.accentLight;
+    }
+  }
+
   Widget _buildEventTile(CalendarEvent event) {
+    final accent = event.isInterview
+        ? _statusColor(event.interviewStatus)
+        : AppColors.accentLight;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
+        color: AppColors.inputFill,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: event.isInterview
+              ? accent.withValues(alpha: 0.35)
+              : AppColors.cardBorder,
+        ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -543,11 +588,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
             height: 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              gradient: const LinearGradient(
-                colors: kAccentGradient,
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+              color: event.isInterview ? accent : null,
+              gradient: event.isInterview
+                  ? null
+                  : const LinearGradient(
+                      colors: kAccentGradient,
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
             ),
           ),
           const SizedBox(width: 12),
@@ -555,20 +603,45 @@ class _CalendarScreenState extends State<CalendarScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  event.title,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        event.title,
+                        style: GoogleFonts.poppins(
+                          color: AppColors.textPrimary,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    if (event.isInterview)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: accent.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(20),
+                          border:
+                              Border.all(color: accent.withValues(alpha: 0.4)),
+                        ),
+                        child: Text(
+                          event.interviewStatus?.name ?? "Interview",
+                          style: GoogleFonts.poppins(
+                            color: accent,
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
                 if (event.description.isNotEmpty) ...[
                   const SizedBox(height: 4),
                   Text(
                     event.description,
                     style: GoogleFonts.poppins(
-                      color: Colors.white.withValues(alpha: 0.6),
+                      color: AppColors.sectionLabel,
                       fontSize: 12.5,
                     ),
                   ),
@@ -577,13 +650,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      const Icon(CupertinoIcons.clock,
-                          color: Color(0xffC084FC), size: 13),
+                      Icon(CupertinoIcons.clock, color: accent, size: 13),
                       const SizedBox(width: 5),
                       Text(
                         event.time!.format(context),
                         style: GoogleFonts.poppins(
-                          color: const Color(0xffC084FC),
+                          color: accent,
                           fontSize: 11.5,
                         ),
                       ),
@@ -593,10 +665,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () => _removeEvent(_selectedDay, event),
-            child: const Icon(CupertinoIcons.xmark_circle, color: Colors.white38, size: 18),
-          ),
+          // Interview events are auto-generated and can't be deleted here —
+          // only manually-added events show the remove icon.
+          if (!event.isInterview)
+            GestureDetector(
+              onTap: () => _removeEvent(_selectedDay, event),
+              child: const Icon(CupertinoIcons.xmark_circle,
+                  color: AppColors.textMuted, size: 18),
+            ),
         ],
       ),
     );

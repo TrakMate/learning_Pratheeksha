@@ -3,18 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:landpage/src/ui/screens/camera.dart';
-// import 'package:landpage/src/ui/screens/inter_room.dart';
 import 'package:landpage/src/ui/widgets/calendar.dart';
 import 'package:landpage/src/ui/widgets/guidelines.dart';
-import 'package:landpage/src/ui/widgets/mock.dart';
-// import 'package:landpage/mock.dart';
+// import 'package:landpage/src/ui/theme/colors.dart';
+import 'package:landpage/src/utils/colors.dart'; // adjust path if different
 
 /// Shared accent gradient — keep in sync with dashboard.dart's kAccentGradient.
-const List<Color> kInterviewAccentGradient = [
-  Color(0xffC084FC),
-  Color(0xffA855F7),
-  Color(0xff6D28D9),
-];
+const List<Color> kInterviewAccentGradient = AppColors.accentGradient;
 
 /// How early a candidate is allowed to join before the scheduled time.
 const Duration kJoinWindowBefore = Duration(minutes: 10);
@@ -179,7 +174,7 @@ class _InterviewsSectionState extends State<InterviewsSection> {
               Text(
                 "Interviews",
                 style: GoogleFonts.poppins(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 26,
                   fontWeight: FontWeight.w600,
                 ),
@@ -188,7 +183,7 @@ class _InterviewsSectionState extends State<InterviewsSection> {
               Text(
                 "Track upcoming, completed and cancelled interviews.",
                 style: GoogleFonts.poppins(
-                  color: Colors.white.withValues(alpha: 0.65),
+                  color: AppColors.textFaded65,
                   fontSize: 13.5,
                 ),
               ),
@@ -257,7 +252,7 @@ class _InterviewsSectionState extends State<InterviewsSection> {
           Text(
             "Schedule",
             style: GoogleFonts.poppins(
-              color: Colors.white,
+              color: AppColors.textPrimary,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
@@ -270,7 +265,7 @@ class _InterviewsSectionState extends State<InterviewsSection> {
                 child: Text(
                   "No interviews in this category.",
                   style: GoogleFonts.poppins(
-                    color: Colors.white.withValues(alpha: 0.5),
+                    color: AppColors.textFaded50,
                     fontSize: 13.5,
                   ),
                 ),
@@ -293,7 +288,7 @@ class _InterviewsSectionState extends State<InterviewsSection> {
           Text(
             "Interview Prep",
             style: GoogleFonts.poppins(
-              color: Colors.white,
+              color: AppColors.textPrimary,
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
@@ -302,7 +297,7 @@ class _InterviewsSectionState extends State<InterviewsSection> {
           Text(
             "Sharpen up before your next round with tailored resources.",
             style: GoogleFonts.poppins(
-              color: Colors.white.withValues(alpha: 0.6),
+              color: AppColors.sectionLabel,
               fontSize: 12.5,
             ),
           ),
@@ -331,7 +326,7 @@ class _InterviewsSectionState extends State<InterviewsSection> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const CalendarScreen(),
+                builder: (context) => CalendarScreen(interviews: _interviews),
               ),
             );
           }),
@@ -353,15 +348,15 @@ class _InterviewsSectionState extends State<InterviewsSection> {
         ),
         child: ElevatedButton.icon(
           onPressed: onTap,
-          icon: Icon(icon, size: 18, color: Colors.white),
+          icon: Icon(icon, size: 18, color: AppColors.textPrimary),
           label: Text(
             label,
             style: GoogleFonts.poppins(fontSize: 14.5, fontWeight: FontWeight.w500),
           ),
           style: ElevatedButton.styleFrom(
             elevation: 4,
-            backgroundColor: Colors.white.withValues(alpha: 0.15),
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.glassFillHover,
+            foregroundColor: AppColors.textPrimary,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.5)),
           ),
         ),
@@ -375,15 +370,15 @@ class _InterviewsSectionState extends State<InterviewsSection> {
       height: 46,
       child: OutlinedButton.icon(
         onPressed: onTap,
-        icon: Icon(icon, size: 18, color: Colors.white70),
+        icon: Icon(icon, size: 18, color: AppColors.textSecondary),
         label: Text(
           label,
-          style: GoogleFonts.poppins(fontSize: 14.5, color: Colors.white70),
+          style: GoogleFonts.poppins(fontSize: 14.5, color: AppColors.textSecondary),
         ),
         style: OutlinedButton.styleFrom(
-          side: BorderSide(color: Colors.white.withValues(alpha: 0.2)),
+          side: BorderSide(color: AppColors.outlineBorder),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.5)),
-          backgroundColor: Colors.white.withValues(alpha: 0.04),
+          backgroundColor: AppColors.outlineBg,
         ),
       ),
     );
@@ -410,7 +405,7 @@ void _handleJoinTap(BuildContext context, InterviewData data) {
       _showJoinInfoDialog(
         context,
         icon: CupertinoIcons.clock,
-        iconColor: const Color(0xffD68E41),
+        iconColor: AppColors.statusUpcomingInterview,
         title: "Interview not started yet",
         message:
             "This interview is scheduled for ${_formatDate(data.dateTime)} at "
@@ -422,7 +417,7 @@ void _handleJoinTap(BuildContext context, InterviewData data) {
       _showJoinInfoDialog(
         context,
         icon: CupertinoIcons.xmark_seal,
-        iconColor: const Color(0xffF87171),
+        iconColor: AppColors.statusCancelledInterview,
         title: "This interview has ended",
         message:
             "The scheduled window for this interview closed on "
@@ -452,7 +447,7 @@ void _showJoinInfoDialog(
   showDialog(
     context: context,
     barrierDismissible: true,
-    barrierColor: Colors.black.withValues(alpha: 0.4),
+    barrierColor: AppColors.barrierOverlay,
     builder: (dialogContext) {
       return Dialog(
         backgroundColor: Colors.transparent,
@@ -465,10 +460,10 @@ void _showJoinInfoDialog(
               width: 380,
               padding: const EdgeInsets.all(26),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.08),
+                color: AppColors.glassFill,
                 borderRadius: BorderRadius.circular(22),
                 border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.15),
+                  color: AppColors.glassBorder,
                 ),
               ),
               child: Column(
@@ -493,7 +488,7 @@ void _showJoinInfoDialog(
                         child: Text(
                           title,
                           style: GoogleFonts.poppins(
-                            color: Colors.white,
+                            color: AppColors.textPrimary,
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
@@ -505,7 +500,7 @@ void _showJoinInfoDialog(
                   Text(
                     message,
                     style: GoogleFonts.poppins(
-                      color: Colors.white.withValues(alpha: .65),
+                      color: AppColors.textFaded65,
                       fontSize: 12.5,
                       height: 1.5,
                     ),
@@ -548,8 +543,8 @@ void _showJoinInfoDialog(
                               onPressed: () => Navigator.of(dialogContext).pop(),
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
-                                backgroundColor: Colors.white.withValues(alpha: .14),
-                                foregroundColor: Colors.white,
+                                backgroundColor: AppColors.glassFillHover,
+                                foregroundColor: AppColors.textPrimary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(11),
                                 ),
@@ -605,9 +600,9 @@ class _InterviewTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
+        color: AppColors.inputFill,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+        border: Border.all(color: AppColors.cardBorder),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -622,13 +617,13 @@ class _InterviewTile extends StatelessWidget {
                     .map((c) => c.withValues(alpha: 0.35))
                     .toList(),
               ),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+              border: Border.all(color: AppColors.glassBorder),
             ),
             alignment: Alignment.center,
             child: Text(
               data.company.isNotEmpty ? data.company[0].toUpperCase() : "?",
               style: GoogleFonts.poppins(
-                color: Colors.white,
+                color: AppColors.textPrimary,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -645,7 +640,7 @@ class _InterviewTile extends StatelessWidget {
                       child: Text(
                         "${data.role} · ${data.company}",
                         style: GoogleFonts.poppins(
-                          color: Colors.white,
+                          color: AppColors.textPrimary,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
@@ -659,29 +654,29 @@ class _InterviewTile extends StatelessWidget {
                 Text(
                   "${data.type} · with ${data.interviewer}",
                   style: GoogleFonts.poppins(
-                    color: Colors.white.withValues(alpha: 0.55),
+                    color: AppColors.textFaded55,
                     fontSize: 12,
                   ),
                 ),
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    Icon(CupertinoIcons.calendar, size: 13, color: Colors.white.withValues(alpha: 0.5)),
+                    Icon(CupertinoIcons.calendar, size: 13, color: AppColors.textFaded50),
                     const SizedBox(width: 6),
                     Text(
                       dateStr,
                       style: GoogleFonts.poppins(
-                        color: Colors.white.withValues(alpha: 0.6),
+                        color: AppColors.sectionLabel,
                         fontSize: 12,
                       ),
                     ),
                     const SizedBox(width: 16),
-                    Icon(CupertinoIcons.clock, size: 13, color: Colors.white.withValues(alpha: 0.5)),
+                    Icon(CupertinoIcons.clock, size: 13, color: AppColors.textFaded50),
                     const SizedBox(width: 6),
                     Text(
                       timeStr,
                       style: GoogleFonts.poppins(
-                        color: Colors.white.withValues(alpha: 0.6),
+                        color: AppColors.sectionLabel,
                         fontSize: 12,
                       ),
                     ),
@@ -714,15 +709,15 @@ class _StatusBadge extends StatelessWidget {
     late String label;
     switch (status) {
       case InterviewStatus.upcoming:
-        color = const Color.fromARGB(255, 227, 207, 154);
+        color = AppColors.statusInterview;
         label = "Upcoming";
         break;
       case InterviewStatus.completed:
-        color = const Color(0xff22C55E);
+        color = AppColors.statusCompletedInterview;
         label = "Completed";
         break;
       case InterviewStatus.cancelled:
-        color = const Color(0xffF87171);
+        color = AppColors.statusCancelledInterview;
         label = "Cancelled";
         break;
     }
@@ -770,17 +765,15 @@ class _FilterChip extends StatelessWidget {
           gradient: selected
               ? const LinearGradient(colors: kInterviewAccentGradient)
               : null,
-          color: selected ? null : Colors.white.withValues(alpha: 0.06),
+          color: selected ? null : AppColors.glassFill06,
           border: Border.all(
-            color: selected
-                ? Colors.transparent
-                : Colors.white.withValues(alpha: 0.15),
+            color: selected ? Colors.transparent : AppColors.glassBorder,
           ),
         ),
         child: Text(
           label,
           style: GoogleFonts.poppins(
-            color: selected ? Colors.white : Colors.white70,
+            color: selected ? AppColors.textPrimary : AppColors.textSecondary,
             fontSize: 12.5,
             fontWeight: FontWeight.w500,
           ),
@@ -816,7 +809,7 @@ class _SummaryCard extends StatelessWidget {
             child: Icon(
               data.icon,
               size: 72,
-              color: Colors.white.withValues(alpha: 0.05),
+              color: AppColors.inputFill,
             ),
           ),
           Row(
@@ -832,9 +825,9 @@ class _SummaryCard extends StatelessWidget {
                         .map((c) => c.withValues(alpha: 0.3))
                         .toList(),
                   ),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+                  border: Border.all(color: AppColors.glassBorder),
                 ),
-                child: Icon(data.icon, color: Colors.white, size: 21),
+                child: Icon(data.icon, color: AppColors.textPrimary, size: 21),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -845,7 +838,7 @@ class _SummaryCard extends StatelessWidget {
                     Text(
                       data.value,
                       style: GoogleFonts.poppins(
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                         fontSize: 19,
                         fontWeight: FontWeight.w600,
                       ),
@@ -853,7 +846,7 @@ class _SummaryCard extends StatelessWidget {
                     Text(
                       data.label,
                       style: GoogleFonts.poppins(
-                        color: Colors.white.withValues(alpha: 0.6),
+                        color: AppColors.sectionLabel,
                         fontSize: 11.5,
                       ),
                     ),
@@ -888,9 +881,9 @@ class _GlassContainer extends StatelessWidget {
         child: Container(
           padding: padding,
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.07),
+            color: AppColors.glassFill07,
             borderRadius: BorderRadius.circular(radius),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+            border: Border.all(color: AppColors.glassBorder),
           ),
           child: child,
         ),

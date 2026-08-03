@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:landpage/src/utils/colors.dart' show AppColors;
 import 'dashboard.dart' show kAccentGradient; 
 // import 'package:landpage/src/ui/widgets/offer_email_button.dart';
 enum ApplicationStatus { applied, underReview, interview, offer, rejected }
@@ -25,15 +26,15 @@ extension _StatusMeta on ApplicationStatus {
   Color get color {
     switch (this) {
       case ApplicationStatus.applied:
-        return const Color.fromARGB(255, 228, 135, 219);
+        return AppColors.statusApplied;
       case ApplicationStatus.underReview:
-        return const Color.fromARGB(255, 159, 195, 239);
+        return AppColors.statusUnderReview;
       case ApplicationStatus.interview:
-        return const Color.fromARGB(255, 227, 207, 154);
+        return AppColors.statusInterview;
       case ApplicationStatus.offer:
-        return const Color.fromARGB(255, 144, 211, 187);
+        return AppColors.statusOffer;
       case ApplicationStatus.rejected:
-        return const Color.fromARGB(255, 239, 167, 167);
+        return AppColors.statusRejected;
     }
   }
 
@@ -196,13 +197,13 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
             gradient: const LinearGradient(colors: kAccentGradient),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xffA855F7).withValues(alpha: 0.4),
+                color: AppColors.accentMid.withValues(alpha: 0.4),
                 blurRadius: 16,
                 offset: const Offset(0, 6),
               ),
             ],
           ),
-          child: const Icon(CupertinoIcons.paperplane_fill, color: Colors.white, size: 20),
+          child: Icon(CupertinoIcons.paperplane_fill, color: AppColors.textPrimary, size: 20),
         ),
         const SizedBox(width: 14),
         Column(
@@ -210,12 +211,12 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
           children: [
             ShaderMask(
               shaderCallback: (bounds) =>
-                  const LinearGradient(colors: [Colors.white, Color(0xffE9D5FF)])
+                  LinearGradient(colors: [AppColors.white, AppColors.shaderHighlight])
                       .createShader(bounds),
               child: Text(
                 "Applications Sent",
                 style: GoogleFonts.poppins(
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   fontSize: 19,
                   fontWeight: FontWeight.w600,
                 ),
@@ -225,7 +226,7 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
             Text(
               "Track every role you've applied to",
               style: GoogleFonts.poppins(
-                color: Colors.white.withValues(alpha: 0.5),
+                color: AppColors.textFaded50,
                 fontSize: 12.5,
               ),
             ),
@@ -239,12 +240,12 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
             gradient: LinearGradient(
               colors: kAccentGradient.map((c) => c.withValues(alpha: 0.25)).toList(),
             ),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+            border: Border.all(color: AppColors.outlineBorder),
           ),
           child: Text(
             "$total total",
             style: GoogleFonts.poppins(
-              color: Colors.white,
+              color: AppColors.textPrimary,
               fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
@@ -264,7 +265,7 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
           _FilterChip(
             label: "All",
             count: _applications.length,
-            color: Colors.white,
+            color: AppColors.white,
             selected: _filter == null,
             onTap: () => setState(() => _filter = null),
           ),
@@ -302,15 +303,15 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
                 gradient: LinearGradient(
                   colors: kAccentGradient.map((c) => c.withValues(alpha: 0.2)).toList(),
                 ),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+                border: Border.all(color: AppColors.glassBorder),
               ),
-              child: Icon(CupertinoIcons.tray, color: Colors.white.withValues(alpha: 0.5), size: 28),
+              child: Icon(CupertinoIcons.tray, color: AppColors.textFaded50, size: 28),
             ),
             const SizedBox(height: 16),
             Text(
               "Nothing here yet",
               style: GoogleFonts.poppins(
-                color: Colors.white.withValues(alpha: 0.8),
+                color: AppColors.textFaded80,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
@@ -318,7 +319,7 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
             const SizedBox(height: 4),
             Text(
               "Applications matching this filter will show up here.",
-              style: GoogleFonts.poppins(color: Colors.white.withValues(alpha: 0.4), fontSize: 12),
+              style: GoogleFonts.poppins(color: AppColors.textFaded40, fontSize: 12),
             ),
           ],
         ),
@@ -368,9 +369,9 @@ class _FilterChipState extends State<_FilterChip> {
             borderRadius: BorderRadius.circular(30),
             color: active
                 ? widget.color.withValues(alpha: 0.18)
-                : Colors.white.withValues(alpha: hovered ? 0.08 : 0.04),
+                : (hovered ? AppColors.glassFill : AppColors.outlineBg),
             border: Border.all(
-              color: active ? widget.color.withValues(alpha: 0.6) : Colors.white.withValues(alpha: 0.12),
+              color: active ? widget.color.withValues(alpha: 0.6) : AppColors.cardGradientStart,
               width: active ? 1.3 : 1,
             ),
             boxShadow: active
@@ -387,13 +388,13 @@ class _FilterChipState extends State<_FilterChip> {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (widget.icon != null) ...[
-                Icon(widget.icon, size: 13, color: active ? widget.color : Colors.white60),
+                Icon(widget.icon, size: 13, color: active ? widget.color : AppColors.sectionLabel),
                 const SizedBox(width: 6),
               ],
               Text(
                 widget.label,
                 style: GoogleFonts.poppins(
-                  color: active ? Colors.white : Colors.white70,
+                  color: active ? AppColors.textPrimary : AppColors.textSecondary,
                   fontSize: 12.5,
                   fontWeight: active ? FontWeight.w600 : FontWeight.w400,
                 ),
@@ -402,13 +403,13 @@ class _FilterChipState extends State<_FilterChip> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.12),
+                  color: AppColors.cardGradientStart,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   "${widget.count}",
                   style: GoogleFonts.poppins(
-                    color: Colors.white.withValues(alpha: 0.85),
+                    color: AppColors.textFaded85,
                     fontSize: 10.5,
                     fontWeight: FontWeight.w600,
                   ),
@@ -489,12 +490,12 @@ class _ApplicationTileState extends State<_ApplicationTile> {
               
               Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: hovered ? 0.09 : 0.045),
+                  color: hovered ? AppColors.tileFillHover : AppColors.tileFillBase,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: hovered
                         ? status.color.withValues(alpha: 0.45)
-                        : Colors.white.withValues(alpha: 0.1),
+                        : AppColors.cardBorder,
                   ),
                   boxShadow: hovered
                       ? [
@@ -536,7 +537,7 @@ class _ApplicationTileState extends State<_ApplicationTile> {
                                       Text(
                                         widget.data.role,
                                         style: GoogleFonts.poppins(
-                                          color: Colors.white,
+                                          color: AppColors.textPrimary,
                                           fontSize: 14.5,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -545,23 +546,23 @@ class _ApplicationTileState extends State<_ApplicationTile> {
                                       Row(
                                         children: [
                                           Icon(CupertinoIcons.building_2_fill,
-                                              size: 11, color: Colors.white.withValues(alpha: 0.4)),
+                                              size: 11, color: AppColors.textFaded40),
                                           const SizedBox(width: 4),
                                           Text(
                                             widget.data.company,
                                             style: GoogleFonts.poppins(
-                                              color: Colors.white.withValues(alpha: 0.55),
+                                              color: AppColors.textFaded55,
                                               fontSize: 12,
                                             ),
                                           ),
                                           const SizedBox(width: 10),
                                           Icon(CupertinoIcons.time,
-                                              size: 11, color: Colors.white.withValues(alpha: 0.4)),
+                                              size: 11, color: AppColors.textFaded40),
                                           const SizedBox(width: 4),
                                           Text(
                                             widget.data.appliedOn,
                                             style: GoogleFonts.poppins(
-                                              color: Colors.white.withValues(alpha: 0.4),
+                                              color: AppColors.textFaded40,
                                               fontSize: 11.5,
                                             ),
                                           ),
@@ -607,7 +608,7 @@ class _ApplicationTileState extends State<_ApplicationTile> {
         gradient: const LinearGradient(colors: kAccentGradient),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xffA855F7).withValues(alpha: 0.35),
+            color: AppColors.accentMid.withValues(alpha: 0.35),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -617,7 +618,7 @@ class _ApplicationTileState extends State<_ApplicationTile> {
       child: Text(
         widget.data.companyInitial,
         style: GoogleFonts.poppins(
-          color: Colors.white,
+          color: AppColors.textPrimary,
           fontSize: 15,
           fontWeight: FontWeight.w600,
         ),
@@ -668,7 +669,7 @@ class _ApplicationTileState extends State<_ApplicationTile> {
               margin: const EdgeInsets.symmetric(horizontal: 2),
               color: filled
                   ? status.color.withValues(alpha: isRejected ? 0.3 : 0.6)
-                  : Colors.white.withValues(alpha: 0.1),
+                  : AppColors.cardBorder,
             ),
           );
         }
@@ -679,7 +680,7 @@ class _ApplicationTileState extends State<_ApplicationTile> {
 
         Color dotColor;
         if (isFuture) {
-          dotColor = Colors.white.withValues(alpha: 0.15);
+          dotColor = AppColors.glassBorder;
         } else if (isCurrent && isRejected) {
           dotColor = status.color;
         } else {
@@ -728,9 +729,9 @@ class _ApplicationsGlassContainer extends StatelessWidget {
         child: Container(
           padding: padding,
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08),
+            color: AppColors.glassFill,
             borderRadius: BorderRadius.circular(radius),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
+            border: Border.all(color: AppColors.glassBorder),
           ),
           child: child,
         ),

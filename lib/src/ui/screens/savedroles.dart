@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:landpage/src/models/saved.dart';
 import 'package:landpage/src/ui/widgets/glassContainer.dart';
 import 'package:landpage/src/ui/custom/toast.dart';
+import 'package:landpage/src/utils/colors.dart' show AppColors;
 import 'dashboard.dart' show kAccentGradient;
 
 /// Splits [items] into [columnCount] alternating columns (item i goes to
@@ -90,7 +91,7 @@ final roles = _roles.where((item) {
         Text(
           "Selected Roles",
           style: GoogleFonts.poppins(
-            color: Colors.white,
+            color: AppColors.textPrimary,
             fontSize: 24,
             fontWeight: FontWeight.w600,
           ),
@@ -101,7 +102,7 @@ final roles = _roles.where((item) {
         Text(
           "Manage all the opportunities you've shortlisted.",
           style: GoogleFonts.poppins(
-            color: Colors.white.withOpacity(.65),
+            color: AppColors.textFaded65,
             fontSize: 13,
           ),
         ),
@@ -214,7 +215,7 @@ final roles = _roles.where((item) {
         });
       },
       style: GoogleFonts.poppins(
-        color: Colors.white,
+        color: AppColors.textPrimary,
       ),
       decoration: InputDecoration(
         border: InputBorder.none,
@@ -222,11 +223,11 @@ final roles = _roles.where((item) {
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         prefixIcon: Icon(
           CupertinoIcons.search,
-          color: Colors.white.withOpacity(.45),
+          color: AppColors.textFaded45,
         ),
         hintText: "Search selected roles...",
         hintStyle: GoogleFonts.poppins(
-          color: Colors.white.withOpacity(.40),
+          color: AppColors.textFaded40,
         ),
         suffixIcon: _query.isEmpty
             ? null
@@ -237,7 +238,7 @@ final roles = _roles.where((item) {
                 },
                 icon: Icon(
                   CupertinoIcons.clear_circled_solid,
-                  color: Colors.white.withOpacity(.45),
+                  color: AppColors.textFaded45,
                 ),
               ),
       ),
@@ -290,19 +291,19 @@ final roles = _roles.where((item) {
                       : null,
                   color: selected
                       ? null
-                      : Colors.white.withOpacity(.07),
+                      : AppColors.glassFill07,
                   borderRadius:
                       BorderRadius.circular(30),
                   border: Border.all(
                     color: selected
                         ? Colors.transparent
-                        : Colors.white.withOpacity(.15),
+                        : AppColors.glassBorder,
                   ),
                 ),
                 child: Text(
                   item,
                   style: GoogleFonts.poppins(
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                     fontSize: 12.5,
                     fontWeight: FontWeight.w500,
                   ),
@@ -314,53 +315,6 @@ final roles = _roles.where((item) {
       ),
     );
   }
-
-  // Widget _buildEmptyState() {
-  //   return GlassContainer(
-  //     radius: 22,
-  //     padding: const EdgeInsets.symmetric(
-  //       vertical: 60,
-  //       horizontal: 20,
-  //     ),
-  //     child: Column(
-  //       children: [
-  //         Container(
-  //           width: 70,
-  //           height: 70,
-  //           decoration: BoxDecoration(
-  //             shape: BoxShape.circle,
-  //             gradient: const LinearGradient(
-  //               colors: kAccentGradient,
-  //             ),
-  //           ),
-  //           child: const Icon(
-  //             CupertinoIcons.bookmark_fill,
-  //             color: Colors.white,
-  //             size: 30,
-  //           ),
-  //         ),
-  //         const SizedBox(height: 20),
-  //         Text(
-  //           "No Selected Roles",
-  //           style: GoogleFonts.poppins(
-  //             color: Colors.white,
-  //             fontSize: 18,
-  //             fontWeight: FontWeight.w600,
-  //           ),
-  //         ),
-  //         const SizedBox(height: 8),
-  //         Text(
-  //           "Browse companies and shortlist\nroles you like.",
-  //           textAlign: TextAlign.center,
-  //           style: GoogleFonts.poppins(
-  //             color: Colors.white.withOpacity(.60),
-  //             fontSize: 13,
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
 Widget _buildEmptyState() {
   return ClipRRect(
@@ -374,10 +328,10 @@ Widget _buildEmptyState() {
       horizontal: 20,
     ),
     decoration: BoxDecoration(
-      color: Colors.white.withOpacity(0.06),
+      color: AppColors.glassFill06,
       borderRadius: BorderRadius.circular(22),
       border: Border.all(
-        color: Colors.white.withOpacity(0.12),
+        color: AppColors.cardGradientStart,
       ),
     ),
     child: Column(
@@ -392,9 +346,9 @@ Widget _buildEmptyState() {
               colors: kAccentGradient,
             ),
           ),
-          child: const Icon(
+          child: Icon(
             CupertinoIcons.bookmark_fill,
-            color: Colors.white,
+            color: AppColors.textPrimary,
             size: 30,
           ),
         ),
@@ -402,7 +356,7 @@ Widget _buildEmptyState() {
         Text(
           "No Selected Roles",
           style: GoogleFonts.poppins(
-            color: Colors.white,
+            color: AppColors.textPrimary,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
@@ -412,7 +366,7 @@ Widget _buildEmptyState() {
           "Browse companies and shortlist\nroles you like.",
           textAlign: TextAlign.center,
           style: GoogleFonts.poppins(
-            color: Colors.white.withOpacity(.60),
+            color: AppColors.sectionLabel,
             fontSize: 13,
           ),
         ),
@@ -480,7 +434,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                   ),
                   child: Icon(
                     company.icon,
-                    color: Colors.white,
+                    color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(width: 14),
@@ -493,7 +447,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                         role.title,
                         style:
                             GoogleFonts.poppins(
-                          color: Colors.white,
+                          color: AppColors.textPrimary,
                           fontWeight:
                               FontWeight.w600,
                           fontSize: 15,
@@ -504,8 +458,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                         company.name,
                         style:
                             GoogleFonts.poppins(
-                          color: Colors.white
-                              .withOpacity(.60),
+                          color: AppColors.sectionLabel,
                           fontSize: 12.5,
                         ),
                       ),
@@ -517,7 +470,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                   onPressed: () {},
                   icon: const Icon(
                     CupertinoIcons.bookmark_fill,
-                    color: Color(0xffC084FC),
+                    color: AppColors.accentLight,
                   ),
                 ),
               ],
@@ -578,8 +531,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                                 child: Text(
                                   role.description,
                                   style: GoogleFonts.poppins(
-                                    color: Colors.white
-                                        .withOpacity(.65),
+                                    color: AppColors.textFaded65,
                                     fontSize: 12.5,
                                     height: 1.45,
                                   ),
@@ -593,8 +545,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                                   TextOverflow.ellipsis,
                               style:
                                   GoogleFonts.poppins(
-                                color: Colors.white
-                                    .withOpacity(.65),
+                                color: AppColors.textFaded65,
                                 fontSize: 12.5,
                                 height: 1.45,
                               ),
@@ -614,8 +565,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                               : "Read more",
                           style:
                               GoogleFonts.poppins(
-                            color: const Color(
-                                0xffC084FC),
+                            color: AppColors.accentLight,
                             fontSize: 11.5,
                             fontWeight:
                                 FontWeight.w500,
@@ -629,8 +579,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                               : CupertinoIcons
                                   .chevron_down,
                           size: 12,
-                          color: const Color(
-                              0xffC084FC),
+                          color: AppColors.accentLight,
                         ),
                       ],
                     ),
@@ -651,10 +600,10 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                         OutlinedButton.icon(
                       onPressed: widget.onRemove,
 
-                      icon: const Icon(
+                      icon: Icon(
                         CupertinoIcons.delete,
                         size: 16,
-                        color: Colors.white70,
+                        color: AppColors.textSecondary,
                       ),
 
                       label: Text(
@@ -662,7 +611,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                         style:
                             GoogleFonts.poppins(
                           color:
-                              Colors.white70,
+                              AppColors.textSecondary,
                         ),
                       ),
 
@@ -670,14 +619,10 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                           OutlinedButton
                               .styleFrom(
                         side: BorderSide(
-                          color: Colors.white
-                              .withOpacity(
-                                  .18),
+                          color: AppColors.removeButtonBorder,
                         ),
                         backgroundColor:
-                            Colors.white
-                                .withOpacity(
-                                    .04),
+                            AppColors.outlineBg,
                         shape:
                             RoundedRectangleBorder(
                           borderRadius:
@@ -710,7 +655,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
             ? null
             : const LinearGradient(colors: kAccentGradient),
         color: widget.isApplied
-            ? Colors.white.withOpacity(0.1)
+            ? AppColors.appliedBg
             : null,
                       ),
                       child:
@@ -722,11 +667,9 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                                 .styleFrom(
                           elevation: 0,
                           backgroundColor:
-                              Colors.white
-                                  .withOpacity(
-                                      .14),
+                              AppColors.glassFillHover,
                           foregroundColor:
-                              Colors.white,
+                              AppColors.textPrimary,
                           shape:
                               RoundedRectangleBorder(
                             borderRadius:
@@ -778,11 +721,11 @@ class _RoleChip extends StatelessWidget {
         vertical: 5,
       ),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(.06),
+        color: AppColors.glassFill06,
         borderRadius:
             BorderRadius.circular(20),
         border: Border.all(
-          color: Colors.white.withOpacity(.12),
+          color: AppColors.cardGradientStart,
         ),
       ),
       child: Row(
@@ -793,7 +736,7 @@ class _RoleChip extends StatelessWidget {
             icon,
             size: 12,
             color:
-                Colors.white.withOpacity(.60),
+                AppColors.sectionLabel,
           ),
 
           const SizedBox(width: 5),
@@ -802,7 +745,7 @@ class _RoleChip extends StatelessWidget {
             label,
             style: GoogleFonts.poppins(
               color:
-                  Colors.white.withOpacity(.70),
+                  AppColors.chipLabel,
               fontSize: 11,
             ),
           ),
@@ -849,7 +792,7 @@ class _RoleStatCard extends StatelessWidget {
                 ),
                 child: Icon(
                   icon,
-                  color: Colors.white,
+                  color: AppColors.textPrimary,
                   size: 20,
                 ),
               ),
@@ -861,7 +804,7 @@ class _RoleStatCard extends StatelessWidget {
                     Text(
                       value,
                       style: GoogleFonts.poppins(
-                        color: Colors.white,
+                        color: AppColors.textPrimary,
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
@@ -869,7 +812,7 @@ class _RoleStatCard extends StatelessWidget {
                     Text(
                       title,
                       style: GoogleFonts.poppins(
-                        color: Colors.white.withOpacity(.60),
+                        color: AppColors.sectionLabel,
                         fontSize: 12,
                       ),
                     ),
@@ -885,9 +828,9 @@ class _RoleStatCard extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: percentage!.clamp(0, 1),
                 minHeight: 6,
-                backgroundColor: Colors.white.withOpacity(.08),
+                backgroundColor: AppColors.glassFill,
                 valueColor: const AlwaysStoppedAnimation(
-                  Color(0xffC084FC),
+                  AppColors.accentLight,
                 ),
               ),
             ),
@@ -895,7 +838,7 @@ class _RoleStatCard extends StatelessWidget {
             Text(
               "${(percentage! * 100).toStringAsFixed(0)}% of total",
               style: GoogleFonts.poppins(
-                color: Colors.white.withOpacity(.50),
+                color: AppColors.textFaded50,
                 fontSize: 11,
               ),
             ),
@@ -903,7 +846,7 @@ class _RoleStatCard extends StatelessWidget {
             Text(
               subtitle!,
               style: GoogleFonts.poppins(
-                color: Colors.white.withOpacity(.50),
+                color: AppColors.textFaded50,
                 fontSize: 11,
               ),
             ),

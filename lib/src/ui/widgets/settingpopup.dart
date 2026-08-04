@@ -464,3 +464,81 @@ Future<void> showAvatarUploadDialog({
     },
   );
 }
+
+
+
+
+Future<void> showLogoutDialog({
+  required BuildContext context,
+   required Widget registerPage,
+}) {
+  return showDialog(
+    context: context,
+    barrierDismissible: true,
+    barrierColor: AppColors.barrierOverlay,
+    builder: (dialogContext) {
+      return _glassDialogFrame(
+        dialogContext: dialogContext,
+        title: "Log out of all devices",
+        description:
+            "This will sign you out from all devices where you're currently logged in. You'll need to sign in again on each device.",
+        confirmLabel: "Log out",
+        content: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppColors.inputFill,
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(color: AppColors.glassBorder),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.statusCancelledInterview
+                      .withValues(alpha: 0.12),
+                ),
+                child: const Icon(
+                  CupertinoIcons.square_arrow_right,
+                  color: AppColors.statusCancelledInterview,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  "All active sessions will be ended immediately.",
+                  style: GoogleFonts.poppins(
+                    color: AppColors.textPrimary,
+                    fontSize: 12.5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        onConfirm: () {
+          // TODO: Add logout logic later
+           Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (_) => registerPage,
+            ),
+            (route) => false,
+          );
+        },
+      );
+    },
+  );
+}
+
+
+
+
+
+
+
+
+
+

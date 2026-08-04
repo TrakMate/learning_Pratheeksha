@@ -16,7 +16,6 @@ import 'package:landpage/src/ui/widgets/glassContainer.dart';
 import 'package:landpage/src/utils/colors.dart' show AppColors;
 import '../../forms/login.dart';
 
- 
 const List<Color> kAccentGradient = AppColors.accentGradient;
 
 class DashboardPage extends StatefulWidget {
@@ -33,7 +32,6 @@ class _DashboardPageState extends State<DashboardPage>
   final GoogleSignIn googleSignIn = GoogleSignIn.instance;
   String currentTab = "Overview";
 
-  
   final LayerLink _profileLayerLink = LayerLink();
   OverlayEntry? _profileOverlayEntry;
   bool _profileMenuOpen = false;
@@ -55,7 +53,6 @@ class _DashboardPageState extends State<DashboardPage>
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     // debugPrint("⑨ DashboardPage build() called, currentUser=${auth.currentUser}");
@@ -67,10 +64,7 @@ class _DashboardPageState extends State<DashboardPage>
         fit: StackFit.expand,
         children: [
           Positioned.fill(
-            child: Image.asset(
-              'assets/images/land1.png',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/images/land1.png', fit: BoxFit.cover),
           ),
           SafeArea(
             child: SingleChildScrollView(
@@ -115,9 +109,9 @@ class _DashboardPageState extends State<DashboardPage>
       children: [
         _buildGreeting(displayName),
         const SizedBox(height: 32),
-       
+
         _buildStatsRow(),
-       //////this one
+        //////this one
         const SizedBox(height: 32),
         LayoutBuilder(
           builder: (context, constraints) {
@@ -148,7 +142,7 @@ class _DashboardPageState extends State<DashboardPage>
   }
 
   Widget _buildApplicationsTab() {
-     return const ApplicationsSection();
+    return const ApplicationsSection();
   }
 
   Widget _buildSavedRolesTab() {
@@ -164,21 +158,19 @@ class _DashboardPageState extends State<DashboardPage>
     //     style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
     //   ),
     // );
-     return SettingsSection(
-    // displayName: displayName,
-    displayName: "Pratheeksha",
-    email: auth.currentUser?.email ?? "",
-  );
+    return SettingsSection(
+      // displayName: displayName,
+      displayName: "Pratheeksha",
+      email: auth.currentUser?.email ?? "",
+    );
   }
 
-
- Widget _buildInterviewTab() {
-       return const InterviewsSection();
+  Widget _buildInterviewTab() {
+    return const InterviewsSection();
   }
 
- Widget _buildCompaniesTab() {
-return const CompaniesSection();
-
+  Widget _buildCompaniesTab() {
+    return const CompaniesSection();
   }
 
   Widget _buildTopBar(String displayName) {
@@ -188,12 +180,12 @@ return const CompaniesSection();
       child: Row(
         children: [
           Image.asset(
-                'images/logo.png',
-                height: 30,
-                width: 28,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(width: 8),
+            'images/logo.png',
+            height: 30,
+            width: 28,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(width: 8),
           Text(
             "ARTISAN",
             style: GoogleFonts.poppins(
@@ -213,7 +205,7 @@ return const CompaniesSection();
             selected: currentTab == "Companies",
             onTap: () => setState(() => currentTab = "Companies"),
           ),
-           _NavTextItem(
+          _NavTextItem(
             title: "Saved Roles",
             selected: currentTab == "saved roles",
             onTap: () => setState(() => currentTab = "saved roles"),
@@ -223,14 +215,13 @@ return const CompaniesSection();
             selected: currentTab == "Applications",
             onTap: () => setState(() => currentTab = "Applications"),
           ),
-         
-         
-           _NavTextItem(
+
+          _NavTextItem(
             title: "Interviews",
             selected: currentTab == "Interview",
             onTap: () => setState(() => currentTab = "Interview"),
           ),
-           _NavTextItem(
+          _NavTextItem(
             title: "Settings",
             selected: currentTab == "Settings",
             onTap: () => setState(() => currentTab = "Settings"),
@@ -241,8 +232,6 @@ return const CompaniesSection();
       ),
     );
   }
-
- 
 
   Widget _buildProfileChip(String displayName) {
     final user = auth.currentUser;
@@ -256,10 +245,14 @@ return const CompaniesSection();
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
-            color: _profileMenuOpen ? AppColors.glassFillHover : AppColors.glassFill,
+            color: _profileMenuOpen
+                ? AppColors.glassFillHover
+                : AppColors.glassFill,
             borderRadius: BorderRadius.circular(30),
             border: Border.all(
-              color: _profileMenuOpen ? AppColors.glassBorderHover : AppColors.glassBorder,
+              color: _profileMenuOpen
+                  ? AppColors.glassBorderHover
+                  : AppColors.glassBorder,
             ),
           ),
           child: Row(
@@ -285,7 +278,10 @@ return const CompaniesSection();
               const SizedBox(width: 10),
               Text(
                 displayName,
-                style: GoogleFonts.poppins(color: AppColors.textSecondary, fontSize: 13),
+                style: GoogleFonts.poppins(
+                  color: AppColors.textSecondary,
+                  fontSize: 13,
+                ),
               ),
               const SizedBox(width: 2),
               AnimatedRotation(
@@ -351,7 +347,6 @@ return const CompaniesSection();
                       displayName: displayName,
                       email: email,
                       onLogout: () async {
-                       
                         _profileMenuController.stop();
                         _removeProfileOverlay();
                         if (mounted) {
@@ -390,7 +385,6 @@ return const CompaniesSection();
     _profileOverlayEntry = null;
   }
 
- 
   Widget _buildGreeting(String displayName) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -406,24 +400,21 @@ return const CompaniesSection();
                 fontWeight: FontWeight.w600,
               ),
             ),
-           
-             const SizedBox(width: 8),
 
-          SvgPicture.asset(
-            "icons/wave.svg",
-            width: 30,
-            height: 30,
-            color: AppColors.textPrimary,
-          ),
+            const SizedBox(width: 8),
+
+            SvgPicture.asset(
+              "icons/wave.svg",
+              width: 30,
+              height: 30,
+              color: AppColors.textPrimary,
+            ),
           ],
         ),
         const SizedBox(height: 8),
         Text(
           "Here's what's happening with your workspace today.",
-          style: GoogleFonts.poppins(
-            color: AppColors.chipLabel,
-            fontSize: 14,
-          ),
+          style: GoogleFonts.poppins(color: AppColors.chipLabel, fontSize: 14),
         ),
       ],
     );
@@ -431,16 +422,38 @@ return const CompaniesSection();
 
   Widget _buildStatsRow() {
     final stats = [
-      _StatData(label: "Applications Successfully Submitted to the team", value: "7", icon: CupertinoIcons.paperplane_fill, delta: "+2 this week"),
-      _StatData(label: "Upcoming Interviews Scheduled This Week", value: "3", icon: CupertinoIcons.calendar, delta: "Next: Tomorrow"),
-      _StatData(label: "Overall Recruiter Profile Views and Visits", value: "142", icon: CupertinoIcons.eye, delta: "+23 this week"),
-      _StatData(label: "Bookmarked Career Opportunities for Future Applications", value: "15", icon: CupertinoIcons.bookmark, delta: "3 closing soon"),
+      _StatData(
+        label: "Applications Successfully Submitted to the team",
+        value: "7",
+        icon: CupertinoIcons.paperplane_fill,
+        delta: "+2 this week",
+      ),
+      _StatData(
+        label: "Upcoming Interviews Scheduled This Week",
+        value: "3",
+        icon: CupertinoIcons.calendar,
+        delta: "Next: Tomorrow",
+      ),
+      _StatData(
+        label: "Overall Recruiter Profile Views and Visits",
+        value: "142",
+        icon: CupertinoIcons.eye,
+        delta: "+23 this week",
+      ),
+      _StatData(
+        label: "Bookmarked Career Opportunities for Future Applications",
+        value: "15",
+        icon: CupertinoIcons.bookmark,
+        delta: "3 closing soon",
+      ),
     ];
 
     return LayoutBuilder(
       builder: (context, constraints) {
         final isWide = constraints.maxWidth > 900;
-        final crossAxisCount = isWide ? 4 : (constraints.maxWidth > 600 ? 2 : 1);
+        final crossAxisCount = isWide
+            ? 4
+            : (constraints.maxWidth > 600 ? 2 : 1);
 
         return GridView.builder(
           shrinkWrap: true,
@@ -460,10 +473,26 @@ return const CompaniesSection();
 
   Widget _buildActivityCard() {
     final activities = [
-      _ActivityData(title: "Application viewed by Frontend team", time: "2h ago", icon: Icons.visibility_outlined),
-      _ActivityData(title: "Interview confirmed: Senior Frontend Engineer", time: "5h ago", icon: Icons.event_available_outlined),
-      _ActivityData(title: "New role matches your profile: Frontend Engineer", time: "1d ago", icon: Icons.auto_awesome_outlined),
-      _ActivityData(title: "Application submitted: Frontend Engineer", time: "2d ago", icon: Icons.send_outlined),
+      _ActivityData(
+        title: "Application viewed by Frontend team",
+        time: "2h ago",
+        icon: Icons.visibility_outlined,
+      ),
+      _ActivityData(
+        title: "Interview confirmed: Senior Frontend Engineer",
+        time: "5h ago",
+        icon: Icons.event_available_outlined,
+      ),
+      _ActivityData(
+        title: "New role matches your profile: Frontend Engineer",
+        time: "1d ago",
+        icon: Icons.auto_awesome_outlined,
+      ),
+      _ActivityData(
+        title: "Application submitted: Frontend Engineer",
+        time: "2d ago",
+        icon: Icons.send_outlined,
+      ),
     ];
 
     return GlassContainer(
@@ -498,7 +527,9 @@ return const CompaniesSection();
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
-                colors: kAccentGradient.map((c) => c.withValues(alpha: 0.35)).toList(),
+                colors: kAccentGradient
+                    .map((c) => c.withValues(alpha: 0.35))
+                    .toList(),
               ),
               border: Border.all(color: AppColors.glassBorder),
             ),
@@ -508,12 +539,18 @@ return const CompaniesSection();
           Expanded(
             child: Text(
               a.title,
-              style: GoogleFonts.poppins(color: AppColors.textEmphasis90, fontSize: 13.5),
+              style: GoogleFonts.poppins(
+                color: AppColors.textEmphasis90,
+                fontSize: 13.5,
+              ),
             ),
           ),
           Text(
             a.time,
-            style: GoogleFonts.poppins(color: AppColors.textFaded50, fontSize: 12),
+            style: GoogleFonts.poppins(
+              color: AppColors.textFaded50,
+              fontSize: 12,
+            ),
           ),
         ],
       ),
@@ -542,11 +579,9 @@ return const CompaniesSection();
           const SizedBox(height: 14),
           _buildOutlineButton("My calendar", CupertinoIcons.calendar, () {
             Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const CalendarScreen(),
-      ),
-    );
+              context,
+              MaterialPageRoute(builder: (context) => const CalendarScreen()),
+            );
           }),
           const SizedBox(height: 28),
         ],
@@ -569,13 +604,18 @@ return const CompaniesSection();
           icon: Icon(icon, size: 18, color: AppColors.textPrimary),
           label: Text(
             label,
-            style: GoogleFonts.poppins(fontSize: 14.5, fontWeight: FontWeight.w500),
+            style: GoogleFonts.poppins(
+              fontSize: 14.5,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           style: ElevatedButton.styleFrom(
             elevation: 4,
             backgroundColor: AppColors.glassBorder,
             foregroundColor: AppColors.textPrimary,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.5)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(13.5),
+            ),
           ),
         ),
       ),
@@ -591,18 +631,22 @@ return const CompaniesSection();
         icon: Icon(icon, size: 18, color: AppColors.textSecondary),
         label: Text(
           label,
-          style: GoogleFonts.poppins(fontSize: 14.5, color: AppColors.textSecondary),
+          style: GoogleFonts.poppins(
+            fontSize: 14.5,
+            color: AppColors.textSecondary,
+          ),
         ),
         style: OutlinedButton.styleFrom(
           side: BorderSide(color: AppColors.outlineBorder),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.5)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(13.5),
+          ),
           backgroundColor: AppColors.outlineBg,
         ),
       ),
     );
   }
 }
-
 
 class _ProfileDropdownMenu extends StatelessWidget {
   final String displayName;
@@ -625,20 +669,18 @@ class _ProfileDropdownMenu extends StatelessWidget {
           filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
           child: Container(
             width: 240,
-           decoration: BoxDecoration(
-  color: AppColors.glassFill,
-  borderRadius: BorderRadius.circular(16),
-  border: Border.all(
-    color: AppColors.glassBorder,
-  ),
-  boxShadow: [
-    BoxShadow(
-      color: AppColors.glowPurple.withValues(alpha: 0.15),
-      blurRadius: 30,
-      spreadRadius: 2,
-    ),
-  ],
-),
+            decoration: BoxDecoration(
+              color: AppColors.glassFill,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.glassBorder),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.glowPurple.withValues(alpha: 0.15),
+                  blurRadius: 30,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -702,11 +744,7 @@ class _ProfileDropdownMenu extends StatelessWidget {
                   ),
                 ),
 
-                Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: AppColors.cardBorder,
-                ),
+                Divider(height: 1, thickness: 1, color: AppColors.cardBorder),
 
                 const SizedBox(height: 6),
 
@@ -769,6 +807,8 @@ class _DropdownMenuTileState extends State<_DropdownMenuTile> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
+            //to make the logout center
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(widget.icon, size: 17, color: fg),
               const SizedBox(width: 10),
@@ -776,7 +816,7 @@ class _DropdownMenuTileState extends State<_DropdownMenuTile> {
                 widget.label,
                 style: GoogleFonts.poppins(
                   color: fg,
-                  fontSize: 13.5,
+                  fontSize: 14.5,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -818,9 +858,13 @@ class _NavTextItemState extends State<_NavTextItem> {
               Text(
                 widget.title,
                 style: GoogleFonts.poppins(
-                  color: active ? AppColors.textPrimary : AppColors.textSecondary,
+                  color: active
+                      ? AppColors.textPrimary
+                      : AppColors.textSecondary,
                   fontSize: 14,
-                  fontWeight: widget.selected ? FontWeight.w600 : FontWeight.w400,
+                  fontWeight: widget.selected
+                      ? FontWeight.w600
+                      : FontWeight.w400,
                 ),
               ),
               const SizedBox(height: 3),
@@ -846,7 +890,12 @@ class _StatData {
   final String value;
   final String delta;
   final IconData icon;
-  _StatData({required this.label, required this.value, required this.icon, required this.delta});
+  _StatData({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.delta,
+  });
 }
 
 class _StatCard extends StatefulWidget {
@@ -875,10 +924,14 @@ class _StatCardState extends State<_StatCard> {
             child: Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: hovered ? AppColors.cardGradientStart : AppColors.glassFill,
+                color: hovered
+                    ? AppColors.cardGradientStart
+                    : AppColors.glassFill,
                 borderRadius: BorderRadius.circular(18),
                 border: Border.all(
-                  color: hovered ? AppColors.cardBorderHover : AppColors.glassBorder,
+                  color: hovered
+                      ? AppColors.cardBorderHover
+                      : AppColors.glassBorder,
                 ),
               ),
               child: Row(
@@ -891,7 +944,11 @@ class _StatCardState extends State<_StatCard> {
                       borderRadius: BorderRadius.circular(12),
                       gradient: const LinearGradient(colors: kAccentGradient),
                     ),
-                    child: Icon(widget.data.icon, color: AppColors.textPrimary, size: 20),
+                    child: Icon(
+                      widget.data.icon,
+                      color: AppColors.textPrimary,
+                      size: 20,
+                    ),
                   ),
                   const SizedBox(width: 14),
                   Expanded(

@@ -1,13 +1,14 @@
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:landpage/src/forms/register.dart';
 import 'package:landpage/src/ui/widgets/glassContainer.dart';
 import 'package:landpage/src/ui/widgets/settingpopup.dart';
-import 'package:landpage/src/services/settingservice.dart'; // adjust path if different
+import 'package:landpage/src/services/settingservice.dart';
 // import 'package:landpage/src/ui/theme/colors.dart';
-import 'package:landpage/src/utils/colors.dart'; // adjust path if different
+import 'package:landpage/src/utils/colors.dart';
 
 class SettingsSection extends StatefulWidget {
   final String displayName;
@@ -23,18 +24,23 @@ class SettingsSection extends StatefulWidget {
   State<SettingsSection> createState() => _SettingsSectionState();
 }
 
+enum _ProfileVisibility { public, recruitersOnly, hidden }
+
 enum _SettingsTab { profile, account }
 
 class _SettingsSectionState extends State<SettingsSection> {
   _SettingsTab _tab = _SettingsTab.profile;
   final SettingsService _settingsService = SettingsService();
 
-  late final TextEditingController _nameController =
-      TextEditingController(text: widget.displayName);
-  late final TextEditingController _emailController =
-      TextEditingController(text: widget.email);
-  final TextEditingController _passwordController =
-      TextEditingController(text: "••••••••••");
+  late final TextEditingController _nameController = TextEditingController(
+    text: widget.displayName,
+  );
+  late final TextEditingController _emailController = TextEditingController(
+    text: widget.email,
+  );
+  final TextEditingController _passwordController = TextEditingController(
+    text: "••••••••••",
+  );
 
   @override
   void dispose() {
@@ -87,18 +93,11 @@ class _SettingsSectionState extends State<SettingsSection> {
           );
         }
 
-        return Column(
-          children: [
-            sidebar,
-            const SizedBox(height: 24),
-            content,
-          ],
-        );
+        return Column(children: [sidebar, const SizedBox(height: 24), content]);
       },
     );
   }
 }
-
 
 class _SettingsSidebar extends StatelessWidget {
   final _SettingsTab selected;
@@ -203,9 +202,13 @@ class _SidebarTileState extends State<_SidebarTile> {
               Text(
                 widget.label,
                 style: GoogleFonts.poppins(
-                  color: active ? AppColors.textPrimary : AppColors.sectionLabel,
+                  color: active
+                      ? AppColors.textPrimary
+                      : AppColors.sectionLabel,
                   fontSize: 13.5,
-                  fontWeight: widget.selected ? FontWeight.w600 : FontWeight.w400,
+                  fontWeight: widget.selected
+                      ? FontWeight.w600
+                      : FontWeight.w400,
                 ),
               ),
             ],
@@ -215,7 +218,6 @@ class _SidebarTileState extends State<_SidebarTile> {
     );
   }
 }
-
 
 class _ProfilePane extends StatelessWidget {
   final String displayName;
@@ -359,7 +361,6 @@ class _ProfilePane extends StatelessWidget {
   }
 }
 
-
 class _AvatarPicker extends StatefulWidget {
   final String displayName;
 
@@ -396,14 +397,26 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                     fit: BoxFit.cover,
                   ),
                 )
-              : Text(
-                  widget.displayName.isNotEmpty
-                      ? widget.displayName[0].toUpperCase()
-                      : "?",
-                  style: GoogleFonts.poppins(
-                    color: AppColors.textPrimary,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w600,
+              // : Text(
+              //     widget.displayName.isNotEmpty
+              //         ? widget.displayName[0].toUpperCase()
+              //         : "?",
+              //     style: GoogleFonts.poppins(
+              //       color: AppColors.textPrimary,
+              //       fontSize: 30,
+              //       fontWeight: FontWeight.w600,
+              //     ),
+              //   ),
+              : Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: SvgPicture.asset(
+                    'icons/profile.svg',
+                    width: 65,
+                    height: 65,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.textPrimary,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
         ),
@@ -439,7 +452,6 @@ class _AvatarPickerState extends State<_AvatarPicker> {
     );
   }
 }
-
 
 class _ResumeField extends StatefulWidget {
   const _ResumeField();
@@ -519,7 +531,9 @@ class _ResumeFieldState extends State<_ResumeField> {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      fileName != null ? "PDF · Uploaded" : "PDF, DOC up to 5MB",
+                      fileName != null
+                          ? "PDF · Uploaded"
+                          : "PDF, DOC up to 5MB",
                       style: GoogleFonts.poppins(
                         color: AppColors.textFaded40,
                         fontSize: 11,
@@ -561,7 +575,6 @@ class _ResumeFieldState extends State<_ResumeField> {
     );
   }
 }
-
 
 class _SkillsetPicker extends StatefulWidget {
   const _SkillsetPicker();
@@ -636,19 +649,26 @@ class _SkillsetPickerState extends State<_SkillsetPicker> {
               onTap: () => _toggle(skill),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 150),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   gradient: isSelected ? AppColors.accentLinearGradient : null,
                   color: isSelected ? null : AppColors.inputFill,
                   border: Border.all(
-                    color: isSelected ? Colors.transparent : AppColors.glassBorder,
+                    color: isSelected
+                        ? Colors.transparent
+                        : AppColors.glassBorder,
                   ),
                 ),
                 child: Text(
                   skill,
                   style: GoogleFonts.poppins(
-                    color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
+                    color: isSelected
+                        ? AppColors.textPrimary
+                        : AppColors.textSecondary,
                     fontSize: 12.5,
                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                   ),
@@ -679,23 +699,170 @@ class _SkillsetPickerState extends State<_SkillsetPicker> {
                 disabledBackgroundColor: AppColors.glassBorder,
                 foregroundColor: AppColors.textPrimary,
                 disabledForegroundColor: AppColors.textPrimary,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(11.5)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(11.5),
+                ),
                 padding: const EdgeInsets.symmetric(horizontal: 24),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (_applied) ...[
-                    const Icon(CupertinoIcons.check_mark, size: 15, color: AppColors.textPrimary),
+                    const Icon(
+                      CupertinoIcons.check_mark,
+                      size: 15,
+                      color: AppColors.textPrimary,
+                    ),
                     const SizedBox(width: 6),
                   ],
                   Text(
                     _applied ? "Applied" : "Apply",
-                    style: GoogleFonts.poppins(fontSize: 13.5, fontWeight: FontWeight.w500),
+                    style: GoogleFonts.poppins(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),
             ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ProfileVisibilityPicker extends StatefulWidget {
+  const _ProfileVisibilityPicker();
+
+  @override
+  State<_ProfileVisibilityPicker> createState() =>
+      _ProfileVisibilityPickerState();
+}
+
+class _ProfileVisibilityPickerState extends State<_ProfileVisibilityPicker> {
+  _ProfileVisibility _selected = _ProfileVisibility.recruitersOnly;
+
+  static const Map<
+    _ProfileVisibility,
+    ({String label, String desc, IconData icon})
+  >
+  _options = {
+    _ProfileVisibility.public: (
+      label: "Public",
+      desc: "Anyone can view your profile.",
+      icon: CupertinoIcons.globe,
+    ),
+    _ProfileVisibility.recruitersOnly: (
+      label: "Recruiters",
+      desc: "Only verified recruiters can view your profile.",
+      icon: CupertinoIcons.briefcase_fill,
+    ),
+    _ProfileVisibility.hidden: (
+      label: "Hidden",
+      desc: "Your profile won't appear in search or matches.",
+      icon: CupertinoIcons.eye_slash_fill,
+    ),
+  };
+
+  void _select(_ProfileVisibility v) {
+    setState(() => _selected = v);
+    // TODO: persist visibility (Firestore, API, etc.)
+    // settingsService.updateProfileVisibility(context: context, visibility: v);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final current = _options[_selected]!;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Profile visibility",
+          style: GoogleFonts.poppins(
+            color: AppColors.textPrimary,
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 4),
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 180),
+          child: Text(
+            current.desc,
+            key: ValueKey(_selected),
+            style: GoogleFonts.poppins(
+              color: AppColors.textFaded55,
+              fontSize: 12.5,
+            ),
+          ),
+        ),
+        const SizedBox(height: 14),
+        Container(
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            color: AppColors.inputFill,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.glassBorder),
+          ),
+          child: Row(
+            children: _options.entries.map((entry) {
+              final isSelected = _selected == entry.key;
+              final opt = entry.value;
+              return Expanded(
+                child: GestureDetector(
+                  onTap: () => _select(entry.key),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 180),
+                    curve: Curves.easeOut,
+                    margin: const EdgeInsets.symmetric(horizontal: 2),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(13),
+                      gradient: isSelected
+                          ? AppColors.accentLinearGradient
+                          : null,
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: AppColors.accentGradient.first
+                                    .withValues(alpha: 0.35),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ]
+                          : null,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          opt.icon,
+                          size: 18,
+                          color: isSelected
+                              ? AppColors.textPrimary
+                              : AppColors.sectionLabel,
+                        ),
+                        // const SizedBox(height: 2),
+                        Text(
+                          opt.label,
+                          style: GoogleFonts.poppins(
+                            color: isSelected
+                                ? AppColors.textPrimary
+                                : AppColors.sectionLabel,
+                            fontSize: 12,
+                            fontWeight: isSelected
+                                ? FontWeight.w600
+                                : FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
           ),
         ),
       ],
@@ -745,7 +912,10 @@ class _SettingsField extends StatelessWidget {
                 child: TextField(
                   controller: controller,
                   obscureText: obscure,
-                  style: GoogleFonts.poppins(color: AppColors.textPrimary, fontSize: 13.5),
+                  style: GoogleFonts.poppins(
+                    color: AppColors.textPrimary,
+                    fontSize: 13.5,
+                  ),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     isDense: true,
@@ -779,7 +949,6 @@ class _SettingsField extends StatelessWidget {
   }
 }
 
-
 class _AccountPane extends StatelessWidget {
   final SettingsService settingsService;
 
@@ -800,6 +969,7 @@ class _AccountPane extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 6),
+
         Text(
           "Manage your account status and data.",
           style: GoogleFonts.poppins(
@@ -808,6 +978,25 @@ class _AccountPane extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 24),
+        Divider(color: AppColors.cardBorder, height: 1),
+        const SizedBox(height: 24),
+        const _ProfileVisibilityPicker(),
+        const SizedBox(height: 14),
+        Divider(color: AppColors.cardBorder, height: 1),
+        const SizedBox(height: 14),
+        _AccountRow(
+          icon: CupertinoIcons.square_arrow_right,
+          title: "Log out of all devices",
+          subtitle: "Sign out from all devices and clear your session.",
+          actionLabel: "Log out",
+          destructive: true,
+          onTap: () {
+            showLogoutDialog(
+              context: context,
+              registerPage: const RegisterApp(),
+            );
+          },
+        ),
         const SizedBox(height: 14),
         Divider(color: AppColors.cardBorder, height: 1),
         const SizedBox(height: 14),
@@ -832,7 +1021,8 @@ class _AccountPane extends StatelessWidget {
                 settingsService.deleteAccount(
                   context: context,
                   currentPassword: password,
-                  registerPage: const RegisterApp(), // <-- REPLACE with your real register/login widget
+                  registerPage:
+                      const RegisterApp(), // <-- REPLACE with your real register/login widget
                 );
               },
             );
@@ -862,7 +1052,9 @@ class _AccountRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color accent = destructive ? AppColors.statusCancelledInterview : AppColors.textPrimary;
+    final Color accent = destructive
+        ? AppColors.statusCancelledInterview
+        : AppColors.textPrimary;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -919,7 +1111,9 @@ class _AccountRow extends StatelessWidget {
             backgroundColor: destructive
                 ? AppColors.statusCancelledInterview.withValues(alpha: 0.08)
                 : AppColors.outlineBg,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           ),
           child: Text(

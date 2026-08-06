@@ -9,8 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:landpage/src/ui/screens/session.dart';
 import 'package:landpage/src/ui/widgets/glassContainer.dart';
 // import 'package:landpage/src/ui/theme/colors.dart';
-import 'package:landpage/src/utils/colors.dart'; // adjust path if different
-
+import 'package:landpage/src/utils/colors.dart';
 
 const String kIconMicOn = 'icons/mic_on.svg';
 const String kIconMicOff = 'icons/mic_off.svg';
@@ -20,11 +19,9 @@ const String kIconNoCamera = 'icons/no_camera.svg';
 
 enum _CameraLoadState { loading, ready, error, noCameras }
 
-
 class CameraOverlay extends StatefulWidget {
   const CameraOverlay({super.key});
 
-  /// Opens the camera view as a full-screen modal overlay.
   static Future<void> show(BuildContext context) {
     return showGeneralDialog(
       context: context,
@@ -34,7 +31,10 @@ class CameraOverlay extends StatefulWidget {
       transitionDuration: const Duration(milliseconds: 250),
       pageBuilder: (context, anim1, anim2) => const CameraOverlay(),
       transitionBuilder: (context, anim, secondaryAnim, child) {
-        final curved = CurvedAnimation(parent: anim, curve: Curves.easeOutCubic);
+        final curved = CurvedAnimation(
+          parent: anim,
+          curve: Curves.easeOutCubic,
+        );
         return FadeTransition(
           opacity: curved,
           child: ScaleTransition(
@@ -50,7 +50,8 @@ class CameraOverlay extends StatefulWidget {
   State<CameraOverlay> createState() => _CameraOverlayState();
 }
 
-class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserver {
+class _CameraOverlayState extends State<CameraOverlay>
+    with WidgetsBindingObserver {
   CameraController? controller;
   List<CameraDescription> _cameras = [];
   int _selectedCameraIndex = 0;
@@ -70,10 +71,11 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
     WidgetsBinding.instance.addObserver(this);
     _initCamera();
     _checkInitialConnectivity();
-    _connectivitySubscription =
-        Connectivity().onConnectivityChanged.listen((results) {
-      final hasConnection = results.isNotEmpty &&
-          !results.contains(ConnectivityResult.none);
+    _connectivitySubscription = Connectivity().onConnectivityChanged.listen((
+      results,
+    ) {
+      final hasConnection =
+          results.isNotEmpty && !results.contains(ConnectivityResult.none);
       if (mounted) setState(() => _hasInternet = hasConnection);
     });
   }
@@ -176,9 +178,7 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    final popupWidth = screenSize.width < 560
-        ? screenSize.width * 0.92
-        : 520.0;
+    final popupWidth = screenSize.width < 560 ? screenSize.width * 0.92 : 520.0;
     final popupHeight = (screenSize.height * 0.85).clamp(520.0, 780.0);
 
     return Material(
@@ -204,11 +204,10 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.asset(
-                    'assets/images/land1.png',
-                    fit: BoxFit.cover,
+                  Image.asset('assets/images/land1.png', fit: BoxFit.cover),
+                  Container(
+                    color: AppColors.overlayTint.withValues(alpha: 0.65),
                   ),
-                  Container(color: AppColors.overlayTint.withValues(alpha: 0.65)),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
                     child: Column(
@@ -216,11 +215,7 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
                       children: [
                         _buildTopBar(context),
                         const SizedBox(height: 8),
-                        Expanded(
-                          child: Center(
-                            child: _buildCameraCard(),
-                          ),
-                        ),
+                        Expanded(child: Center(child: _buildCameraCard())),
                         const SizedBox(height: 14),
                         _buildControls(),
                       ],
@@ -248,7 +243,11 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
               color: AppColors.glassFill06,
               border: Border.all(color: AppColors.cardGradientStart),
             ),
-            child: const Icon(CupertinoIcons.back, color: AppColors.textSecondary, size: 18),
+            child: const Icon(
+              CupertinoIcons.back,
+              color: AppColors.textSecondary,
+              size: 18,
+            ),
           ),
         ),
         const SizedBox(width: 14),
@@ -267,7 +266,9 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
   Widget _buildCameraCard() {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final maxWidth = constraints.maxWidth > 520 ? 480.0 : constraints.maxWidth;
+        final maxWidth = constraints.maxWidth > 520
+            ? 480.0
+            : constraints.maxWidth;
         return Container(
           width: maxWidth,
           padding: const EdgeInsets.all(1.5),
@@ -285,17 +286,9 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
                   Container(color: AppColors.cameraCardBg),
                   _buildPreviewContent(),
                   // Bottom label chip
-                  Positioned(
-                    left: 14,
-                    bottom: 14,
-                    child: _buildNameChip(),
-                  ),
+                  Positioned(left: 14, bottom: 14, child: _buildNameChip()),
                   // Mic status dot, top-right
-                  Positioned(
-                    top: 14,
-                    right: 14,
-                    child: _buildMicIndicator(),
-                  ),
+                  Positioned(top: 14, right: 14, child: _buildMicIndicator()),
                 ],
               ),
             ),
@@ -308,7 +301,11 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
   Widget _buildPreviewContent() {
     if (!_hasInternet) {
       return _buildStatusPanel(
-        icon: const Icon(CupertinoIcons.wifi_slash, color: AppColors.textSecondary, size: 24),
+        icon: const Icon(
+          CupertinoIcons.wifi_slash,
+          color: AppColors.textSecondary,
+          size: 24,
+        ),
         spinner: false,
         title: "No internet connection",
         subtitle: "Please check your network and try again.",
@@ -331,7 +328,10 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
             kIconNoCamera,
             width: 24,
             height: 24,
-            colorFilter: const ColorFilter.mode(AppColors.textSecondary, BlendMode.srcIn),
+            colorFilter: const ColorFilter.mode(
+              AppColors.textSecondary,
+              BlendMode.srcIn,
+            ),
           ),
           spinner: false,
           title: "No camera found",
@@ -340,7 +340,11 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
 
       case _CameraLoadState.error:
         return _buildStatusPanel(
-          icon: const Icon(CupertinoIcons.exclamationmark_triangle, color: AppColors.textSecondary, size: 24),
+          icon: const Icon(
+            CupertinoIcons.exclamationmark_triangle,
+            color: AppColors.textSecondary,
+            size: 24,
+          ),
           spinner: false,
           title: "Couldn't access camera",
           subtitle: _errorMessage ?? "Check permissions and try again.",
@@ -354,7 +358,10 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
               kIconCameraOff,
               width: 24,
               height: 24,
-              colorFilter: const ColorFilter.mode(AppColors.textSecondary, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(
+                AppColors.textSecondary,
+                BlendMode.srcIn,
+              ),
             ),
             spinner: false,
             title: "Camera is off",
@@ -447,12 +454,17 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: AppColors.outlineBorder),
                   backgroundColor: AppColors.inputFill,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(11),
+                  ),
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                 ),
                 child: Text(
                   "Try again",
-                  style: GoogleFonts.poppins(color: AppColors.textSecondary, fontSize: 12.5),
+                  style: GoogleFonts.poppins(
+                    color: AppColors.textSecondary,
+                    fontSize: 12.5,
+                  ),
                 ),
               ),
             ),
@@ -488,7 +500,9 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
   }
 
   Widget _buildMicIndicator() {
-    final color = _micOn ? AppColors.statusCompletedInterview : AppColors.statusCancelledInterview;
+    final color = _micOn
+        ? AppColors.statusCompletedInterview
+        : AppColors.statusCancelledInterview;
     return Container(
       width: 30,
       height: 30,
@@ -502,13 +516,14 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
           _micOn ? kIconMicOn : kIconMicOff,
           width: 14,
           height: 14,
-          colorFilter: const ColorFilter.mode(AppColors.textPrimary, BlendMode.srcIn),
+          colorFilter: const ColorFilter.mode(
+            AppColors.textPrimary,
+            BlendMode.srcIn,
+          ),
         ),
       ),
     );
   }
-
-
 
   Widget _buildControls() {
     return GlassContainer(
@@ -522,7 +537,10 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
               _micOn ? kIconMicOn : kIconMicOff,
               width: 19,
               height: 19,
-              colorFilter: const ColorFilter.mode(AppColors.textPrimary, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(
+                AppColors.textPrimary,
+                BlendMode.srcIn,
+              ),
             ),
             active: _micOn,
             onTap: _toggleMic,
@@ -533,7 +551,10 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
               _cameraOn ? kIconCameraOn : kIconCameraOff,
               width: 19,
               height: 19,
-              colorFilter: const ColorFilter.mode(AppColors.textPrimary, BlendMode.srcIn),
+              colorFilter: const ColorFilter.mode(
+                AppColors.textPrimary,
+                BlendMode.srcIn,
+              ),
             ),
             active: _cameraOn,
             onTap: _toggleCamera,
@@ -567,7 +588,11 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
                 );
               }
             : null,
-        icon: const Icon(CupertinoIcons.play_fill, size: 16, color: AppColors.textPrimary),
+        icon: const Icon(
+          CupertinoIcons.play_fill,
+          size: 16,
+          color: AppColors.textPrimary,
+        ),
         label: Text(
           "Join",
           style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
@@ -578,7 +603,9 @@ class _CameraOverlayState extends State<CameraOverlay> with WidgetsBindingObserv
           disabledBackgroundColor: AppColors.glassFill06,
           foregroundColor: AppColors.textPrimary,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.5)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(13.5),
+          ),
         ),
       ),
     );
@@ -627,8 +654,10 @@ class _ControlButton extends StatelessWidget {
             color: neutral
                 ? AppColors.glassBorder
                 : (active
-                    ? AppColors.glassBorder
-                    : AppColors.statusCancelledInterview.withValues(alpha: 0.4)),
+                      ? AppColors.glassBorder
+                      : AppColors.statusCancelledInterview.withValues(
+                          alpha: 0.4,
+                        )),
           ),
         ),
         child: Center(child: iconBuilder(iconColor)),

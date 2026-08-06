@@ -2,11 +2,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:landpage/dashboard.dart
+import 'package:landpage/main.dart'; // for LandingPage (Home)
 import 'package:landpage/src/forms/register.dart';
+import 'package:landpage/src/ui/screens/aboutUs.dart';
+import 'package:landpage/src/ui/screens/contactUs.dart';
 import 'package:landpage/src/utils/colors.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key});
+  final bool isContactPage;
+  final bool isAboutPage;
+  const CustomAppBar({
+    super.key,
+    this.isContactPage = false,
+    this.isAboutPage = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +48,12 @@ class CustomAppBar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-
               NavTextItem(
                 title: "Jobs",
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => const Placeholder(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const Placeholder()),
                   );
                 },
               ),
@@ -57,39 +63,61 @@ class CustomAppBar extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => const Placeholder(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const Placeholder()),
                   );
                 },
               ),
 
+              // NavTextItem(
+              //   title: "About Us",
+              //   onTap: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (_) => const Placeholder()),
+              //     );
+              //   },
+              // ),
               NavTextItem(
-                title: "About Us",
+                title: isAboutPage ? "Home" : "About Us",
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const Placeholder(),
-                    ),
-                  );
+                  if (isAboutPage) {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (_) => const LandingPage()),
+                      (route) => false,
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AboutUsPage()),
+                    );
+                  }
                 },
               ),
 
-              const SizedBox(width: 350),
+              const SizedBox(width: 390),
 
               Row(
                 children: [
-
                   NavTextItem(
-                    title: "Contact Us",
+                    title: isContactPage ? "Home" : "Contact Us",
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const Placeholder(),
-                        ),
-                      );
+                      if (isContactPage) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const LandingPage(),
+                          ),
+                          (route) => false,
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ContactUsPage(),
+                          ),
+                        );
+                      }
                     },
                   ),
 
@@ -104,45 +132,36 @@ class CustomAppBar extends StatelessWidget {
                   //     );
                   //   },
                   // ),
-
                   const SizedBox(width: 13),
 
                   InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (_) => const RegisterApp(),
-                        ),
+                        MaterialPageRoute(builder: (_) => const RegisterApp()),
                       );
 
+                      // final user = FirebaseAuth.instance.currentUser;
 
-// final user = FirebaseAuth.instance.currentUser;
+                      //   if (user != null) {
+                      //     await user.reload(); // refresh session, in case it's stale
+                      //   }
 
-//   if (user != null) {
-//     await user.reload(); // refresh session, in case it's stale
-//   }
+                      //   final freshUser = FirebaseAuth.instance.currentUser;
 
-//   final freshUser = FirebaseAuth.instance.currentUser;
-
-//   if (freshUser != null && freshUser.emailVerified) {
-//     // Already logged in and verified -> go straight to Dashboard
-//     Navigator.push(
-//       context,
-//       MaterialPageRoute(builder: (context) => const DashboardPage()),
-//     );
-//   } else {
-//     // Not logged in -> show login/register screen
-//     Navigator.push(
-//       context,
-//       MaterialPageRoute(builder: (context) => const RegisterApp()),
-//     );
-//   }
-
-
-
-
-
+                      //   if (freshUser != null && freshUser.emailVerified) {
+                      //     // Already logged in and verified -> go straight to Dashboard
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(builder: (context) => const DashboardPage()),
+                      //     );
+                      //   } else {
+                      //     // Not logged in -> show login/register screen
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(builder: (context) => const RegisterApp()),
+                      //     );
+                      //   }
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
@@ -183,18 +202,11 @@ class CustomAppBar extends StatelessWidget {
   }
 }
 
-
-
-
 class NavTextItem extends StatefulWidget {
   final String title;
   final VoidCallback? onTap;
 
-  const NavTextItem({
-    super.key,
-    required this.title,
-    this.onTap,
-  });
+  const NavTextItem({super.key, required this.title, this.onTap});
 
   @override
   State<NavTextItem> createState() => _NavTextItemState();

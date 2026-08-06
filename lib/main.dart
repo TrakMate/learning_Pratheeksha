@@ -8,20 +8,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'src/ui/custom/custom_appbar.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
- 
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -55,7 +52,8 @@ class _LandingPageState extends State<LandingPage> {
     super.initState();
 
     _scrollController.addListener(() {
-      bool bottom = _scrollController.position.pixels >=
+      bool bottom =
+          _scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - 10;
 
       if (bottom != isAtBottom) {
@@ -79,10 +77,7 @@ class _LandingPageState extends State<LandingPage> {
         fit: StackFit.expand,
         children: [
           Positioned.fill(
-            child: Image.asset(
-              'assets/images/land.png',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/images/land.png', fit: BoxFit.cover),
           ),
           SafeArea(
             child: SingleChildScrollView(
@@ -93,7 +88,10 @@ class _LandingPageState extends State<LandingPage> {
 
                   const SizedBox(height: 100),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.badgeBg,
                       borderRadius: BorderRadius.circular(10),
@@ -108,11 +106,21 @@ class _LandingPageState extends State<LandingPage> {
                             color: AppColors.badgePurple.withValues(alpha: 0.5),
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          child: const Text("+", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                          child: const Text(
+                            "+",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
                         ),
                         Text(
                           ' Combinator W24 • 35M+ raised',
-                          style: TextStyle(color: AppColors.subtitleText, fontSize: 12),
+                          style: TextStyle(
+                            color: AppColors.subtitleText,
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),
@@ -144,7 +152,10 @@ class _LandingPageState extends State<LandingPage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.textPrimary,
                       foregroundColor: AppColors.buttonFg,
-                      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 28,
+                        vertical: 16,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(24),
                       ),
@@ -166,10 +177,30 @@ class _LandingPageState extends State<LandingPage> {
                       width: 300,
                       child: Stack(
                         children: const [
-                          Positioned(left: 0, child: HoverAvatar(imagePath: 'assets/images/a1.png')),
-                          Positioned(left: 70, child: HoverAvatar(imagePath: 'assets/images/a2.png')),
-                          Positioned(left: 140, child: HoverAvatar(imagePath: 'assets/images/a3.png')),
-                          Positioned(left: 210, child: HoverAvatar(imagePath: 'assets/images/a4.png')),
+                          Positioned(
+                            left: 0,
+                            child: HoverAvatar(
+                              imagePath: 'assets/images/a1.png',
+                            ),
+                          ),
+                          Positioned(
+                            left: 70,
+                            child: HoverAvatar(
+                              imagePath: 'assets/images/a2.png',
+                            ),
+                          ),
+                          Positioned(
+                            left: 140,
+                            child: HoverAvatar(
+                              imagePath: 'assets/images/a3.png',
+                            ),
+                          ),
+                          Positioned(
+                            left: 210,
+                            child: HoverAvatar(
+                              imagePath: 'assets/images/a4.png',
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -196,7 +227,8 @@ class _LandingPageState extends State<LandingPage> {
                             child: FeatureCard(
                               image: "assets/images/collaboration.png",
                               title: "Effortless\nCollaboration.",
-                              description: "Connect, share, and build together in real-time.",
+                              description:
+                                  "Connect, share, and build together in real-time.",
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -206,7 +238,8 @@ class _LandingPageState extends State<LandingPage> {
                             child: FeatureCard(
                               image: "assets/images/dashboard.png",
                               title: "Visualize Your\nProgress.",
-                              description: "Track performance with dynamic analytics & intuitive dashboards.",
+                              description:
+                                  "Track performance with dynamic analytics & intuitive dashboards.",
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -216,7 +249,8 @@ class _LandingPageState extends State<LandingPage> {
                             child: FeatureCard(
                               image: "assets/images/automation.png",
                               title: "Smart\nAutomation.",
-                              description: "Automate workflows and save time with intelligent task management.",
+                              description:
+                                  "Automate workflows and save time with intelligent task management.",
                             ),
                           ),
                         ],
@@ -229,15 +263,14 @@ class _LandingPageState extends State<LandingPage> {
             ),
           ),
 
-         
-Positioned(
-  bottom: 20,
-  left: 0,
-  right: 0,
-  child: Center(
-    child: ScrollProgressFAB(scrollController: _scrollController),
-  ),
-),
+          Positioned(
+            bottom: 20,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: ScrollProgressFAB(scrollController: _scrollController),
+            ),
+          ),
         ],
       ),
     );
@@ -279,15 +312,10 @@ class _FeatureCardState extends State<FeatureCard> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              AppColors.cardGradientStart,
-              AppColors.cardGradientEnd,
-            ],
+            colors: [AppColors.cardGradientStart, AppColors.cardGradientEnd],
           ),
           border: Border.all(
-            color: hovered
-                ? AppColors.cardBorderHover
-                : AppColors.cardBorder,
+            color: hovered ? AppColors.cardBorderHover : AppColors.cardBorder,
             width: 1.2,
           ),
           boxShadow: hovered
@@ -310,10 +338,7 @@ class _FeatureCardState extends State<FeatureCard> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 5,
-              sigmaY: 5,
-            ),
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Container(
               padding: const EdgeInsets.all(24),
               child: Column(
@@ -362,11 +387,7 @@ class NavTextItem extends StatefulWidget {
   final String title;
   final VoidCallback? onTap;
 
-  const NavTextItem({
-    super.key,
-    required this.title,
-    this.onTap,
-  });
+  const NavTextItem({super.key, required this.title, this.onTap});
 
   @override
   State<NavTextItem> createState() => _NavTextItemState();
@@ -442,7 +463,7 @@ class _HoverAvatarState extends State<HoverAvatar> {
                       color: AppColors.avatarShadow,
                       blurRadius: 20,
                       offset: const Offset(0, 10),
-                    )
+                    ),
                   ]
                 : [],
           ),
@@ -463,7 +484,6 @@ class _HoverAvatarState extends State<HoverAvatar> {
     );
   }
 }
-
 
 class ScrollProgressFAB extends StatefulWidget {
   final ScrollController scrollController;
@@ -511,8 +531,9 @@ class _ScrollProgressFABState extends State<ScrollProgressFAB>
     final maxScroll = position.maxScrollExtent;
     final offset = position.pixels;
 
-    final newProgress =
-        maxScroll <= 0 ? 0.0 : (offset / maxScroll).clamp(0.0, 1.0);
+    final newProgress = maxScroll <= 0
+        ? 0.0
+        : (offset / maxScroll).clamp(0.0, 1.0);
     final shouldShow = offset > 150; // appear only after some scrolling
 
     if (newProgress == _progress && shouldShow == _visible) return;
@@ -574,10 +595,7 @@ class _ScrollProgressFABState extends State<ScrollProgressFAB>
               builder: (context, child) {
                 final pulse = 1 + (_pulseController.value * 0.05);
                 final press = 1 - (_pressController.value * 0.15);
-                return Transform.scale(
-                  scale: pulse * press,
-                  child: child,
-                );
+                return Transform.scale(scale: pulse * press, child: child);
               },
               child: SizedBox(
                 width: 60,
@@ -593,8 +611,9 @@ class _ScrollProgressFABState extends State<ScrollProgressFAB>
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.fabGlow
-                                .withValues(alpha: 0.35 + _progress * 0.25),
+                            color: AppColors.fabGlow.withValues(
+                              alpha: 0.35 + _progress * 0.25,
+                            ),
                             blurRadius: 20 + (_progress * 10),
                             spreadRadius: 1,
                           ),
@@ -633,23 +652,25 @@ class _ScrollProgressFABState extends State<ScrollProgressFAB>
                           child: Center(
                             child: AnimatedSwitcher(
                               duration: const Duration(milliseconds: 350),
-                             transitionBuilder: (child, animation) {
-                             return FadeTransition(
-                             opacity: animation,
-                             child: child,
-                                 );
-                               },
-                             child: Transform.rotate(
+                              transitionBuilder: (child, animation) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                              child: Transform.rotate(
                                 key: ValueKey(atBottom),
-                                angle: atBottom ? 0 : 3.14159, // 180° flip when at bottom
+                                angle: atBottom
+                                    ? 0
+                                    : 3.14159, // 180° flip when at bottom
                                 child: SvgPicture.asset(
                                   'icons/mouse.svg',
-                                   key: ValueKey(atBottom),
-                                   width: 22,
-                                   height: 22,
-                                color: AppColors.textPrimary,
+                                  key: ValueKey(atBottom),
+                                  width: 22,
+                                  height: 22,
+                                  color: AppColors.textPrimary,
                                 ),
-                               ),
+                              ),
                             ),
                           ),
                         ),
@@ -684,7 +705,11 @@ class _ProgressRingPainter extends CustomPainter {
 
     final progressPaint = Paint()
       ..shader = const SweepGradient(
-        colors: [AppColors.ringAccent, AppColors.textPrimary, AppColors.ringAccent],
+        colors: [
+          AppColors.ringAccent,
+          AppColors.textPrimary,
+          AppColors.ringAccent,
+        ],
         startAngle: 0,
         endAngle: 6.28319,
       ).createShader(Rect.fromCircle(center: center, radius: radius))

@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:landpage/src/utils/colors.dart' show AppColors;
-import 'dashboard.dart' show kAccentGradient; 
+import 'dashboard.dart' show kAccentGradient;
+
 // import 'package:landpage/src/ui/widgets/offer_email_button.dart';
 enum ApplicationStatus { applied, underReview, interview, offer, rejected }
 
@@ -84,9 +85,8 @@ class ApplicationData {
     required this.companyInitial,
   });
 
- // Add this — a stable id used to track "offer email sent" state.
+  // Add this — a stable id used to track "offer email sent" state.
   String get id => "$company|$role|$appliedOn";
-
 }
 
 class ApplicationsSection extends StatefulWidget {
@@ -101,42 +101,42 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
   final Set<String> _sentOfferIds = {};
 
   List<ApplicationData> get _applications => const [
-        ApplicationData(
-          role: "Frontend Engineer",
-          company: "Fable Studio",
-          appliedOn: "Jul 18, 2026",
-          status: ApplicationStatus.interview,
-          companyInitial: "F",
-        ),
-        ApplicationData(
-          role: "UX Researcher",
-          company: "Fable Studio",
-          appliedOn: "Jul 15, 2026",
-          status: ApplicationStatus.underReview,
-          companyInitial: "F",
-        ),
-        ApplicationData(
-          role: "Frontend Engineer",
-          company: "Orbit Robotics",
-          appliedOn: "Jul 12, 2026",
-          status: ApplicationStatus.applied,
-          companyInitial: "O",
-        ),
-        ApplicationData(
-          role: "Frontend Engineer",
-          company: "Lumen Health",
-          appliedOn: "Jul 05, 2026",
-          status: ApplicationStatus.offer,
-          companyInitial: "L",
-        ),
-        ApplicationData(
-          role: "UX Designer",
-          company: "Lumen Health",
-          appliedOn: "Jun 29, 2026",
-          status: ApplicationStatus.rejected,
-          companyInitial: "L",
-        ),
-      ];
+    ApplicationData(
+      role: "Frontend Engineer",
+      company: "Fable Studio",
+      appliedOn: "Jul 18, 2026",
+      status: ApplicationStatus.interview,
+      companyInitial: "F",
+    ),
+    ApplicationData(
+      role: "UX Researcher",
+      company: "Fable Studio",
+      appliedOn: "Jul 15, 2026",
+      status: ApplicationStatus.underReview,
+      companyInitial: "F",
+    ),
+    ApplicationData(
+      role: "Frontend Engineer",
+      company: "Orbit Robotics",
+      appliedOn: "Jul 12, 2026",
+      status: ApplicationStatus.applied,
+      companyInitial: "O",
+    ),
+    ApplicationData(
+      role: "Frontend Engineer",
+      company: "Lumen Health",
+      appliedOn: "Jul 05, 2026",
+      status: ApplicationStatus.offer,
+      companyInitial: "L",
+    ),
+    ApplicationData(
+      role: "UX Designer",
+      company: "Lumen Health",
+      appliedOn: "Jun 29, 2026",
+      status: ApplicationStatus.rejected,
+      companyInitial: "L",
+    ),
+  ];
 
   Map<ApplicationStatus, int> get _counts {
     final map = <ApplicationStatus, int>{};
@@ -149,8 +149,9 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
   @override
   Widget build(BuildContext context) {
     final all = _applications;
-    final filtered =
-        _filter == null ? all : all.where((a) => a.status == _filter).toList();
+    final filtered = _filter == null
+        ? all
+        : all.where((a) => a.status == _filter).toList();
 
     return _ApplicationsGlassContainer(
       radius: 20,
@@ -169,7 +170,7 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
               return _AnimatedEntry(
                 index: i,
                 // child: _ApplicationTile(data: filtered[i]),
-   child: _ApplicationTile(
+                child: _ApplicationTile(
                   key: ValueKey(filtered[i].id), // NEW: stable key
                   data: filtered[i],
                   alreadySent: _sentOfferIds.contains(filtered[i].id), // NEW
@@ -177,8 +178,6 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
                     setState(() => _sentOfferIds.add(filtered[i].id)); // NEW
                   },
                 ),
-
-
               );
             }),
         ],
@@ -203,16 +202,20 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
               ),
             ],
           ),
-          child: Icon(CupertinoIcons.paperplane_fill, color: AppColors.textPrimary, size: 20),
+          child: Icon(
+            CupertinoIcons.paperplane_fill,
+            color: AppColors.textPrimary,
+            size: 20,
+          ),
         ),
         const SizedBox(width: 14),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ShaderMask(
-              shaderCallback: (bounds) =>
-                  LinearGradient(colors: [AppColors.white, AppColors.shaderHighlight])
-                      .createShader(bounds),
+              shaderCallback: (bounds) => LinearGradient(
+                colors: [AppColors.white, AppColors.shaderHighlight],
+              ).createShader(bounds),
               child: Text(
                 "Applications Sent",
                 style: GoogleFonts.poppins(
@@ -238,7 +241,9 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             gradient: LinearGradient(
-              colors: kAccentGradient.map((c) => c.withValues(alpha: 0.25)).toList(),
+              colors: kAccentGradient
+                  .map((c) => c.withValues(alpha: 0.25))
+                  .toList(),
             ),
             border: Border.all(color: AppColors.outlineBorder),
           ),
@@ -301,11 +306,17 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
-                  colors: kAccentGradient.map((c) => c.withValues(alpha: 0.2)).toList(),
+                  colors: kAccentGradient
+                      .map((c) => c.withValues(alpha: 0.2))
+                      .toList(),
                 ),
                 border: Border.all(color: AppColors.glassBorder),
               ),
-              child: Icon(CupertinoIcons.tray, color: AppColors.textFaded50, size: 28),
+              child: Icon(
+                CupertinoIcons.tray,
+                color: AppColors.textFaded50,
+                size: 28,
+              ),
             ),
             const SizedBox(height: 16),
             Text(
@@ -319,7 +330,10 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
             const SizedBox(height: 4),
             Text(
               "Applications matching this filter will show up here.",
-              style: GoogleFonts.poppins(color: AppColors.textFaded40, fontSize: 12),
+              style: GoogleFonts.poppins(
+                color: AppColors.textFaded40,
+                fontSize: 12,
+              ),
             ),
           ],
         ),
@@ -327,7 +341,6 @@ class _ApplicationsSectionState extends State<ApplicationsSection> {
     );
   }
 }
-
 
 class _FilterChip extends StatefulWidget {
   final String label;
@@ -371,7 +384,9 @@ class _FilterChipState extends State<_FilterChip> {
                 ? widget.color.withValues(alpha: 0.18)
                 : (hovered ? AppColors.glassFill : AppColors.outlineBg),
             border: Border.all(
-              color: active ? widget.color.withValues(alpha: 0.6) : AppColors.cardGradientStart,
+              color: active
+                  ? widget.color.withValues(alpha: 0.6)
+                  : AppColors.cardGradientStart,
               width: active ? 1.3 : 1,
             ),
             boxShadow: active
@@ -388,13 +403,19 @@ class _FilterChipState extends State<_FilterChip> {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (widget.icon != null) ...[
-                Icon(widget.icon, size: 13, color: active ? widget.color : AppColors.sectionLabel),
+                Icon(
+                  widget.icon,
+                  size: 13,
+                  color: active ? widget.color : AppColors.sectionLabel,
+                ),
                 const SizedBox(width: 6),
               ],
               Text(
                 widget.label,
                 style: GoogleFonts.poppins(
-                  color: active ? AppColors.textPrimary : AppColors.textSecondary,
+                  color: active
+                      ? AppColors.textPrimary
+                      : AppColors.textSecondary,
                   fontSize: 12.5,
                   fontWeight: active ? FontWeight.w600 : FontWeight.w400,
                 ),
@@ -423,7 +444,6 @@ class _FilterChipState extends State<_FilterChip> {
   }
 }
 
-
 class _AnimatedEntry extends StatelessWidget {
   final int index;
   final Widget child;
@@ -449,18 +469,16 @@ class _AnimatedEntry extends StatelessWidget {
   }
 }
 
-
 class _ApplicationTile extends StatefulWidget {
   final ApplicationData data;
-  final bool alreadySent;          
-  final VoidCallback onOfferSent;  
+  final bool alreadySent;
+  final VoidCallback onOfferSent;
   const _ApplicationTile({
-    super.key,  
+    super.key,
     required this.data,
-     required this.alreadySent,     
-    required this.onOfferSent,     
-    });
-  
+    required this.alreadySent,
+    required this.onOfferSent,
+  });
 
   @override
   State<_ApplicationTile> createState() => _ApplicationTileState();
@@ -487,10 +505,11 @@ class _ApplicationTileState extends State<_ApplicationTile> {
           borderRadius: BorderRadius.circular(16),
           child: Stack(
             children: [
-              
               Container(
                 decoration: BoxDecoration(
-                  color: hovered ? AppColors.tileFillHover : AppColors.tileFillBase,
+                  color: hovered
+                      ? AppColors.tileFillHover
+                      : AppColors.tileFillBase,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: hovered
@@ -532,7 +551,8 @@ class _ApplicationTileState extends State<_ApplicationTile> {
                                 const SizedBox(width: 14),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         widget.data.role,
@@ -545,8 +565,11 @@ class _ApplicationTileState extends State<_ApplicationTile> {
                                       const SizedBox(height: 3),
                                       Row(
                                         children: [
-                                          Icon(CupertinoIcons.building_2_fill,
-                                              size: 11, color: AppColors.textFaded40),
+                                          Icon(
+                                            CupertinoIcons.building_2_fill,
+                                            size: 11,
+                                            color: AppColors.textFaded40,
+                                          ),
                                           const SizedBox(width: 4),
                                           Text(
                                             widget.data.company,
@@ -556,8 +579,11 @@ class _ApplicationTileState extends State<_ApplicationTile> {
                                             ),
                                           ),
                                           const SizedBox(width: 10),
-                                          Icon(CupertinoIcons.time,
-                                              size: 11, color: AppColors.textFaded40),
+                                          Icon(
+                                            CupertinoIcons.time,
+                                            size: 11,
+                                            color: AppColors.textFaded40,
+                                          ),
                                           const SizedBox(width: 4),
                                           Text(
                                             widget.data.appliedOn,
@@ -578,13 +604,13 @@ class _ApplicationTileState extends State<_ApplicationTile> {
                             const SizedBox(height: 14),
                             _buildStageProgress(status),
                             const SizedBox(height: 14),
-//                             Align(
-//                               alignment: Alignment.bottomRight,
-//                             child:OfferEmailButton(data: widget.data,
-//  alreadySent: widget.alreadySent,   // NEW
-//   onSent: widget.onOfferSent,     
-//                             ),
-//                             ),
+                            //                             Align(
+                            //                               alignment: Alignment.bottomRight,
+                            //                             child:OfferEmailButton(data: widget.data,
+                            //  alreadySent: widget.alreadySent,   // NEW
+                            //   onSent: widget.onOfferSent,
+                            //                             ),
+                            //                             ),
                           ],
                         ),
                       ),
@@ -659,9 +685,9 @@ class _ApplicationTileState extends State<_ApplicationTile> {
     return Row(
       children: List.generate(_stages.length * 2 - 1, (i) {
         if (i.isOdd) {
-          
           final stageBefore = i ~/ 2;
-          final filled = stageBefore < activeIndex ||
+          final filled =
+              stageBefore < activeIndex ||
               (stageBefore == activeIndex && !isRejected);
           return Expanded(
             child: Container(
@@ -697,7 +723,12 @@ class _ApplicationTileState extends State<_ApplicationTile> {
                 shape: BoxShape.circle,
                 color: dotColor,
                 boxShadow: isCurrent
-                    ? [BoxShadow(color: status.color.withValues(alpha: 0.6), blurRadius: 8)]
+                    ? [
+                        BoxShadow(
+                          color: status.color.withValues(alpha: 0.6),
+                          blurRadius: 8,
+                        ),
+                      ]
                     : [],
               ),
             ),
@@ -707,7 +738,6 @@ class _ApplicationTileState extends State<_ApplicationTile> {
     );
   }
 }
-
 
 class _ApplicationsGlassContainer extends StatelessWidget {
   final Widget child;

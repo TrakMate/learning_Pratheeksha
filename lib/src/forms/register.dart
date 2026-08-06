@@ -22,22 +22,21 @@ class RegisterApp extends StatefulWidget {
 }
 
 class _RegisterAppState extends State<RegisterApp> {
-
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn.instance;
   final AuthService authService = AuthService();
   // Toggle flag: true => show Login form, false => show Register form
   bool isLogin = true;
-static bool _googleSignInInitialized = false;
+  static bool _googleSignInInitialized = false;
   // final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   final TextEditingController loginEmailController = TextEditingController();
   final TextEditingController loginPasswordController = TextEditingController();
-  
- @override
+
+  @override
   void initState() {
     super.initState();
     // debugPrint("⑦ RegisterApp initState — WE ARE HERE");
@@ -45,27 +44,26 @@ static bool _googleSignInInitialized = false;
   }
 
   Future<void> initializeGoogleSignIn() async {
-    try{
-    await googleSignIn.initialize(
-      clientId: '1067334725424-rsnakp7apt78i4c0dk01cg37ph19vd6t.apps.googleusercontent.com',
-    );
-     _googleSignInInitialized = true;
-  }
-  catch (e) {
+    try {
+      await googleSignIn.initialize(
+        clientId:
+            '1067334725424-rsnakp7apt78i4c0dk01cg37ph19vd6t.apps.googleusercontent.com',
+      );
+      _googleSignInInitialized = true;
+    } catch (e) {
       // debugPrint("GoogleSignIn init error: $e");
-      
+
       _googleSignInInitialized = true;
     }
   }
 
- @override
+  @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
 
-  
   Future<void> _createUserDocument(User user, {String? provider}) async {
     try {
       await firestore.collection('users').doc(user.uid).set({
@@ -83,194 +81,171 @@ static bool _googleSignInInitialized = false;
     }
   }
 
-
-
- Future<void> registerUser() async {
-  if (emailController.text.trim().isEmpty) {
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   const SnackBar(
-    //     content: Text("Please enter your email."),
-    //     backgroundColor: Color.fromARGB(255, 154, 102, 163),
-    //   ),
-    // );
-    showSnackBar(
-  context,"Please enter your email.", 
-);
-    return;
-  }
-  if (!emailController.text.contains('@')) {
-  // ScaffoldMessenger.of(context).showSnackBar(
-  //   const SnackBar(
-  //     content: Text("Please enter a valid email."),
-  //     backgroundColor: Color.fromARGB(255, 154, 102, 163),
-  //   ),
-  // );
-   showSnackBar(
-  context,"Please enter a valid email.", 
-);
-  return;
-}
-
-  if (passwordController.text.trim().isEmpty) {
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   const SnackBar(
-    //     content: Text("Please enter your password."),
-    //     backgroundColor:  Color.fromARGB(255, 154, 102, 163),
-    //   ),
-    // );
-     showSnackBar(
-  context,"Please enter your password.", 
-);
-    return;
-  }
-
-  try {
-    // print("Register button pressed");
-
-    UserCredential user =
-        await auth.createUserWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
-
-    // Create the Firestore user document right after the auth account exists.
-    if (user.user != null) {
-      await _createUserDocument(user.user!, provider: 'password');
+  Future<void> registerUser() async {
+    if (emailController.text.trim().isEmpty) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text("Please enter your email."),
+      //     backgroundColor: Color.fromARGB(255, 154, 102, 163),
+      //   ),
+      // );
+      showSnackBar(context, "Please enter your email.");
+      return;
+    }
+    if (!emailController.text.contains('@')) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text("Please enter a valid email."),
+      //     backgroundColor: Color.fromARGB(255, 154, 102, 163),
+      //   ),
+      // );
+      showSnackBar(context, "Please enter a valid email.");
+      return;
     }
 
-    await user.user?.sendEmailVerification();
-    await Future.delayed(const Duration(seconds: 3));
-    if (!mounted) return;
-
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   const SnackBar(
-    //     content: Text("Registration Successful!Please check your email to verify your account."),
-    //     backgroundColor: Colors.green,
-    //   ),
-    // );
-     showSnackBar(
-  context,"Registration Successful!Please check your email to verify your account..", 
-);
-
-    await Future.delayed(const Duration(seconds: 5));
-
-if (!mounted) return;
-
-    emailController.clear();
-    passwordController.clear();
-
-setState(() {
-  isLogin = true; // Show the login form
-});
-
-    // // print(user.user?.uid);
-    // print(user.user?.email);
-
-  } on FirebaseAuthException catch (e) {
-    String message;
-
-    switch (e.code) {
-      case 'email-already-in-use':
-        message = "This email is already registered.";
-        break;
-
-      case 'invalid-email':
-        message = "Please enter a valid email address.";
-        break;
-
-      case 'weak-password':
-        message = "Password should be at least 6 characters.";
-        break;
-
-      case 'network-request-failed':
-        message = "Please check your internet connection.";
-        break;
-
-      case 'too-many-requests':
-        message = "Too many attempts. Please try again later.";
-        break;
-
-      default:
-        message = e.message ?? "Registration failed.";
+    if (passwordController.text.trim().isEmpty) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text("Please enter your password."),
+      //     backgroundColor:  Color.fromARGB(255, 154, 102, 163),
+      //   ),
+      // );
+      showSnackBar(context, "Please enter your password.");
+      return;
     }
 
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(
-    //     content: Text(message),
-    //     backgroundColor: Colors.red,
-    //   ),
-    // );
-     showSnackBar(
-  context,message, 
-);
+    try {
+      // print("Register button pressed");
 
-  } catch (e) {
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(
-    //     content: Text("Unexpected Error: $e"),
-    //     backgroundColor: Colors.red,
-    //   ),
-    // );
-     showSnackBar(
-  context,"Unexpected Error: $e", 
-);
-  }
-}
+      UserCredential user = await auth.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
 
+      // Create the Firestore user document right after the auth account exists.
+      if (user.user != null) {
+        await _createUserDocument(user.user!, provider: 'password');
+      }
 
-Future<void> signInWithGoogle() async {
-  try {
-    await FirebaseAuth.instance.signOut();
-    await googleSignIn.signOut();
-    GoogleAuthProvider googleProvider = GoogleAuthProvider();
+      await user.user?.sendEmailVerification();
+      await Future.delayed(const Duration(seconds: 3));
+      if (!mounted) return;
 
-    UserCredential credential =await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text("Registration Successful!Please check your email to verify your account."),
+      //     backgroundColor: Colors.green,
+      //   ),
+      // );
+      showSnackBar(
+        context,
+        "Registration Successful!Please check your email to verify your account..",
+      );
 
-    // Create/update the Firestore user document for Google sign-in too.
-    if (credential.user != null) {
-      await _createUserDocument(credential.user!, provider: 'google');
+      await Future.delayed(const Duration(seconds: 5));
+
+      if (!mounted) return;
+
+      emailController.clear();
+      passwordController.clear();
+
+      setState(() {
+        isLogin = true; // Show the login form
+      });
+
+      // // print(user.user?.uid);
+      // print(user.user?.email);
+    } on FirebaseAuthException catch (e) {
+      String message;
+
+      switch (e.code) {
+        case 'email-already-in-use':
+          message = "This email is already registered.";
+          break;
+
+        case 'invalid-email':
+          message = "Please enter a valid email address.";
+          break;
+
+        case 'weak-password':
+          message = "Password should be at least 6 characters.";
+          break;
+
+        case 'network-request-failed':
+          message = "Please check your internet connection.";
+          break;
+
+        case 'too-many-requests':
+          message = "Too many attempts. Please try again later.";
+          break;
+
+        default:
+          message = e.message ?? "Registration failed.";
+      }
+
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text(message),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // );
+      showSnackBar(context, message);
+    } catch (e) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text("Unexpected Error: $e"),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // );
+      showSnackBar(context, "Unexpected Error: $e");
     }
-
-    if (!mounted) return;
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   const SnackBar(
-    //     content: Text("Google Sign-In Successful"),
-    //   ),
-    // );
-     showSnackBar(
-  context,"Google Sign-In Successful", 
-);
-    Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(
-    builder: (context) => const DashboardPage(),
-  ),
-);
-  }on FirebaseAuthException catch (e) {
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(
-    //     content: Text(e.message ?? "Google Sign-In Failed"),
-    //     backgroundColor: Colors.red,
-    //   ),
-    // );
-     showSnackBar(
-  context,e.message ?? "Google Sign-In Failed", 
-);
-  } catch (e) {
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   SnackBar(
-    //     content: Text("Unexpected Error: $e"),
-    //     backgroundColor: Colors.red,
-    //   ),
-    // );
-     showSnackBar(
-  context,"Unexpected Error: $e", 
-);
-    // print(e);
   }
-}
 
+  Future<void> signInWithGoogle() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      await googleSignIn.signOut();
+      GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
+      UserCredential credential = await FirebaseAuth.instance.signInWithPopup(
+        googleProvider,
+      );
+
+      // Create/update the Firestore user document for Google sign-in too.
+      if (credential.user != null) {
+        await _createUserDocument(credential.user!, provider: 'google');
+      }
+
+      if (!mounted) return;
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     content: Text("Google Sign-In Successful"),
+      //   ),
+      // );
+      showSnackBar(context, "Google Sign-In Successful");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const DashboardPage()),
+      );
+    } on FirebaseAuthException catch (e) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text(e.message ?? "Google Sign-In Failed"),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // );
+      showSnackBar(context, e.message ?? "Google Sign-In Failed");
+    } catch (e) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text("Unexpected Error: $e"),
+      //     backgroundColor: Colors.red,
+      //   ),
+      // );
+      showSnackBar(context, "Unexpected Error: $e");
+      // print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -280,38 +255,29 @@ Future<void> signInWithGoogle() async {
         fit: StackFit.expand,
         children: [
           Positioned.fill(
-            child: Image.asset(
-              'assets/images/land1.png',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/images/land1.png', fit: BoxFit.cover),
           ),
 
           //  const AnimatedGlobe(),
 
-      // Globe orbits BEHIND the text — same rough center point.
-    Positioned(
-      right: 60,   
-      top: 100,
-      child: AnimatedGlobe(
-        globeSize: 200,
-        orbitRadius: 60, 
-        duration: const Duration(seconds: 10),
-      ),
-    ),
+          // Globe orbits BEHIND the text — same rough center point.
+          Positioned(
+            right: 60,
+            top: 100,
+            child: AnimatedGlobe(
+              globeSize: 200,
+              orbitRadius: 60,
+              duration: const Duration(seconds: 10),
+            ),
+          ),
 
-    // // Text painted AFTER globe => always on top, globe passes behind it.
-    // Positioned(
-    //   right: 30,
-    //   top: 180,
-    //   child: const AnimatedBrandText(),
-    // ),
-
-  
-Positioned(
-  right: 30,
-  top: 180,
-  child: const AnimatedBrandText(),
-),
+          // // Text painted AFTER globe => always on top, globe passes behind it.
+          // Positioned(
+          //   right: 30,
+          //   top: 180,
+          //   child: const AnimatedBrandText(),
+          // ),
+          Positioned(right: 30, top: 180, child: const AnimatedBrandText()),
 
           //form
           Align(
@@ -321,21 +287,16 @@ Positioned(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(25),
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 12,
-                    sigmaY: 12,
-                  ),
+                  filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
                   child: Container(
                     width: 420,
                     padding: const EdgeInsets.all(30),
                     decoration: BoxDecoration(
                       color: AppColors.glassFill,
                       borderRadius: BorderRadius.circular(25),
-                      border: Border.all(
-                        color: AppColors.glassBorder,
-                      ),
+                      border: Border.all(color: AppColors.glassBorder),
                     ),
-                    
+
                     child: isLogin ? buildLoginForm() : buildRegisterForm(),
                   ),
                 ),
@@ -347,7 +308,6 @@ Positioned(
     );
   }
 
-  
   Widget buildRegisterForm() {
     return Column(
       key: const ValueKey('registerForm'),
@@ -356,7 +316,7 @@ Positioned(
         const Text(
           "Create Account",
           style: TextStyle(
-           color: AppColors.textPrimary,
+            color: AppColors.textPrimary,
             fontSize: 32,
             fontWeight: FontWeight.bold,
           ),
@@ -366,9 +326,7 @@ Positioned(
 
         Text(
           "Join us and start your journey.",
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: .7),
-          ),
+          style: TextStyle(color: Colors.white.withValues(alpha: .7)),
         ),
 
         const SizedBox(height: 35),
@@ -380,7 +338,6 @@ Positioned(
         // ),
 
         // const SizedBox(height: 18),
-
         buildField(
           controller: emailController,
           hint: "Email",
@@ -402,14 +359,10 @@ Positioned(
           width: double.infinity,
           height: 44,
           child: Container(
-            padding: const EdgeInsets.all(1.5), 
+            padding: const EdgeInsets.all(1.5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              gradient: const LinearGradient(
-                colors: 
-                  AppColors.accentGradient
-                
-              ),
+              gradient: const LinearGradient(colors: AppColors.accentGradient),
             ),
             child: ElevatedButton(
               onPressed: registerUser,
@@ -433,31 +386,33 @@ Positioned(
         ),
 
         const SizedBox(height: 18),
-         Text("--------- or ---------",style: GoogleFonts.poppins(
-                  fontSize: 14,color: AppColors.textSecondary,
-                  // fontWeight: FontWeight.w500,
-                ),),
+        Text(
+          "--------- or ---------",
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            color: AppColors.textSecondary,
+            // fontWeight: FontWeight.w500,
+          ),
+        ),
         const SizedBox(height: 18),
 
         SizedBox(
           width: double.infinity,
           height: 44,
           child: Container(
-            padding: const EdgeInsets.all(1.5), 
+            padding: const EdgeInsets.all(1.5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              gradient: const LinearGradient(
-                colors: AppColors.accentGradient
-              ),
+              gradient: const LinearGradient(colors: AppColors.accentGradient),
             ),
             child: ElevatedButton.icon(
               onPressed: signInWithGoogle,
               icon: SvgPicture.asset(
-                    "icons/google.svg",
-                     width: 22,
-                     height: 22,
-                     color: AppColors.textPrimary,
-                  ),
+                "icons/google.svg",
+                width: 22,
+                height: 22,
+                color: AppColors.textPrimary,
+              ),
               label: Text(
                 "Sign in with Google",
                 style: GoogleFonts.poppins(
@@ -480,33 +435,31 @@ Positioned(
 
         const SizedBox(height: 18),
 
-         SizedBox(
+        SizedBox(
           width: double.infinity,
           height: 44,
           child: Container(
-            padding: const EdgeInsets.all(1.5), 
+            padding: const EdgeInsets.all(1.5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              gradient: const LinearGradient(
-                colors: AppColors.accentGradient
-              ),
+              gradient: const LinearGradient(colors: AppColors.accentGradient),
             ),
             child: ElevatedButton.icon(
-              onPressed: (){},
+              onPressed: () {},
               icon: SvgPicture.asset(
-                     "icons/apple.svg",
-                      width: 22,
-                      height: 22,
-                     color: AppColors.textPrimary,
-                  ),
-                      label: Text(
-                           "Sign in with Apple",
-                           style: GoogleFonts.poppins(
-                            fontSize: 15,
-                           color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                "icons/apple.svg",
+                width: 22,
+                height: 22,
+                color: AppColors.textPrimary,
+              ),
+              label: Text(
+                "Sign in with Apple",
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 backgroundColor: AppColors.glassBorder,
@@ -521,7 +474,6 @@ Positioned(
 
         const SizedBox(height: 18),
 
-
         TextButton(
           onPressed: () {
             setState(() {
@@ -532,12 +484,11 @@ Positioned(
             "Already have an account? Login",
             style: TextStyle(color: Colors.white70),
           ),
-        )
+        ),
       ],
     );
   }
 
-  
   Widget buildLoginForm() {
     return Column(
       key: const ValueKey('loginForm'),
@@ -556,9 +507,7 @@ Positioned(
 
         Text(
           "Login to continue your journey.",
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: .7),
-          ),
+          style: TextStyle(color: Colors.white.withValues(alpha: .7)),
         ),
 
         const SizedBox(height: 35),
@@ -566,7 +515,7 @@ Positioned(
         buildField(
           controller: loginEmailController,
           hint: "Email",
-         icon: CupertinoIcons.mail_solid,
+          icon: CupertinoIcons.mail_solid,
         ),
 
         const SizedBox(height: 18),
@@ -577,25 +526,31 @@ Positioned(
           icon: CupertinoIcons.lock_shield,
           obscure: true,
         ),
-         Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-  //               onPressed: (){
-  //                 authService.resetPassword(
-  //   context: context,
-  //   emailController: loginEmailController,
-  // );
-  //               },
-  onPressed: (){
-  showForgotPasswordDialog(context, initialEmail: loginEmailController.text);
-},
-                child: Text("Forgot password?",style: GoogleFonts.poppins(
-                  fontSize: 14,color: AppColors.textSecondary,
-                  // fontWeight: FontWeight.w500,
-                )),
-                               
-                    ),
-                ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            //               onPressed: (){
+            //                 authService.resetPassword(
+            //   context: context,
+            //   emailController: loginEmailController,
+            // );
+            //               },
+            onPressed: () {
+              showForgotPasswordDialog(
+                context,
+                initialEmail: loginEmailController.text,
+              );
+            },
+            child: Text(
+              "Forgot password?",
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                color: AppColors.textSecondary,
+                // fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
         const SizedBox(height: 30),
 
         SizedBox(
@@ -605,18 +560,16 @@ Positioned(
             padding: const EdgeInsets.all(1.5), // Border thickness
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              gradient: const LinearGradient(
-                colors: AppColors.accentGradient
-              ),
+              gradient: const LinearGradient(colors: AppColors.accentGradient),
             ),
             child: ElevatedButton(
-              onPressed:(){
+              onPressed: () {
                 authService.loginUser(
-      context: context,
-      loginEmailController: loginEmailController,
-      loginPasswordController: loginPasswordController,
-      dashboardPage: DashboardPage(),
-    );
+                  context: context,
+                  loginEmailController: loginEmailController,
+                  loginPasswordController: loginPasswordController,
+                  dashboardPage: DashboardPage(),
+                );
               },
               style: ElevatedButton.styleFrom(
                 elevation: 4,
@@ -638,10 +591,14 @@ Positioned(
         ),
 
         const SizedBox(height: 18),
-        Text("--------- or ---------",style: GoogleFonts.poppins(
-                  fontSize: 14,color: AppColors.textSecondary,
-                  // fontWeight: FontWeight.w500,
-                ),),
+        Text(
+          "--------- or ---------",
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            color: AppColors.textSecondary,
+            // fontWeight: FontWeight.w500,
+          ),
+        ),
         const SizedBox(height: 18),
 
         SizedBox(
@@ -651,26 +608,24 @@ Positioned(
             padding: const EdgeInsets.all(1.5), // Border thickness
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              gradient: const LinearGradient(
-                colors: AppColors.accentGradient
-              ),
+              gradient: const LinearGradient(colors: AppColors.accentGradient),
             ),
             child: ElevatedButton.icon(
               onPressed: signInWithGoogle,
               icon: SvgPicture.asset(
-                     "icons/google.svg",
-                      width: 22,
-                      height: 22,
-                     color: AppColors.textPrimary,
-                  ),
-                      label: Text(
-                           "Sign in with Google",
-                           style: GoogleFonts.poppins(
-                            fontSize: 15,
-                           color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                "icons/google.svg",
+                width: 22,
+                height: 22,
+                color: AppColors.textPrimary,
+              ),
+              label: Text(
+                "Sign in with Google",
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 backgroundColor: AppColors.glassBorder,
@@ -685,33 +640,31 @@ Positioned(
 
         const SizedBox(height: 18),
 
-         SizedBox(
+        SizedBox(
           width: double.infinity,
           height: 44,
           child: Container(
             padding: const EdgeInsets.all(1.5), // Border thickness
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              gradient: const LinearGradient(
-                colors:AppColors.accentGradient,
-              ),
+              gradient: const LinearGradient(colors: AppColors.accentGradient),
             ),
             child: ElevatedButton.icon(
-              onPressed: (){},
+              onPressed: () {},
               icon: SvgPicture.asset(
-                     "icons/apple.svg",
-                      width: 22,
-                      height: 22,
-                     color: AppColors.textPrimary,
-                  ),
-                      label: Text(
-                           "Sign in with Apple",
-                           style: GoogleFonts.poppins(
-                            fontSize: 15,
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                "icons/apple.svg",
+                width: 22,
+                height: 22,
+                color: AppColors.textPrimary,
+              ),
+              label: Text(
+                "Sign in with Apple",
+                style: GoogleFonts.poppins(
+                  fontSize: 15,
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 backgroundColor: AppColors.glassBorder,
@@ -736,7 +689,7 @@ Positioned(
             "Don't have an account? Sign up",
             style: TextStyle(color: AppColors.textSecondary),
           ),
-        )
+        ),
       ],
     );
   }
@@ -754,22 +707,16 @@ Positioned(
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: AppColors.textSecondary),
         hintText: hint,
-        hintStyle: GoogleFonts.poppins(
-         color: AppColors.sectionLabel,
-        ),
+        hintStyle: GoogleFonts.poppins(color: AppColors.sectionLabel),
         filled: true,
-         fillColor: AppColors.inputFill,
+        fillColor: AppColors.inputFill,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(
-           color: AppColors.glassBorder,
-          ),
+          borderSide: BorderSide(color: AppColors.glassBorder),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
-          borderSide: const BorderSide(
-           color: AppColors.textPrimary,
-          ),
+          borderSide: const BorderSide(color: AppColors.textPrimary),
         ),
       ),
     );

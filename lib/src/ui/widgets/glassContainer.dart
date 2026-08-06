@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:landpage/src/utils/colors.dart';
-// import 'package:landpage/src/ui/theme/colors.dart'; // adjust path if different
+// import 'package:landpage/src/ui/theme/colors.dart';
 
 class GlassContainer extends StatelessWidget {
   final Widget child;

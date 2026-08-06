@@ -5,11 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:landpage/src/models/saved.dart';
 import 'package:landpage/src/ui/custom/toast.dart';
 import 'package:landpage/src/ui/widgets/glassContainer.dart';
+import 'package:landpage/src/ui/widgets/guestuserpopup.dart';
 
 // import 'package:landpage/src/ui/custom/toast.dart';
 import 'dashboard.dart' show kAccentGradient;
 import 'package:landpage/src/utils/colors.dart' show AppColors;
-
 
 class RoleData {
   final String title;
@@ -39,11 +39,11 @@ class CompanyData {
   });
 }
 
-
 final List<CompanyData> kCompanies = [
   CompanyData(
     name: "Nova Analytics",
-    tagline: "Data platforms for modern enterprises, Where data becomes decisions",
+    tagline:
+        "Data platforms for modern enterprises, Where data becomes decisions",
     icon: CupertinoIcons.chart_bar_alt_fill,
     roles: const [
       RoleData(
@@ -93,7 +93,7 @@ final List<CompanyData> kCompanies = [
         description:
             "Own firmware for our sensor and motor-control boards. You'll bring up new hardware revisions, write low-level drivers, and debug issues that span firmware and hardware. Experience with real-time embedded systems expected.",
       ),
-       RoleData(
+      RoleData(
         title: "frontend Engineer",
         location: "Hybrid",
         type: "Full-time",
@@ -144,7 +144,8 @@ final List<CompanyData> kCompanies = [
   ),
   CompanyData(
     name: "Fable Studio",
-    tagline: "Every story deserves great tools, Creative tools for storytellers",
+    tagline:
+        "Every story deserves great tools, Creative tools for storytellers",
     icon: CupertinoIcons.paintbrush_fill,
     roles: const [
       RoleData(
@@ -166,7 +167,6 @@ final List<CompanyData> kCompanies = [
     ],
   ),
 ];
-
 
 Widget buildColumnMasonry<T>(
   List<T> items,
@@ -204,7 +204,8 @@ Widget buildColumnMasonry<T>(
 }
 
 class CompaniesSection extends StatefulWidget {
-  const CompaniesSection({super.key});
+  final bool guestMode;
+  const CompaniesSection({super.key, this.guestMode = false});
 
   @override
   State<CompaniesSection> createState() => _CompaniesSectionState();
@@ -223,35 +224,28 @@ class _CompaniesSectionState extends State<CompaniesSection> {
   }
 
   void _toggleSaved(CompanyData company, RoleData role) {
-  final key = "${company.name}::${role.title}";
+    final key = "${company.name}::${role.title}";
 
-  setState(() {
-    if (_savedRoles.contains(key)) {
-      _savedRoles.remove(key);
+    setState(() {
+      if (_savedRoles.contains(key)) {
+        _savedRoles.remove(key);
 
-      SavedRoles.roles.removeWhere(
-        (e) =>
-            e.company.name == company.name &&
-            e.role.title == role.title,
-      );
-    } else {
-      _savedRoles.add(key);
+        SavedRoles.roles.removeWhere(
+          (e) => e.company.name == company.name && e.role.title == role.title,
+        );
+      } else {
+        _savedRoles.add(key);
 
-      SavedRoles.roles.add(
-        SelectedRole(
-          company: company,
-          role: role,
-        ),
-      );
-    }
-  });
-}
+        SavedRoles.roles.add(SelectedRole(company: company, role: role));
+      }
+    });
+  }
 
-void _markApplied(String key) {
-  setState(() {
-    SavedRoles.appliedRoles.add(key);
-  });
-}
+  void _markApplied(String key) {
+    setState(() {
+      SavedRoles.appliedRoles.add(key);
+    });
+  }
 
   List<CompanyData> get _filteredCompanies {
     Iterable<CompanyData> list = kCompanies;
@@ -259,11 +253,15 @@ void _markApplied(String key) {
     final q = _query.trim().toLowerCase();
     if (q.isNotEmpty) {
       list = list.where((c) {
-        final matchesCompany = c.name.toLowerCase().contains(q) || c.tagline.toLowerCase().contains(q);
-        final matchesRole = c.roles.any((r) =>
-            r.title.toLowerCase().contains(q) ||
-            r.location.toLowerCase().contains(q) ||
-            r.type.toLowerCase().contains(q));
+        final matchesCompany =
+            c.name.toLowerCase().contains(q) ||
+            c.tagline.toLowerCase().contains(q);
+        final matchesRole = c.roles.any(
+          (r) =>
+              r.title.toLowerCase().contains(q) ||
+              r.location.toLowerCase().contains(q) ||
+              r.type.toLowerCase().contains(q),
+        );
         return matchesCompany || matchesRole;
       });
     }
@@ -282,14 +280,21 @@ void _markApplied(String key) {
             appliedRoles: SavedRoles.appliedRoles,
             onToggleSaved: _toggleSaved,
             onApply: _markApplied,
+            guestMode: widget.guestMode,
           );
         },
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          final curved = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
+          final curved = CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOutCubic,
+          );
           return FadeTransition(
             opacity: curved,
             child: SlideTransition(
-              position: Tween<Offset>(begin: const Offset(0, 0.06), end: Offset.zero).animate(curved),
+              position: Tween<Offset>(
+                begin: const Offset(0, 0.06),
+                end: Offset.zero,
+              ).animate(curved),
               child: child,
             ),
           );
@@ -301,7 +306,10 @@ void _markApplied(String key) {
   @override
   Widget build(BuildContext context) {
     final companies = _filteredCompanies;
-    final totalRoles = kCompanies.fold<int>(0, (sum, c) => sum + c.roles.length);
+    final totalRoles = kCompanies.fold<int>(
+      0,
+      (sum, c) => sum + c.roles.length,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,7 +325,10 @@ void _markApplied(String key) {
         const SizedBox(height: 6),
         Text(
           "$totalRoles open roles across ${kCompanies.length} companies.",
-          style: GoogleFonts.poppins(color: AppColors.textFaded65, fontSize: 13.5),
+          style: GoogleFonts.poppins(
+            color: AppColors.textFaded65,
+            fontSize: 13.5,
+          ),
         ),
         const SizedBox(height: 20),
         GlassContainer(
@@ -328,18 +339,34 @@ void _markApplied(String key) {
             child: TextField(
               controller: _searchController,
               onChanged: (v) => setState(() => _query = v),
-              style: GoogleFonts.poppins(color: AppColors.textPrimary, fontSize: 14),
+              style: GoogleFonts.poppins(
+                color: AppColors.textPrimary,
+                fontSize: 14,
+              ),
               decoration: InputDecoration(
                 border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 hintText: "Search companies, roles, or locations…",
-                hintStyle: GoogleFonts.poppins(color: AppColors.textFaded40, fontSize: 13.5),
-                prefixIcon: Icon(CupertinoIcons.search, color: AppColors.textFaded45, size: 19),
+                hintStyle: GoogleFonts.poppins(
+                  color: AppColors.textFaded40,
+                  fontSize: 13.5,
+                ),
+                prefixIcon: Icon(
+                  CupertinoIcons.search,
+                  color: AppColors.textFaded45,
+                  size: 19,
+                ),
                 suffixIcon: _query.isEmpty
                     ? null
                     : IconButton(
-                        icon: Icon(CupertinoIcons.clear_circled_solid,
-                            color: AppColors.textFaded45, size: 18),
+                        icon: Icon(
+                          CupertinoIcons.clear_circled_solid,
+                          color: AppColors.textFaded45,
+                          size: 18,
+                        ),
                         onPressed: () => setState(() {
                           _searchController.clear();
                           _query = "";
@@ -364,37 +391,42 @@ void _markApplied(String key) {
                   const SizedBox(height: 10),
                   Text(
                     "No companies match \"$_query\"",
-                    style: GoogleFonts.poppins(color: AppColors.textFaded50, fontSize: 13.5),
+                    style: GoogleFonts.poppins(
+                      color: AppColors.textFaded50,
+                      fontSize: 13.5,
+                    ),
                   ),
                 ],
               ),
             ),
           )
         else
-          buildColumnMasonry<CompanyData>(
-            companies,
-            (company) {
-              final savedInCompany =
-                  company.roles.where((r) => _savedRoles.contains("${company.name}::${r.title}")).length;
-              return _CompanyListTile(
-                company: company,
-                savedCount: savedInCompany,
-                onTap: () => _openRoles(company),
-              );
-            },
-            columnCount: 4,
-          ),
+          buildColumnMasonry<CompanyData>(companies, (company) {
+            final savedInCompany = company.roles
+                .where(
+                  (r) => _savedRoles.contains("${company.name}::${r.title}"),
+                )
+                .length;
+            return _CompanyListTile(
+              company: company,
+              savedCount: savedInCompany,
+              onTap: () => _openRoles(company),
+            );
+          }, columnCount: 4),
       ],
     );
   }
 }
 
-
 class _CompanyListTile extends StatefulWidget {
   final CompanyData company;
   final int savedCount;
   final VoidCallback onTap;
-  const _CompanyListTile({required this.company, required this.savedCount, required this.onTap});
+  const _CompanyListTile({
+    required this.company,
+    required this.savedCount,
+    required this.onTap,
+  });
 
   @override
   State<_CompanyListTile> createState() => _CompanyListTileState();
@@ -431,9 +463,15 @@ class _CompanyListTileState extends State<_CompanyListTile> {
                         height: 40,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          gradient: const LinearGradient(colors: kAccentGradient),
+                          gradient: const LinearGradient(
+                            colors: kAccentGradient,
+                          ),
                         ),
-                        child: Icon(company.icon, color: AppColors.textPrimary, size: 18),
+                        child: Icon(
+                          company.icon,
+                          color: AppColors.textPrimary,
+                          size: 18,
+                        ),
                       ),
                     ),
                     const Spacer(),
@@ -473,12 +511,15 @@ class _CompanyListTileState extends State<_CompanyListTile> {
                     height: 1.5,
                   ),
                 ),
-                
+
                 const Spacer(),
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 9,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.glassFill,
                         borderRadius: BorderRadius.circular(20),
@@ -510,7 +551,6 @@ class _CompanyListTileState extends State<_CompanyListTile> {
   }
 }
 
-
 class CompanyRolesPage extends StatefulWidget {
   final CompanyData company;
   final Set<String> savedRoles;
@@ -518,6 +558,7 @@ class CompanyRolesPage extends StatefulWidget {
   // final void Function(String key) onToggleSaved;
   final void Function(CompanyData, RoleData) onToggleSaved;
   final void Function(String key) onApply;
+  final bool guestMode;
 
   const CompanyRolesPage({
     super.key,
@@ -526,6 +567,7 @@ class CompanyRolesPage extends StatefulWidget {
     required this.appliedRoles,
     required this.onToggleSaved,
     required this.onApply,
+    this.guestMode = false,
   });
 
   @override
@@ -560,11 +602,13 @@ class _CompanyRolesPageState extends State<CompanyRolesPage> {
 
     final q = _roleQuery.trim().toLowerCase();
     if (q.isNotEmpty) {
-      roles = roles.where((r) =>
-          r.title.toLowerCase().contains(q) ||
-          r.location.toLowerCase().contains(q) ||
-          r.type.toLowerCase().contains(q) ||
-          r.description.toLowerCase().contains(q));
+      roles = roles.where(
+        (r) =>
+            r.title.toLowerCase().contains(q) ||
+            r.location.toLowerCase().contains(q) ||
+            r.type.toLowerCase().contains(q) ||
+            r.description.toLowerCase().contains(q),
+      );
     }
 
     return roles.toList();
@@ -572,10 +616,10 @@ class _CompanyRolesPageState extends State<CompanyRolesPage> {
 
   void _showApplyConfirmation(RoleData role) {
     widget.onApply("${widget.company.name}::${role.title}");
-   showSnackBar(
-    context,
-    "Application sent for ${role.title} at ${widget.company.name}",
-  );
+    showSnackBar(
+      context,
+      "Application sent for ${role.title} at ${widget.company.name}",
+    );
   }
 
   @override
@@ -587,12 +631,8 @@ class _CompanyRolesPageState extends State<CompanyRolesPage> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          
           Positioned.fill(
-            child: Image.asset(
-              'assets/images/land1.png',
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/images/land1.png', fit: BoxFit.cover),
           ),
           SafeArea(
             child: CustomScrollView(
@@ -604,7 +644,10 @@ class _CompanyRolesPageState extends State<CompanyRolesPage> {
                       children: [
                         IconButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          icon: Icon(CupertinoIcons.back, color: AppColors.textSecondary),
+                          icon: Icon(
+                            CupertinoIcons.back,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ],
                     ),
@@ -615,88 +658,113 @@ class _CompanyRolesPageState extends State<CompanyRolesPage> {
                   sliver: SliverToBoxAdapter(
                     child: GlassContainer(
                       radius: 20,
-                      
-                       padding: const EdgeInsets.all(18),
-                     
-                        child: Row(
-                          children: [
-                            Hero(
-                              tag: 'company-icon-${company.name}',
-                              child: Container(
-                                width: 56,
-                                height: 56,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  gradient: const LinearGradient(colors: kAccentGradient),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppColors.shadowPurpleDeep.withOpacity(0.4),
-                                      blurRadius: 20,
-                                      offset: const Offset(0, 8),
-                                    ),
-                                  ],
+
+                      padding: const EdgeInsets.all(18),
+
+                      child: Row(
+                        children: [
+                          Hero(
+                            tag: 'company-icon-${company.name}',
+                            child: Container(
+                              width: 56,
+                              height: 56,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                gradient: const LinearGradient(
+                                  colors: kAccentGradient,
                                 ),
-                                child: Icon(company.icon, color: AppColors.textPrimary, size: 25),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Hero(
-                                    tag: 'company-name-${company.name}',
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: Text(
-                                        company.name,
-                                        style: GoogleFonts.poppins(
-                                          color: AppColors.textPrimary,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 3),
-                                  Text(
-                                    company.tagline,
-                                    style:
-                                        GoogleFonts.poppins(color: AppColors.sectionLabel, fontSize: 12.5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.shadowPurpleDeep
+                                        .withOpacity(0.4),
+                                    blurRadius: 20,
+                                    offset: const Offset(0, 8),
                                   ),
                                 ],
                               ),
+                              child: Icon(
+                                company.icon,
+                                color: AppColors.textPrimary,
+                                size: 25,
+                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Hero(
+                                  tag: 'company-name-${company.name}',
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: Text(
+                                      company.name,
+                                      style: GoogleFonts.poppins(
+                                        color: AppColors.textPrimary,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  company.tagline,
+                                  style: GoogleFonts.poppins(
+                                    color: AppColors.sectionLabel,
+                                    fontSize: 12.5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                       // ),
                     ),
                   ),
                 ),
-               
+
                 SliverPadding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 14),
                   sliver: SliverToBoxAdapter(
                     child: GlassContainer(
                       radius: 14,
-                       padding: EdgeInsets.zero,
-                         child: SizedBox(
-                         height: 46,
+                      padding: EdgeInsets.zero,
+                      child: SizedBox(
+                        height: 46,
                         child: TextField(
                           controller: _roleSearchController,
                           onChanged: (v) => setState(() => _roleQuery = v),
-                          style: GoogleFonts.poppins(color: AppColors.textPrimary, fontSize: 14),
+                          style: GoogleFonts.poppins(
+                            color: AppColors.textPrimary,
+                            fontSize: 14,
+                          ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
                             hintText: "Search roles at ${company.name}…",
-                            hintStyle: GoogleFonts.poppins(color: AppColors.textFaded40, fontSize: 13.5),
-                            prefixIcon: Icon(CupertinoIcons.search, color: AppColors.textFaded45, size: 19),
+                            hintStyle: GoogleFonts.poppins(
+                              color: AppColors.textFaded40,
+                              fontSize: 13.5,
+                            ),
+                            prefixIcon: Icon(
+                              CupertinoIcons.search,
+                              color: AppColors.textFaded45,
+                              size: 19,
+                            ),
                             suffixIcon: _roleQuery.isEmpty
                                 ? null
                                 : IconButton(
-                                    icon: Icon(CupertinoIcons.clear_circled_solid,
-                                        color: AppColors.textFaded45, size: 18),
+                                    icon: Icon(
+                                      CupertinoIcons.clear_circled_solid,
+                                      color: AppColors.textFaded45,
+                                      size: 18,
+                                    ),
                                     onPressed: () => setState(() {
                                       _roleSearchController.clear();
                                       _roleQuery = "";
@@ -704,8 +772,8 @@ class _CompanyRolesPageState extends State<CompanyRolesPage> {
                                   ),
                           ),
                         ),
-                      // ),
-                    ),
+                        // ),
+                      ),
                     ),
                   ),
                 ),
@@ -726,17 +794,27 @@ class _CompanyRolesPageState extends State<CompanyRolesPage> {
                             onTap: () => setState(() => _typeFilter = type),
                             child: GlassContainer(
                               radius: 20,
-                               padding: EdgeInsets.zero,
+                              padding: EdgeInsets.zero,
                               child: AnimatedContainer(
                                 duration: const Duration(milliseconds: 150),
-                                padding: const EdgeInsets.symmetric(horizontal: 18),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                ),
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                  gradient: selected ? const LinearGradient(colors: kAccentGradient) : null,
-                                  color: selected ? null : AppColors.glassFill07,
+                                  gradient: selected
+                                      ? const LinearGradient(
+                                          colors: kAccentGradient,
+                                        )
+                                      : null,
+                                  color: selected
+                                      ? null
+                                      : AppColors.glassFill07,
                                   borderRadius: BorderRadius.circular(20),
                                   border: Border.all(
-                                    color: selected ? Colors.transparent : AppColors.glassFillHover,
+                                    color: selected
+                                        ? Colors.transparent
+                                        : AppColors.glassFillHover,
                                   ),
                                 ),
                                 child: Text(
@@ -770,7 +848,10 @@ class _CompanyRolesPageState extends State<CompanyRolesPage> {
                             const SizedBox(height: 10),
                             Text(
                               "No roles match \"$_roleQuery\"",
-                              style: GoogleFonts.poppins(color: AppColors.textFaded50, fontSize: 13.5),
+                              style: GoogleFonts.poppins(
+                                color: AppColors.textFaded50,
+                                fontSize: 13.5,
+                              ),
                             ),
                           ],
                         ),
@@ -789,8 +870,12 @@ class _CompanyRolesPageState extends State<CompanyRolesPage> {
                             role: role,
                             isSaved: widget.savedRoles.contains(key),
                             isApplied: widget.appliedRoles.contains(key),
-                            onSave: () => setState(() => widget.onToggleSaved(company, role)),
-                            onApply: () => setState(() => _showApplyConfirmation(role)),
+                            onSave: () => setState(
+                              () => widget.onToggleSaved(company, role),
+                            ),
+                            onApply: () =>
+                                setState(() => _showApplyConfirmation(role)),
+                            guestMode: widget.guestMode,
                           );
                         },
                         columnCount: 4,
@@ -807,13 +892,13 @@ class _CompanyRolesPageState extends State<CompanyRolesPage> {
   }
 }
 
-
 class _RoleTile extends StatefulWidget {
   final RoleData role;
   final bool isSaved;
   final bool isApplied;
   final VoidCallback onSave;
   final VoidCallback onApply;
+  final bool guestMode;
 
   const _RoleTile({
     required this.role,
@@ -821,6 +906,7 @@ class _RoleTile extends StatefulWidget {
     required this.isApplied,
     required this.onSave,
     required this.onApply,
+    this.guestMode = false,
   });
 
   @override
@@ -866,11 +952,16 @@ class _RoleTileState extends State<_RoleTile> {
                 if (widget.isApplied) ...[
                   const SizedBox(width: 6),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 7,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.success.withOpacity(0.15),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppColors.success.withOpacity(0.4)),
+                      border: Border.all(
+                        color: AppColors.success.withOpacity(0.4),
+                      ),
                     ),
                     child: Text(
                       "Applied",
@@ -889,9 +980,18 @@ class _RoleTileState extends State<_RoleTile> {
               spacing: 6,
               runSpacing: 6,
               children: [
-                _RoleChip(icon: CupertinoIcons.location_solid, label: role.location),
-                _RoleChip(icon: CupertinoIcons.briefcase_fill, label: role.type),
-                _RoleChip(icon: CupertinoIcons.money_dollar, label: role.salary),
+                _RoleChip(
+                  icon: CupertinoIcons.location_solid,
+                  label: role.location,
+                ),
+                _RoleChip(
+                  icon: CupertinoIcons.briefcase_fill,
+                  label: role.type,
+                ),
+                _RoleChip(
+                  icon: CupertinoIcons.money_dollar,
+                  label: role.salary,
+                ),
               ],
             ),
             const SizedBox(height: 25),
@@ -945,7 +1045,9 @@ class _RoleTileState extends State<_RoleTile> {
                           ),
                         ),
                         Icon(
-                          _expanded ? CupertinoIcons.chevron_up : CupertinoIcons.chevron_down,
+                          _expanded
+                              ? CupertinoIcons.chevron_up
+                              : CupertinoIcons.chevron_down,
                           size: 10,
                           color: AppColors.accentLight,
                         ),
@@ -962,17 +1064,30 @@ class _RoleTileState extends State<_RoleTile> {
                   child: SizedBox(
                     height: 40,
                     child: OutlinedButton.icon(
-                      onPressed: widget.onSave,
+                      // onPressed: widget.onSave,
+                      onPressed: () {
+                        if (widget.guestMode) {
+                          showGuestSignInDialog(context);
+                          return;
+                        }
+                        widget.onSave();
+                      },
                       icon: Icon(
-                        widget.isSaved ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
+                        widget.isSaved
+                            ? CupertinoIcons.bookmark_fill
+                            : CupertinoIcons.bookmark,
                         size: 14,
-                        color: widget.isSaved ? AppColors.accentLight : AppColors.textSecondary,
+                        color: widget.isSaved
+                            ? AppColors.accentLight
+                            : AppColors.textSecondary,
                       ),
                       label: Text(
                         widget.isSaved ? "Saved" : "Save",
                         style: GoogleFonts.poppins(
                           fontSize: 12,
-                          color: widget.isSaved ? AppColors.accentLight : AppColors.textSecondary,
+                          color: widget.isSaved
+                              ? AppColors.accentLight
+                              : AppColors.textSecondary,
                         ),
                       ),
                       style: OutlinedButton.styleFrom(
@@ -983,7 +1098,9 @@ class _RoleTileState extends State<_RoleTile> {
                               : AppColors.outlineBorder,
                         ),
                         backgroundColor: AppColors.outlineBg,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                   ),
@@ -996,25 +1113,40 @@ class _RoleTileState extends State<_RoleTile> {
                       padding: const EdgeInsets.all(1.5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(13),
-                        gradient: widget.isApplied ? null : const LinearGradient(colors: kAccentGradient),
+                        gradient: widget.isApplied
+                            ? null
+                            : const LinearGradient(colors: kAccentGradient),
                         color: widget.isApplied ? AppColors.appliedBg : null,
                       ),
                       child: ElevatedButton(
-                        onPressed: widget.isApplied ? null : widget.onApply,
+                        // onPressed: widget.isApplied ? null : widget.onApply,
+                        onPressed: widget.isApplied
+                            ? null
+                            : () {
+                                if (widget.guestMode) {
+                                  showGuestSignInDialog(context);
+                                  return;
+                                }
+                                widget.onApply();
+                              },
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.zero,
                           elevation: 0,
                           disabledBackgroundColor: Colors.transparent,
                           backgroundColor: AppColors.glassBorder,
                           foregroundColor: AppColors.textPrimary,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(11.5)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11.5),
+                          ),
                         ),
                         child: Text(
                           widget.isApplied ? "Applied ✓" : "Apply",
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: widget.isApplied ? AppColors.sectionLabel : AppColors.textPrimary,
+                            color: widget.isApplied
+                                ? AppColors.sectionLabel
+                                : AppColors.textPrimary,
                           ),
                         ),
                       ),
@@ -1053,7 +1185,10 @@ class _RoleChip extends StatelessWidget {
             label,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.poppins(color: AppColors.chipLabel, fontSize: 10),
+            style: GoogleFonts.poppins(
+              color: AppColors.chipLabel,
+              fontSize: 10,
+            ),
           ),
         ],
       ),

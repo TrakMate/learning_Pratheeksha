@@ -255,7 +255,7 @@ class _RegisterAppState extends State<RegisterApp> {
         fit: StackFit.expand,
         children: [
           Positioned.fill(
-            child: Image.asset('assets/images/land1.png', fit: BoxFit.cover),
+            child: Image.asset('images/land1.png', fit: BoxFit.cover),
           ),
 
           //  const AnimatedGlobe(),

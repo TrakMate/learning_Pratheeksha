@@ -27,7 +27,7 @@ class CustomAppBar extends StatelessWidget {
           Row(
             children: [
               Image.asset(
-                'assets/images/logo.png',
+                'images/logo.png',
                 height: 30,
                 width: 28,
                 fit: BoxFit.contain,

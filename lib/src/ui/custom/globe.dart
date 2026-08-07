@@ -1,4 +1,3 @@
-
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:landpage/src/utils/colors.dart';
@@ -17,7 +16,7 @@ class AnimatedGlobe extends StatefulWidget {
   const AnimatedGlobe({
     super.key,
     this.globeSize = 220,
-    this.imagePath = 'assets/images/globe.png',
+    this.imagePath = 'images/globe.png',
     this.duration = const Duration(seconds: 10),
     this.orbitRadius = 90,
   });
@@ -33,10 +32,8 @@ class _AnimatedGlobeState extends State<AnimatedGlobe>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    )..repeat();
+    _controller = AnimationController(vsync: this, duration: widget.duration)
+      ..repeat();
   }
 
   @override
@@ -93,10 +90,11 @@ class _AnimatedGlobeState extends State<AnimatedGlobe>
                       height: widget.globeSize,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        boxShadow:[
+                        boxShadow: [
                           BoxShadow(
-                            color: AppColors.ringAccent
-                                .withValues(alpha: 0.05 + 0.35 * depth),
+                            color: AppColors.ringAccent.withValues(
+                              alpha: 0.05 + 0.35 * depth,
+                            ),
                             blurRadius: 30,
                             spreadRadius: 2,
                           ),
@@ -154,4 +152,3 @@ class _OrbitPathPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _OrbitPathPainter oldDelegate) => false;
 }
-

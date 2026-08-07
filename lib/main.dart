@@ -78,7 +78,7 @@ class _LandingPageState extends State<LandingPage> {
         fit: StackFit.expand,
         children: [
           Positioned.fill(
-            child: Image.asset('assets/images/land.png', fit: BoxFit.cover),
+            child: Image.asset('images/land.png', fit: BoxFit.cover),
           ),
           SafeArea(
             child: SingleChildScrollView(
@@ -180,27 +180,19 @@ class _LandingPageState extends State<LandingPage> {
                         children: const [
                           Positioned(
                             left: 0,
-                            child: HoverAvatar(
-                              imagePath: 'assets/images/a1.png',
-                            ),
+                            child: HoverAvatar(imagePath: 'images/a1.png'),
                           ),
                           Positioned(
                             left: 70,
-                            child: HoverAvatar(
-                              imagePath: 'assets/images/a2.png',
-                            ),
+                            child: HoverAvatar(imagePath: 'images/a2.png'),
                           ),
                           Positioned(
                             left: 140,
-                            child: HoverAvatar(
-                              imagePath: 'assets/images/a3.png',
-                            ),
+                            child: HoverAvatar(imagePath: 'images/a3.png'),
                           ),
                           Positioned(
                             left: 210,
-                            child: HoverAvatar(
-                              imagePath: 'assets/images/a4.png',
-                            ),
+                            child: HoverAvatar(imagePath: 'images/a4.png'),
                           ),
                         ],
                       ),
@@ -226,7 +218,7 @@ class _LandingPageState extends State<LandingPage> {
                             width: 280,
                             height: 420,
                             child: FeatureCard(
-                              image: "assets/images/collaboration.png",
+                              image: "images/collaboration.png",
                               title: "Effortless\nCollaboration.",
                               description:
                                   "Connect, share, and build together in real-time.",
@@ -237,7 +229,7 @@ class _LandingPageState extends State<LandingPage> {
                             width: 280,
                             height: 420,
                             child: FeatureCard(
-                              image: "assets/images/dashboard.png",
+                              image: "images/dashboard.png",
                               title: "Visualize Your\nProgress.",
                               description:
                                   "Track performance with dynamic analytics & intuitive dashboards.",
@@ -248,7 +240,7 @@ class _LandingPageState extends State<LandingPage> {
                             width: 280,
                             height: 420,
                             child: FeatureCard(
-                              image: "assets/images/automation.png",
+                              image: "images/automation.png",
                               title: "Smart\nAutomation.",
                               description:
                                   "Automate workflows and save time with intelligent task management.",

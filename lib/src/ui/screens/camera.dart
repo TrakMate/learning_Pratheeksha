@@ -209,7 +209,7 @@ class _CameraOverlayState extends State<CameraOverlay>
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.asset('assets/images/land1.png', fit: BoxFit.cover),
+                  Image.asset('images/land1.png', fit: BoxFit.cover),
                   Container(
                     color: AppColors.overlayTint.withValues(alpha: 0.65),
                   ),

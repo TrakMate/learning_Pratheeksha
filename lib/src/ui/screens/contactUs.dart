@@ -95,7 +95,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
         fit: StackFit.expand,
         children: [
           Positioned.fill(
-            child: Image.asset('assets/images/land.png', fit: BoxFit.cover),
+            child: Image.asset('images/land.png', fit: BoxFit.cover),
           ),
           SafeArea(
             child: SingleChildScrollView(

@@ -150,17 +150,9 @@ class _DashboardPageState extends State<DashboardPage>
   }
 
   Widget _buildSettingsTab(displayName) {
-    // return GlassContainer(
-    //   radius: 20,
-    //   padding: const EdgeInsets.all(24),
-    //   child: Text(
-    //     "Settings.",
-    //     style: GoogleFonts.poppins(color: Colors.white, fontSize: 16),
-    //   ),
-    // );
     return SettingsSection(
-      // displayName: displayName,
-      displayName: "Pratheeksha",
+      displayName: displayName,
+      // displayName: "Pratheeksha",
       email: auth.currentUser?.email ?? "",
     );
   }
@@ -573,15 +565,22 @@ class _DashboardPageState extends State<DashboardPage>
             ),
           ),
           const SizedBox(height: 20),
-          _buildGradientButton("Browse Open Roles", CupertinoIcons.plus, () {}),
+          _buildGradientButton("Browse Open Roles", CupertinoIcons.plus, () {
+            setState(() {
+              currentTab = "Companies";
+            });
+          }),
           const SizedBox(height: 14),
-          _buildOutlineButton("My Profile", CupertinoIcons.person_add, () {}),
+          _buildOutlineButton("My Profile", CupertinoIcons.person_add, () {
+            setState(() {
+              currentTab = "Settings";
+            });
+          }),
           const SizedBox(height: 14),
-          _buildOutlineButton("My calendar", CupertinoIcons.calendar, () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const CalendarScreen()),
-            );
+          _buildOutlineButton("Account Settings", CupertinoIcons.settings, () {
+            setState(() {
+              currentTab = "Settings";
+            });
           }),
           const SizedBox(height: 28),
         ],

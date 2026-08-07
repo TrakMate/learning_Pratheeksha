@@ -266,7 +266,10 @@ class _ProfilePane extends StatelessWidget {
             final fields = Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _SettingsField(label: "Name", controller: nameController),
+                _SettingsField(
+                  label: "Display name",
+                  controller: nameController,
+                ),
                 const SizedBox(height: 14),
                 _SettingsField(
                   label: "Email",
@@ -413,10 +416,7 @@ class _AvatarPickerState extends State<_AvatarPicker> {
                     'icons/profile.svg',
                     width: 65,
                     height: 65,
-                    colorFilter: const ColorFilter.mode(
-                      AppColors.textPrimary,
-                      BlendMode.srcIn,
-                    ),
+                    color: AppColors.textPrimary,
                   ),
                 ),
         ),

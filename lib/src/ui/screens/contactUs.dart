@@ -8,6 +8,7 @@ import 'package:landpage/src/ui/custom/toast.dart';
 import 'package:landpage/src/ui/widgets/glassContainer.dart';
 import 'package:landpage/src/utils/colors.dart';
 // import 'package:landpage/src/utils/snackbar.dart'; // adjust path to wherever showSnackBar lives
+import 'package:landpage/src/utils/app_secrets.dart';
 
 class ContactUsPage extends StatefulWidget {
   const ContactUsPage({super.key});
@@ -17,8 +18,6 @@ class ContactUsPage extends StatefulWidget {
 }
 
 class _ContactUsPageState extends State<ContactUsPage> {
-  static const String _formspreeEndpoint = 'https://formspree.io/f/xaewwqqv';
-
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -43,7 +42,8 @@ class _ContactUsPageState extends State<ContactUsPage> {
 
     try {
       final response = await http.post(
-        Uri.parse(_formspreeEndpoint),
+        // Uri.parse(_formspreeEndpoint),
+        Uri.parse(AppSecrets.formspreeEndpoint),
         headers: {'Accept': 'application/json'},
         body: {
           'first name': _firstNameController.text.trim(),

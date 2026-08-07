@@ -6,6 +6,8 @@ import 'package:landpage/main.dart'; // for LandingPage (Home)
 import 'package:landpage/src/forms/register.dart';
 import 'package:landpage/src/ui/screens/aboutUs.dart';
 import 'package:landpage/src/ui/screens/contactUs.dart';
+import 'package:landpage/src/ui/screens/openroles.dart';
+import 'package:landpage/src/ui/screens/opentalents.dart';
 import 'package:landpage/src/utils/colors.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -49,7 +51,7 @@ class CustomAppBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               NavTextItem(
-                title: "Jobs",
+                title: "Talents",
                 onTap: () {
                   Navigator.push(
                     context,
@@ -63,7 +65,7 @@ class CustomAppBar extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const Placeholder()),
+                    MaterialPageRoute(builder: (_) => const OpenRolesPage()),
                   );
                 },
               ),

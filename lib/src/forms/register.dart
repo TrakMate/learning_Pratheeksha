@@ -13,6 +13,7 @@ import 'package:landpage/src/ui/custom/toast.dart';
 import '../ui/custom/globe.dart';
 import 'package:landpage/src/ui/custom/animated.dart';
 import 'login.dart';
+import 'package:landpage/src/ui/widgets/passwordrulespopup.dart';
 
 class RegisterApp extends StatefulWidget {
   const RegisterApp({super.key});
@@ -64,6 +65,28 @@ class _RegisterAppState extends State<RegisterApp> {
     super.dispose();
   }
 
+  List<String> getFailedPasswordRules(String password) {
+    final failed = <String>[];
+
+    if (password.length < 8) {
+      failed.add("At least 8 characters long");
+    }
+    if (!password.contains(RegExp(r'[A-Z]'))) {
+      failed.add("At least one uppercase letter (A-Z)");
+    }
+    if (!password.contains(RegExp(r'[a-z]'))) {
+      failed.add("At least one lowercase letter (a-z)");
+    }
+    if (!password.contains(RegExp(r'[0-9]'))) {
+      failed.add("At least one number (0-9)");
+    }
+    if (!password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+      failed.add("At least one special character (!@#\$%^&*...)");
+    }
+
+    return failed;
+  }
+
   Future<void> _createUserDocument(User user, {String? provider}) async {
     try {
       await firestore.collection('users').doc(user.uid).set({
@@ -111,6 +134,12 @@ class _RegisterAppState extends State<RegisterApp> {
       //   ),
       // );
       showSnackBar(context, "Please enter your password.");
+      return;
+    }
+
+    final failedRules = getFailedPasswordRules(passwordController.text.trim());
+    if (failedRules.isNotEmpty) {
+      showPasswordRulesDialog(context, failedRules: failedRules);
       return;
     }
 

@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:landpage/src/ui/screens/auth_gate.dart';
+import 'package:landpage/src/ui/screens/openroles.dart';
 import 'package:landpage/src/utils/colors.dart';
 import 'firebase_options.dart';
 import 'package:flutter_svg/svg.dart';
@@ -164,7 +165,7 @@ class _LandingPageState extends State<LandingPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Placeholder(),
+                          builder: (context) => const OpenRolesPage(),
                         ),
                       );
                     },

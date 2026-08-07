@@ -20,16 +20,21 @@ const String kIconNoCamera = 'icons/no_camera.svg';
 enum _CameraLoadState { loading, ready, error, noCameras }
 
 class CameraOverlay extends StatefulWidget {
-  const CameraOverlay({super.key});
+  final String interviewId;
+  const CameraOverlay({super.key, required this.interviewId});
 
-  static Future<void> show(BuildContext context) {
+  static Future<void> show(
+    BuildContext context, {
+    required String interviewId,
+  }) {
     return showGeneralDialog(
       context: context,
       barrierLabel: "Camera Overlay",
       barrierDismissible: false,
       barrierColor: AppColors.black.withValues(alpha: 0.6),
       transitionDuration: const Duration(milliseconds: 250),
-      pageBuilder: (context, anim1, anim2) => const CameraOverlay(),
+      pageBuilder: (context, anim1, anim2) =>
+          CameraOverlay(interviewId: interviewId),
       transitionBuilder: (context, anim, secondaryAnim, child) {
         final curved = CurvedAnimation(
           parent: anim,
@@ -583,6 +588,7 @@ class _CameraOverlayState extends State<CameraOverlay>
                     builder: (_) => InterviewSessionScreen(
                       initialMicOn: _micOn,
                       initialCameraOn: _cameraOn,
+                      interviewId: widget.interviewId,
                     ),
                   ),
                 );

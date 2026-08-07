@@ -81,7 +81,6 @@ class _InterviewsSectionState extends State<InterviewsSection> {
     //   status: InterviewStatus.cancelled,
     //   interviewer: "Dhyan Kapoor",
     // ),
-
     InterviewData(
       interviewId: "INT_1002",
       company: "Artisan Labs",
@@ -161,8 +160,6 @@ class _InterviewsSectionState extends State<InterviewsSection> {
     );
   }
 
-  
-
   Widget _buildHeader() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,11 +190,13 @@ class _InterviewsSectionState extends State<InterviewsSection> {
         Wrap(
           spacing: 8,
           children: ["All", "Upcoming", "Completed", "Cancelled"]
-              .map((f) => _FilterChip(
-                    label: f,
-                    selected: _filter == f,
-                    onTap: () => setState(() => _filter = f),
-                  ))
+              .map(
+                (f) => _FilterChip(
+                  label: f,
+                  selected: _filter == f,
+                  onTap: () => setState(() => _filter = f),
+                ),
+              )
               .toList(),
         ),
       ],
@@ -205,8 +204,9 @@ class _InterviewsSectionState extends State<InterviewsSection> {
   }
 
   Widget _buildSummaryRow() {
-    final upcoming =
-        _interviews.where((i) => i.status == InterviewStatus.upcoming).length;
+    final upcoming = _interviews
+        .where((i) => i.status == InterviewStatus.upcoming)
+        .length;
     final completed = _interviews
         .where((i) => i.status == InterviewStatus.completed)
         .length;
@@ -215,16 +215,34 @@ class _InterviewsSectionState extends State<InterviewsSection> {
         .length;
 
     final stats = [
-      _SummaryData(label: "Upcoming", value: "$upcoming", icon: CupertinoIcons.calendar_badge_plus),
-      _SummaryData(label: "Completed", value: "$completed", icon: CupertinoIcons.checkmark_seal),
-      _SummaryData(label: "Cancelled", value: "$cancelled", icon: CupertinoIcons.xmark_seal),
-      _SummaryData(label: "Total", value: "${_interviews.length}", icon: CupertinoIcons.square_stack_3d_up),
+      _SummaryData(
+        label: "Upcoming",
+        value: "$upcoming",
+        icon: CupertinoIcons.calendar_badge_plus,
+      ),
+      _SummaryData(
+        label: "Completed",
+        value: "$completed",
+        icon: CupertinoIcons.checkmark_seal,
+      ),
+      _SummaryData(
+        label: "Cancelled",
+        value: "$cancelled",
+        icon: CupertinoIcons.xmark_seal,
+      ),
+      _SummaryData(
+        label: "Total",
+        value: "${_interviews.length}",
+        icon: CupertinoIcons.square_stack_3d_up,
+      ),
     ];
 
     return LayoutBuilder(
       builder: (context, constraints) {
         final isWide = constraints.maxWidth > 900;
-        final crossAxisCount = isWide ? 4 : (constraints.maxWidth > 600 ? 2 : 1);
+        final crossAxisCount = isWide
+            ? 4
+            : (constraints.maxWidth > 600 ? 2 : 1);
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -309,18 +327,22 @@ class _InterviewsSectionState extends State<InterviewsSection> {
             //     builder: (context) => const CameraView(),
             //   ),
             // );
-             CameraOverlay.show(context);
+            CameraOverlay.show(context, interviewId: 'mock_practice');
           }),
           const SizedBox(height: 14),
-          _buildOutlineButton("Candidate Guidelines", CupertinoIcons.doc_text, () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => const Placeholder(),
-            //   ),
-            // );
-            showGuidelineDialog(context);
-          }),
+          _buildOutlineButton(
+            "Candidate Guidelines",
+            CupertinoIcons.doc_text,
+            () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const Placeholder(),
+              //   ),
+              // );
+              showGuidelineDialog(context);
+            },
+          ),
           const SizedBox(height: 14),
           _buildOutlineButton("Add to calendar", CupertinoIcons.calendar, () {
             Navigator.push(
@@ -351,13 +373,18 @@ class _InterviewsSectionState extends State<InterviewsSection> {
           icon: Icon(icon, size: 18, color: AppColors.textPrimary),
           label: Text(
             label,
-            style: GoogleFonts.poppins(fontSize: 14.5, fontWeight: FontWeight.w500),
+            style: GoogleFonts.poppins(
+              fontSize: 14.5,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           style: ElevatedButton.styleFrom(
             elevation: 4,
             backgroundColor: AppColors.glassFillHover,
             foregroundColor: AppColors.textPrimary,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.5)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(13.5),
+            ),
           ),
         ),
       ),
@@ -373,19 +400,22 @@ class _InterviewsSectionState extends State<InterviewsSection> {
         icon: Icon(icon, size: 18, color: AppColors.textSecondary),
         label: Text(
           label,
-          style: GoogleFonts.poppins(fontSize: 14.5, color: AppColors.textSecondary),
+          style: GoogleFonts.poppins(
+            fontSize: 14.5,
+            color: AppColors.textSecondary,
+          ),
         ),
         style: OutlinedButton.styleFrom(
           side: BorderSide(color: AppColors.outlineBorder),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.5)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(13.5),
+          ),
           backgroundColor: AppColors.outlineBg,
         ),
       ),
     );
   }
 }
-
-
 
 _JoinState _getJoinState(DateTime scheduledAt) {
   final now = DateTime.now();
@@ -426,14 +456,14 @@ void _handleJoinTap(BuildContext context, InterviewData data) {
       );
       break;
     case _JoinState.active:
-      // TODO: replace Placeholder() with your actual join / interview-room widget.
+
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(builder: (context) => const Placeholder()),
       // );
-        CameraOverlay.show(context);
- 
-        break;
+      CameraOverlay.show(context, interviewId: data.interviewId);
+
+      break;
   }
 }
 
@@ -462,9 +492,7 @@ void _showJoinInfoDialog(
               decoration: BoxDecoration(
                 color: AppColors.glassFill,
                 borderRadius: BorderRadius.circular(22),
-                border: Border.all(
-                  color: AppColors.glassBorder,
-                ),
+                border: Border.all(color: AppColors.glassBorder),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -478,7 +506,9 @@ void _showJoinInfoDialog(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: iconColor.withValues(alpha: 0.15),
-                          border: Border.all(color: iconColor.withValues(alpha: 0.4)),
+                          border: Border.all(
+                            color: iconColor.withValues(alpha: 0.4),
+                          ),
                         ),
                         alignment: Alignment.center,
                         child: Icon(icon, color: iconColor, size: 19),
@@ -537,10 +567,13 @@ void _showJoinInfoDialog(
                             padding: const EdgeInsets.all(1.5),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(13),
-                              gradient: const LinearGradient(colors: kInterviewAccentGradient),
+                              gradient: const LinearGradient(
+                                colors: kInterviewAccentGradient,
+                              ),
                             ),
                             child: ElevatedButton(
-                              onPressed: () => Navigator.of(dialogContext).pop(),
+                              onPressed: () =>
+                                  Navigator.of(dialogContext).pop(),
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
                                 backgroundColor: AppColors.glassFillHover,
@@ -551,7 +584,9 @@ void _showJoinInfoDialog(
                               ),
                               child: Text(
                                 "Got it",
-                                style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ),
@@ -571,8 +606,18 @@ void _showJoinInfoDialog(
 
 String _formatDate(DateTime d) {
   const months = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   return "${months[d.month - 1]} ${d.day}, ${d.year}";
 }
@@ -583,7 +628,6 @@ String _formatTime(DateTime d) {
   final period = d.hour >= 12 ? "PM" : "AM";
   return "$hour:$minute $period";
 }
-
 
 class _InterviewTile extends StatelessWidget {
   final InterviewData data;
@@ -661,7 +705,11 @@ class _InterviewTile extends StatelessWidget {
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    Icon(CupertinoIcons.calendar, size: 13, color: AppColors.textFaded50),
+                    Icon(
+                      CupertinoIcons.calendar,
+                      size: 13,
+                      color: AppColors.textFaded50,
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       dateStr,
@@ -671,7 +719,11 @@ class _InterviewTile extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 16),
-                    Icon(CupertinoIcons.clock, size: 13, color: AppColors.textFaded50),
+                    Icon(
+                      CupertinoIcons.clock,
+                      size: 13,
+                      color: AppColors.textFaded50,
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       timeStr,
@@ -787,7 +839,11 @@ class _SummaryData {
   final String label;
   final String value;
   final IconData icon;
-  const _SummaryData({required this.label, required this.value, required this.icon});
+  const _SummaryData({
+    required this.label,
+    required this.value,
+    required this.icon,
+  });
 }
 
 class _SummaryCard extends StatelessWidget {
@@ -806,11 +862,7 @@ class _SummaryCard extends StatelessWidget {
           // Decorative watermark icon — fills the empty right side of the card.
           Positioned(
             right: -12,
-            child: Icon(
-              data.icon,
-              size: 72,
-              color: AppColors.inputFill,
-            ),
+            child: Icon(data.icon, size: 72, color: AppColors.inputFill),
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,

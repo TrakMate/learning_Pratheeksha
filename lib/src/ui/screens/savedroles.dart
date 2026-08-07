@@ -8,10 +8,6 @@ import 'package:landpage/src/ui/custom/toast.dart';
 import 'package:landpage/src/utils/colors.dart' show AppColors;
 import 'dashboard.dart' show kAccentGradient;
 
-/// Splits [items] into [columnCount] alternating columns (item i goes to
-/// column i % columnCount), wraps each item with [builder], and lays them
-/// out in a Row of Columns. Mirrors the masonry layout used on the company
-/// roles page so both grids behave the same way.
 Widget buildColumnMasonry<T>(
   List<T> items,
   Widget Function(T item) builder, {
@@ -66,28 +62,23 @@ class _SelectedRolesSectionState extends State<SelectedRolesSection> {
   }
 
   List<SelectedRole> get _roles {
-  return SavedRoles.roles;
-}
-
+    return SavedRoles.roles;
+  }
 
   @override
   Widget build(BuildContext context) {
-    
+    final roles = _roles.where((item) {
+      final matchesSearch =
+          item.role.title.toLowerCase().contains(_query.toLowerCase()) ||
+          item.company.name.toLowerCase().contains(_query.toLowerCase());
 
-final roles = _roles.where((item) {
-  final matchesSearch =
-      item.role.title.toLowerCase().contains(_query.toLowerCase()) ||
-      item.company.name.toLowerCase().contains(_query.toLowerCase());
+      final matchesFilter = _filter == "All" || item.role.type == _filter;
 
-  final matchesFilter =
-      _filter == "All" || item.role.type == _filter;
-
-  return matchesSearch && matchesFilter;
-}).toList();
+      return matchesSearch && matchesFilter;
+    }).toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         Text(
           "Selected Roles",
           style: GoogleFonts.poppins(
@@ -150,118 +141,109 @@ final roles = _roles.where((item) {
       ],
     );
   }
-   Widget _buildStats() {
-  final roles = _roles;
-  final total = roles.length;
-  final fullTime =
-      roles.where((e) => e.role.type == "Full-time").length;
-  final remote =
-      roles.where((e) => e.role.location == "Remote").length;
-  final internshipCount =
-      roles.where((r) => r.role.type == "Internship").length;
-  return LayoutBuilder(
-    builder: (context, constraints) {
-      final crossAxisCount =
-          constraints.maxWidth > 900 ? 4 : 2;
-      return GridView.count(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: 18,
-        mainAxisSpacing: 18,
-        childAspectRatio: 2.4,
-        children: [
-          _RoleStatCard(
-            icon: CupertinoIcons.bookmark_fill,
-            title: "Selected Roles",
-            value: "${roles.length}",
-            subtitle: "Total saved",
-          ),
-          _RoleStatCard(
-            icon: CupertinoIcons.checkmark_circle_fill,
-            title: "Internships",
-            value: "$internshipCount",
-            percentage: total == 0 ? 0 : internshipCount / total,
-          ),
-          _RoleStatCard(
-            icon: CupertinoIcons.location_solid,
-            title: "Remote Roles",
-            value: "$remote",
-            percentage: total == 0 ? 0 : remote / total,
-          ),
-          _RoleStatCard(
-            icon: CupertinoIcons.briefcase_fill,
-            title: "Full-time",
-            value: "$fullTime",
-            percentage: total == 0 ? 0 : fullTime / total,
-          ),
-        ],
-      );
-    },
-  );
-}
+
+  Widget _buildStats() {
+    final roles = _roles;
+    final total = roles.length;
+    final fullTime = roles.where((e) => e.role.type == "Full-time").length;
+    final remote = roles.where((e) => e.role.location == "Remote").length;
+    final internshipCount = roles
+        .where((r) => r.role.type == "Internship")
+        .length;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final crossAxisCount = constraints.maxWidth > 900 ? 4 : 2;
+        return GridView.count(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: crossAxisCount,
+          crossAxisSpacing: 18,
+          mainAxisSpacing: 18,
+          childAspectRatio: 2.4,
+          children: [
+            _RoleStatCard(
+              icon: CupertinoIcons.bookmark_fill,
+              title: "Selected Roles",
+              value: "${roles.length}",
+              subtitle: "Total saved",
+            ),
+            _RoleStatCard(
+              icon: CupertinoIcons.checkmark_circle_fill,
+              title: "Internships",
+              value: "$internshipCount",
+              percentage: total == 0 ? 0 : internshipCount / total,
+            ),
+            _RoleStatCard(
+              icon: CupertinoIcons.location_solid,
+              title: "Remote Roles",
+              value: "$remote",
+              percentage: total == 0 ? 0 : remote / total,
+            ),
+            _RoleStatCard(
+              icon: CupertinoIcons.briefcase_fill,
+              title: "Full-time",
+              value: "$fullTime",
+              percentage: total == 0 ? 0 : fullTime / total,
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Widget _buildSearchBar() {
     return GlassContainer(
-  radius: 16,
-  padding: EdgeInsets.zero,
-  child: SizedBox(
-    height: 48,
-    child: TextField(
-      controller: _searchController,
-      onChanged: (v) {
-        setState(() {
-          _query = v;
-        });
-      },
-      style: GoogleFonts.poppins(
-        color: AppColors.textPrimary,
-      ),
-      decoration: InputDecoration(
-        border: InputBorder.none,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        prefixIcon: Icon(
-          CupertinoIcons.search,
-          color: AppColors.textFaded45,
+      radius: 16,
+      padding: EdgeInsets.zero,
+      child: SizedBox(
+        height: 48,
+        child: TextField(
+          controller: _searchController,
+          onChanged: (v) {
+            setState(() {
+              _query = v;
+            });
+          },
+          style: GoogleFonts.poppins(color: AppColors.textPrimary),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
+            ),
+            prefixIcon: Icon(
+              CupertinoIcons.search,
+              color: AppColors.textFaded45,
+            ),
+            hintText: "Search selected roles...",
+            hintStyle: GoogleFonts.poppins(color: AppColors.textFaded40),
+            suffixIcon: _query.isEmpty
+                ? null
+                : IconButton(
+                    onPressed: () {
+                      _searchController.clear();
+                      setState(() => _query = "");
+                    },
+                    icon: Icon(
+                      CupertinoIcons.clear_circled_solid,
+                      color: AppColors.textFaded45,
+                    ),
+                  ),
+          ),
         ),
-        hintText: "Search selected roles...",
-        hintStyle: GoogleFonts.poppins(
-          color: AppColors.textFaded40,
-        ),
-        suffixIcon: _query.isEmpty
-            ? null
-            : IconButton(
-                onPressed: () {
-                  _searchController.clear();
-                  setState(() => _query = "");
-                },
-                icon: Icon(
-                  CupertinoIcons.clear_circled_solid,
-                  color: AppColors.textFaded45,
-                ),
-              ),
       ),
-    ),
-  ),
-);
+    );
   }
 
   Widget _buildFilters() {
-    const filters = [
-      "All",
-      "Full-time",
-      "Internship",
-      
-    ];
+    const filters = ["All", "Full-time", "Internship"];
 
     return SizedBox(
       height: 36,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: filters.length,
-        separatorBuilder: (_, __) =>
-            const SizedBox(width: 8),
+        separatorBuilder: (_, __) => const SizedBox(width: 8),
         itemBuilder: (_, index) {
           final item = filters[index];
 
@@ -275,25 +257,17 @@ final roles = _roles.where((item) {
             },
             child: GlassContainer(
               radius: 30,
-               padding: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
               child: AnimatedContainer(
-                duration:
-                    const Duration(milliseconds: 180),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                ),
+                duration: const Duration(milliseconds: 180),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   gradient: selected
-                      ? const LinearGradient(
-                          colors: kAccentGradient,
-                        )
+                      ? const LinearGradient(colors: kAccentGradient)
                       : null,
-                  color: selected
-                      ? null
-                      : AppColors.glassFill07,
-                  borderRadius:
-                      BorderRadius.circular(30),
+                  color: selected ? null : AppColors.glassFill07,
+                  borderRadius: BorderRadius.circular(30),
                   border: Border.all(
                     color: selected
                         ? Colors.transparent
@@ -316,76 +290,70 @@ final roles = _roles.where((item) {
     );
   }
 
-Widget _buildEmptyState() {
-  return ClipRRect(
-     borderRadius: BorderRadius.circular(22),
-     child: BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-    child:Container(
-    width: double.infinity,
-    padding: const EdgeInsets.symmetric(
-      vertical: 60,
-      horizontal: 20,
-    ),
-    decoration: BoxDecoration(
-      color: AppColors.glassFill06,
+  Widget _buildEmptyState() {
+    return ClipRRect(
       borderRadius: BorderRadius.circular(22),
-      border: Border.all(
-        color: AppColors.cardGradientStart,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+          decoration: BoxDecoration(
+            color: AppColors.glassFill06,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: AppColors.cardGradientStart),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 70,
+                height: 70,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(colors: kAccentGradient),
+                ),
+                child: Icon(
+                  CupertinoIcons.bookmark_fill,
+                  color: AppColors.textPrimary,
+                  size: 30,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                "No Selected Roles",
+                style: GoogleFonts.poppins(
+                  color: AppColors.textPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Browse companies and shortlist\nroles you like.",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.poppins(
+                  color: AppColors.sectionLabel,
+                  fontSize: 13,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-    ),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 70,
-          height: 70,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: kAccentGradient,
-            ),
-          ),
-          child: Icon(
-            CupertinoIcons.bookmark_fill,
-            color: AppColors.textPrimary,
-            size: 30,
-          ),
-        ),
-        const SizedBox(height: 20),
-        Text(
-          "No Selected Roles",
-          style: GoogleFonts.poppins(
-            color: AppColors.textPrimary,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          "Browse companies and shortlist\nroles you like.",
-          textAlign: TextAlign.center,
-          style: GoogleFonts.poppins(
-            color: AppColors.sectionLabel,
-            fontSize: 13,
-          ),
-        ),
-      ],
-    ),
-    ),
-     ),
-  );
+    );
+  }
 }
-}
- class _SelectedRoleCard extends StatefulWidget {
+
+class _SelectedRoleCard extends StatefulWidget {
   final SelectedRole data;
-   final bool isApplied;
+  final bool isApplied;
   final VoidCallback onApply;
   final VoidCallback onRemove;
   const _SelectedRoleCard({
     // super.key,
     required this.data,
-     required this.isApplied,
+    required this.isApplied,
     required this.onApply,
     required this.onRemove,
   });
@@ -414,11 +382,10 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
     return AspectRatio(
       aspectRatio: 1.2,
       child: GlassContainer(
-      radius: 18,
-       padding: const EdgeInsets.all(18),
+        radius: 18,
+        padding: const EdgeInsets.all(18),
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -426,38 +393,28 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                   width: 52,
                   height: 52,
                   decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(14),
-                    gradient: const LinearGradient(
-                      colors: kAccentGradient,
-                    ),
+                    borderRadius: BorderRadius.circular(14),
+                    gradient: const LinearGradient(colors: kAccentGradient),
                   ),
-                  child: Icon(
-                    company.icon,
-                    color: AppColors.textPrimary,
-                  ),
+                  child: Icon(company.icon, color: AppColors.textPrimary),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         role.title,
-                        style:
-                            GoogleFonts.poppins(
+                        style: GoogleFonts.poppins(
                           color: AppColors.textPrimary,
-                          fontWeight:
-                              FontWeight.w600,
+                          fontWeight: FontWeight.w600,
                           fontSize: 15,
                         ),
                       ),
                       const SizedBox(height: 3),
                       Text(
                         company.name,
-                        style:
-                            GoogleFonts.poppins(
+                        style: GoogleFonts.poppins(
                           color: AppColors.sectionLabel,
                           fontSize: 12.5,
                         ),
@@ -482,21 +439,18 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
               spacing: 8,
               runSpacing: 8,
               children: [
-
                 _RoleChip(
                   icon: CupertinoIcons.location_solid,
                   label: role.location,
                 ),
 
                 _RoleChip(
-                  icon:
-                      CupertinoIcons.briefcase_fill,
+                  icon: CupertinoIcons.briefcase_fill,
                   label: role.type,
                 ),
 
                 _RoleChip(
-                  icon:
-                      CupertinoIcons.money_dollar,
+                  icon: CupertinoIcons.money_dollar,
                   label: role.salary,
                 ),
               ],
@@ -517,8 +471,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                 },
                 behavior: HitTestBehavior.opaque,
                 child: Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: expanded
@@ -541,10 +494,8 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                           : Text(
                               role.description,
                               maxLines: 2,
-                              overflow:
-                                  TextOverflow.ellipsis,
-                              style:
-                                  GoogleFonts.poppins(
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.poppins(
                                 color: AppColors.textFaded65,
                                 fontSize: 12.5,
                                 height: 1.45,
@@ -555,29 +506,21 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                     const SizedBox(height: 5),
 
                     Row(
-                      mainAxisSize:
-                          MainAxisSize.min,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-
                         Text(
-                          expanded
-                              ? "Show less"
-                              : "Read more",
-                          style:
-                              GoogleFonts.poppins(
+                          expanded ? "Show less" : "Read more",
+                          style: GoogleFonts.poppins(
                             color: AppColors.accentLight,
                             fontSize: 11.5,
-                            fontWeight:
-                                FontWeight.w500,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
 
                         Icon(
                           expanded
-                              ? CupertinoIcons
-                                  .chevron_up
-                              : CupertinoIcons
-                                  .chevron_down,
+                              ? CupertinoIcons.chevron_up
+                              : CupertinoIcons.chevron_down,
                           size: 12,
                           color: AppColors.accentLight,
                         ),
@@ -592,12 +535,10 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
 
             Row(
               children: [
-
                 Expanded(
                   child: SizedBox(
                     height: 42,
-                    child:
-                        OutlinedButton.icon(
+                    child: OutlinedButton.icon(
                       onPressed: widget.onRemove,
 
                       icon: Icon(
@@ -608,27 +549,16 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
 
                       label: Text(
                         "Remove",
-                        style:
-                            GoogleFonts.poppins(
-                          color:
-                              AppColors.textSecondary,
+                        style: GoogleFonts.poppins(
+                          color: AppColors.textSecondary,
                         ),
                       ),
 
-                      style:
-                          OutlinedButton
-                              .styleFrom(
-                        side: BorderSide(
-                          color: AppColors.removeButtonBorder,
-                        ),
-                        backgroundColor:
-                            AppColors.outlineBg,
-                        shape:
-                            RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius
-                                  .circular(
-                                      12),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: AppColors.removeButtonBorder),
+                        backgroundColor: AppColors.outlineBg,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
@@ -641,52 +571,30 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
                   child: SizedBox(
                     height: 42,
                     child: Container(
-                      padding:
-                          const EdgeInsets.all(
-                              1.5),
-                      decoration:
-                          BoxDecoration(
-                        borderRadius:
-                            BorderRadius
-                                .circular(
-                                    13),
-                        gradient:
-                           widget.isApplied
-            ? null
-            : const LinearGradient(colors: kAccentGradient),
-        color: widget.isApplied
-            ? AppColors.appliedBg
-            : null,
+                      padding: const EdgeInsets.all(1.5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(13),
+                        gradient: widget.isApplied
+                            ? null
+                            : const LinearGradient(colors: kAccentGradient),
+                        color: widget.isApplied ? AppColors.appliedBg : null,
                       ),
-                      child:
-                          ElevatedButton(
-                       onPressed: widget.isApplied ? null : widget.onApply,
+                      child: ElevatedButton(
+                        onPressed: widget.isApplied ? null : widget.onApply,
 
-                        style:
-                            ElevatedButton
-                                .styleFrom(
+                        style: ElevatedButton.styleFrom(
                           elevation: 0,
-                          backgroundColor:
-                              AppColors.glassFillHover,
-                          foregroundColor:
-                              AppColors.textPrimary,
-                          shape:
-                              RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius
-                                    .circular(
-                                        11),
+                          backgroundColor: AppColors.glassFillHover,
+                          foregroundColor: AppColors.textPrimary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11),
                           ),
                         ),
 
                         child: Text(
                           widget.isApplied ? "Applied ✓" : "Apply",
-                          style:
-                              GoogleFonts
-                                  .poppins(
-                            fontWeight:
-                                FontWeight
-                                    .w500,
+                          style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
@@ -697,7 +605,7 @@ class _SelectedRoleCardState extends State<_SelectedRoleCard> {
             ),
           ],
         ),
-      // ),
+        // ),
       ),
     );
   }
@@ -707,45 +615,28 @@ class _RoleChip extends StatelessWidget {
   final IconData icon;
   final String label;
 
-  const _RoleChip({
-    required this.icon,
-    required this.label,
-  });
+  const _RoleChip({required this.icon, required this.label});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 5,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: AppColors.glassFill06,
-        borderRadius:
-            BorderRadius.circular(20),
-        border: Border.all(
-          color: AppColors.cardGradientStart,
-        ),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.cardGradientStart),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-
-          Icon(
-            icon,
-            size: 12,
-            color:
-                AppColors.sectionLabel,
-          ),
+          Icon(icon, size: 12, color: AppColors.sectionLabel),
 
           const SizedBox(width: 5),
 
           Text(
             label,
             style: GoogleFonts.poppins(
-              color:
-                  AppColors.chipLabel,
+              color: AppColors.chipLabel,
               fontSize: 11,
             ),
           ),
@@ -786,15 +677,9 @@ class _RoleStatCard extends StatelessWidget {
                 height: 42,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  gradient: const LinearGradient(
-                    colors: kAccentGradient,
-                  ),
+                  gradient: const LinearGradient(colors: kAccentGradient),
                 ),
-                child: Icon(
-                  icon,
-                  color: AppColors.textPrimary,
-                  size: 20,
-                ),
+                child: Icon(icon, color: AppColors.textPrimary, size: 20),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -829,9 +714,7 @@ class _RoleStatCard extends StatelessWidget {
                 value: percentage!.clamp(0, 1),
                 minHeight: 6,
                 backgroundColor: AppColors.glassFill,
-                valueColor: const AlwaysStoppedAnimation(
-                  AppColors.accentLight,
-                ),
+                valueColor: const AlwaysStoppedAnimation(AppColors.accentLight),
               ),
             ),
             const SizedBox(height: 6),

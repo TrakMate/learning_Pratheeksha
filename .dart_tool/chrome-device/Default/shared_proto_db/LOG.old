@@ -1,22 +1,25 @@
-2026/08/06-12:58:35.905 7334 Reusing MANIFEST C:\Users\PRATHE~1.P\AppData\Local\Temp\flutter_tools.347a4bfb\flutter_tools_chrome_device.a524277e\Default\shared_proto_db/MANIFEST-000001
-2026/08/06-12:58:35.906 7334 Recovering log #36
-2026/08/06-12:58:35.907 7334 Reusing old log C:\Users\PRATHE~1.P\AppData\Local\Temp\flutter_tools.347a4bfb\flutter_tools_chrome_device.a524277e\Default\shared_proto_db/000036.log 
-2026/08/06-12:58:35.908 7334 Delete type=0 #3
-2026/08/06-12:58:35.908 7334 Delete type=0 #4
-2026/08/06-12:58:35.908 7334 Delete type=0 #7
-2026/08/06-12:58:35.908 7334 Delete type=2 #8
-2026/08/06-12:58:35.908 7334 Delete type=0 #10
-2026/08/06-12:58:35.908 7334 Delete type=2 #11
-2026/08/06-12:58:35.908 7334 Delete type=0 #13
-2026/08/06-12:58:35.908 7334 Delete type=2 #14
-2026/08/06-12:58:35.908 7334 Delete type=0 #16
-2026/08/06-12:58:35.909 7334 Delete type=2 #17
-2026/08/06-12:58:35.909 7334 Delete type=0 #19
-2026/08/06-12:58:35.909 7334 Delete type=2 #21
-2026/08/06-12:58:35.909 7334 Delete type=0 #23
-2026/08/06-12:58:35.909 7334 Delete type=2 #24
-2026/08/06-12:58:35.909 7334 Delete type=0 #26
-2026/08/06-12:58:35.909 7334 Delete type=2 #27
-2026/08/06-12:58:35.909 7334 Delete type=0 #29
-2026/08/06-12:58:35.909 7334 Delete type=2 #30
-2026/08/06-12:58:35.909 7334 Delete type=0 #32
+2026/08/06-16:20:08.001 6444 Reusing MANIFEST C:\Users\PRATHE~1.P\AppData\Local\Temp\flutter_tools.7550f5a1\flutter_tools_chrome_device.7a307eb4\Default\shared_proto_db/MANIFEST-000001
+2026/08/06-16:20:08.001 6444 Recovering log #36
+2026/08/06-16:20:08.003 6444 Reusing old log C:\Users\PRATHE~1.P\AppData\Local\Temp\flutter_tools.7550f5a1\flutter_tools_chrome_device.7a307eb4\Default\shared_proto_db/000036.log 
+2026/08/06-16:20:08.003 6444 Delete type=0 #3
+2026/08/06-16:20:08.003 6444 Delete type=0 #4
+2026/08/06-16:20:08.003 6444 Delete type=0 #7
+2026/08/06-16:20:08.003 6444 Delete type=2 #8
+2026/08/06-16:20:08.003 6444 Delete type=0 #10
+2026/08/06-16:20:08.003 6444 Delete type=2 #11
+2026/08/06-16:20:08.003 6444 Delete type=0 #13
+2026/08/06-16:20:08.003 6444 Delete type=2 #14
+2026/08/06-16:20:08.004 6444 Delete type=0 #16
+2026/08/06-16:20:08.004 6444 Delete type=2 #17
+2026/08/06-16:20:08.004 6444 Delete type=0 #19
+2026/08/06-16:20:08.004 6444 Delete type=2 #21
+2026/08/06-16:20:08.004 6444 Delete type=0 #23
+2026/08/06-16:20:08.004 6444 Delete type=2 #24
+2026/08/06-16:20:08.004 6444 Delete type=0 #26
+2026/08/06-16:20:08.004 6444 Delete type=2 #27
+2026/08/06-16:20:08.004 6444 Delete type=0 #29
+2026/08/06-16:20:08.004 6444 Delete type=2 #30
+2026/08/06-16:20:08.004 6444 Delete type=0 #32
+2026/08/06-16:20:21.541 5ca0 Level-0 table #40: started
+2026/08/06-16:20:21.554 5ca0 Level-0 table #40: 136894 bytes OK
+2026/08/06-16:20:21.560 5ca0 Delete type=0 #36

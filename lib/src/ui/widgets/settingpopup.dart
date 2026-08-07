@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:landpage/src/ui/theme/colors.dart';
-import 'package:landpage/src/utils/colors.dart'; // adjust path if different
+import 'package:landpage/src/utils/colors.dart';
 
 Widget _glassDialogFrame({
   required BuildContext dialogContext,
@@ -70,7 +70,9 @@ Widget _glassDialogFrame({
                         ),
                         child: Text(
                           "Cancel",
-                          style: GoogleFonts.poppins(color: AppColors.textSecondary),
+                          style: GoogleFonts.poppins(
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ),
                     ),
@@ -87,8 +89,8 @@ Widget _glassDialogFrame({
                             colors: onConfirm != null
                                 ? AppColors.accentGradient
                                 : AppColors.accentGradient
-                                    .map((c) => c.withValues(alpha: .35))
-                                    .toList(),
+                                      .map((c) => c.withValues(alpha: .35))
+                                      .toList(),
                           ),
                         ),
                         child: ElevatedButton(
@@ -127,7 +129,6 @@ Widget _glassDialogFrame({
   );
 }
 
-
 Future<void> showGlassFieldDialog({
   required BuildContext context,
   required String title,
@@ -162,11 +163,12 @@ Future<void> showGlassFieldDialog({
                 obscureText: true,
                 style: const TextStyle(color: AppColors.textPrimary),
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(CupertinoIcons.lock_fill, color: AppColors.textSecondary),
-                  hintText: "Current password",
-                  hintStyle: GoogleFonts.poppins(
-                    color: AppColors.sectionLabel,
+                  prefixIcon: const Icon(
+                    CupertinoIcons.lock_fill,
+                    color: AppColors.textSecondary,
                   ),
+                  hintText: "Current password",
+                  hintStyle: GoogleFonts.poppins(color: AppColors.sectionLabel),
                   filled: true,
                   fillColor: AppColors.inputFill,
                   enabledBorder: OutlineInputBorder(
@@ -188,9 +190,7 @@ Future<void> showGlassFieldDialog({
               decoration: InputDecoration(
                 prefixIcon: Icon(icon, color: AppColors.textSecondary),
                 hintText: hintText,
-                hintStyle: GoogleFonts.poppins(
-                  color: AppColors.sectionLabel,
-                ),
+                hintStyle: GoogleFonts.poppins(color: AppColors.sectionLabel),
                 filled: true,
                 fillColor: AppColors.inputFill,
                 enabledBorder: OutlineInputBorder(
@@ -213,7 +213,6 @@ Future<void> showGlassFieldDialog({
     },
   );
 }
-
 
 Future<void> showResumeUploadDialog({
   required BuildContext context,
@@ -248,7 +247,10 @@ Future<void> showResumeUploadDialog({
             content: GestureDetector(
               onTap: picked == null ? pickFile : null,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 14,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.inputFill,
                   borderRadius: BorderRadius.circular(15),
@@ -285,7 +287,9 @@ Future<void> showResumeUploadDialog({
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            picked?.name ?? currentFileName ?? "No file selected",
+                            picked?.name ??
+                                currentFileName ??
+                                "No file selected",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.poppins(
@@ -296,7 +300,9 @@ Future<void> showResumeUploadDialog({
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            picked != null ? "Ready to upload" : "Tap to browse files",
+                            picked != null
+                                ? "Ready to upload"
+                                : "Tap to browse files",
                             style: GoogleFonts.poppins(
                               color: AppColors.textFaded50,
                               fontSize: 11,
@@ -334,7 +340,6 @@ Future<void> showResumeUploadDialog({
   );
 }
 
-
 Future<void> showAvatarUploadDialog({
   required BuildContext context,
   Uint8List? currentImageBytes,
@@ -363,7 +368,8 @@ Future<void> showAvatarUploadDialog({
             }
           }
 
-          final bool hasNewImage = picked != null && picked != currentImageBytes;
+          final bool hasNewImage =
+              picked != null && picked != currentImageBytes;
 
           return _glassDialogFrame(
             dialogContext: dialogContext,
@@ -373,7 +379,10 @@ Future<void> showAvatarUploadDialog({
             content: GestureDetector(
               onTap: pickImage,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 14,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.inputFill,
                   borderRadius: BorderRadius.circular(15),
@@ -389,10 +398,10 @@ Future<void> showAvatarUploadDialog({
                       height: 44,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: picked == null ? AppColors.accentLinearGradient : null,
-                        border: Border.all(
-                          color: AppColors.glassBorder,
-                        ),
+                        gradient: picked == null
+                            ? AppColors.accentLinearGradient
+                            : null,
+                        border: Border.all(color: AppColors.glassBorder),
                       ),
                       alignment: Alignment.center,
                       child: picked != null
@@ -416,7 +425,9 @@ Future<void> showAvatarUploadDialog({
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            picked != null ? "Photo selected" : "No photo selected",
+                            picked != null
+                                ? "Photo selected"
+                                : "No photo selected",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.poppins(
@@ -427,7 +438,9 @@ Future<void> showAvatarUploadDialog({
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            picked != null ? "Tap to change" : "Tap to browse photos",
+                            picked != null
+                                ? "Tap to change"
+                                : "Tap to browse photos",
                             style: GoogleFonts.poppins(
                               color: AppColors.textFaded50,
                               fontSize: 11,
@@ -465,12 +478,9 @@ Future<void> showAvatarUploadDialog({
   );
 }
 
-
-
-
 Future<void> showLogoutDialog({
   required BuildContext context,
-   required Widget registerPage,
+  required Widget registerPage,
 }) {
   return showDialog(
     context: context,
@@ -497,8 +507,9 @@ Future<void> showLogoutDialog({
                 height: 44,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.statusCancelledInterview
-                      .withValues(alpha: 0.12),
+                  color: AppColors.statusCancelledInterview.withValues(
+                    alpha: 0.12,
+                  ),
                 ),
                 child: const Icon(
                   CupertinoIcons.square_arrow_right,
@@ -520,11 +531,9 @@ Future<void> showLogoutDialog({
         ),
         onConfirm: () {
           // TODO: Add logout logic later
-           Navigator.pushAndRemoveUntil(
+          Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(
-              builder: (_) => registerPage,
-            ),
+            MaterialPageRoute(builder: (_) => registerPage),
             (route) => false,
           );
         },
@@ -532,13 +541,3 @@ Future<void> showLogoutDialog({
     },
   );
 }
-
-
-
-
-
-
-
-
-
-
